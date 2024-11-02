@@ -5,8 +5,16 @@ from PyQt5.QtCore import *
 import sys
 
 class MainWindow(QMainWindow):
-    pass
 
+    def __init__(self, *args, **kwargs):
+        super(MainWindow, self).__init__(*args, **kwargs)
+
+        self.setWindowTitle("My Awesome App")
+
+        label = QLabel("GUI creation")
+        label.setAlignment(Qt.AlignCenter)
+
+        self.setCentralWidget(label)
 
 app = QApplication(sys.argv)
 
