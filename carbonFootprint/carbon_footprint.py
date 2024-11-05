@@ -1,5 +1,6 @@
 import os
 import sys
+from ctypes import windll
 
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QLineEdit, QComboBox, QPushButton, QTabWidget, \
@@ -41,8 +42,8 @@ class CarbonFootprintCalculator(QMainWindow):
     def __init__(self, username):
         super().__init__()
         self.setWindowTitle("Carbon Footprint Calculator")
-        self.setGeometry(100, 100, 600, 600)
-        self.setFixedWidth(800)
+        self.setGeometry(100, 100, 400, 400)
+        # self.setFixedWidth(600)
         self.init_ui()
         self.username = username
         self.carbonCalculator = {}
@@ -89,7 +90,7 @@ class CarbonFootprintCalculator(QMainWindow):
         background = QLabel()
         # Load the image using QPixmap
         pixmap = QPixmap("images/carbonfootprint_login.png")
-        scaled_pixmap = pixmap.scaled(800, 600)
+        scaled_pixmap = pixmap.scaled(400, 400)
 
         # Set the pixmap to the label
         background.setPixmap(scaled_pixmap)
@@ -216,10 +217,10 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab5_layout = QGridLayout(self.tab5)
         # self.tab5_layout.setAlignment(Qt.AlignCenter)
 
-        self.table = QTableWidget(3, 3)  # Set up a table with 3 columns
+        self.table = QTableWidget(4, 2)  # Set up a table with 3 columns
         self.table.verticalHeader().setVisible(False)
         # Set column headers
-        self.table.setHorizontalHeaderLabels(["Operators", "Carbon Footprint", "Status"])
+        self.table.setHorizontalHeaderLabels(["Operators", "Carbon Footprint"])
         self.table.horizontalHeader().setFont(self.my_font)
         self.table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
 
@@ -227,15 +228,13 @@ class CarbonFootprintCalculator(QMainWindow):
         self.table.setItem(0, 0, QTableWidgetItem("Energy"))
         self.table.setItem(1, 0, QTableWidgetItem("Waste"))
         self.table.setItem(2, 0, QTableWidgetItem("Business Travel"))
+        self.table.setItem(3, 0, QTableWidgetItem("Total"))
 
         for col in range(self.table.rowCount()):
             self.table.item(col, 0).setFlags(Qt.ItemIsEnabled)
             self.table.setItem(col, 1, QtWidgets.QTableWidgetItem())
             # self.table.item(col, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(col, 1).setFlags(Qt.ItemIsEnabled)
-            self.table.setItem(col, 2, QtWidgets.QTableWidgetItem())
-            # self.table.item(col, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
-            self.table.item(col, 2).setFlags(Qt.ItemIsEnabled)
 
         # Set custom delegate to the third column for displaying icons
         # delegate = IconDelegate(self.table)
@@ -300,59 +299,51 @@ class CarbonFootprintCalculator(QMainWindow):
             self.calculate()
             self.database_update()
 
-        # energy_result = (float(self.carbonCalculator["Energy"]["Electricity"]) * 12 * 0.0005) + (float(self.carbonCalculator["Energy"]["NaturalGas"]) * 12 * 0.0053) + (float(self.carbonCalculator["Energy"]["Fuel"]) * 12 * 2.32)
-        # waste_result = (float(self.carbonCalculator["Waste"]["Waste_generated"] * 12 * (0.57 - (float(self.carbonCalculator["Waste"]["Waste_generated"]/100)))))
-        # travel_result = float(self.carbonCalculator["Travel"]["Distance"]) * (1/float(self.carbonCalculator["Travel"]["Fuel_Efficiency"] * 2.31))
-        # self.table.setItem(0, 1, QTableWidgetItem(str(energy_result)))
-        # self.table.setItem(1, 1, QTableWidgetItem(str(waste_result)))
-        # self.table.setItem(2, 1, QTableWidgetItem(str(travel_result)))
-
-        # self.carbonCalculator["Result"].update(
-        #     {"Energy_CF": energy_result, "Waste_CF": waste_result, "Travel_CF": travel_result})
-
-        # print(self.carbonCalculator)
-
     def calculate(self):
-        energy_result = (float(self.carbonCalculator["Energy"]["Electricity"]) * 12 * 0.0005) + (
-                float(self.carbonCalculator["Energy"]["NaturalGas"]) * 12 * 0.0053) + (
-                                float(self.carbonCalculator["Energy"]["Fuel"]) * 12 * 2.32)
-        waste_result = float(self.carbonCalculator["Waste"]["Waste_generated"]) * 12 * (
-                0.57 - (float(self.carbonCalculator["Waste"]["Waste_recycle"]) / 100))
-        travel_result = float(self.carbonCalculator["Travel"]["Distance"]) * (
-                1 / float(self.carbonCalculator["Travel"]["Fuel_Efficiency"]) * 2.31)
-        total = energy_result+waste_result+travel_result
-        self.table.setItem(0, 1, QTableWidgetItem("%.2f" % energy_result))
-        self.table.setItem(1, 1, QTableWidgetItem("%.2f" % waste_result))
-        self.table.setItem(2, 1, QTableWidgetItem("%.2f" % travel_result))
+        try:
+            energy_result = (float(self.carbonCalculator["Energy"]["Electricity"]) * 12 * 0.0005) + (
+                    float(self.carbonCalculator["Energy"]["NaturalGas"]) * 12 * 0.0053) + (
+                                    float(self.carbonCalculator["Energy"]["Fuel"]) * 12 * 2.32)
+            waste_result = float(self.carbonCalculator["Waste"]["Waste_generated"]) * 12 * (
+                    0.57 - (float(self.carbonCalculator["Waste"]["Waste_recycle"]) / 100))
+            travel_result = float(self.carbonCalculator["Travel"]["Distance"]) * (
+                    1 / float(self.carbonCalculator["Travel"]["Fuel_Efficiency"]) * 2.31)
+            total = energy_result+waste_result+travel_result
+            self.table.setItem(0, 1, QTableWidgetItem("%.2f" % energy_result))
+            self.table.setItem(1, 1, QTableWidgetItem("%.2f" % waste_result))
+            self.table.setItem(2, 1, QTableWidgetItem("%.2f" % travel_result))
 
-        # table = QTableWidget(0, 2)
+            # table = QTableWidget(0, 2)
 
-        # Create an icon and set it to a QTableWidgetItem
-        icon1 = QIcon("positive-vote.png")
-        icon2 = QIcon("negative-vote.png")
-        item1 = QTableWidgetItem()
-        item2 = QTableWidgetItem()
-        item3 = QTableWidgetItem()
-        # item1.setIcon(icon1)
+            # Create an icon and set it to a QTableWidgetItem
+            icon1 = QIcon("positive-vote.png")
+            icon2 = QIcon("negative-vote.png")
+            item1 = QTableWidgetItem()
+            item2 = QTableWidgetItem()
+            item3 = QTableWidgetItem()
+            # item1.setIcon(icon1)
 
-        # Add the QTableWidgetItem to the table
-        item1.setIcon(icon1)
-        self.table.setItem(0, 2, item1)
-        item2.setIcon(icon2)
-        self.table.setItem(1, 2, item2)
-        item3.setIcon(icon1)
-        self.table.setItem(2, 2, item3)
-        self.table.item(0, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
-        self.table.item(1, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
-        self.table.item(2, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
-        self.table.item(0, 2).setTextAlignment(QtCore.Qt.AlignCenter)
-        self.table.item(1, 2).setTextAlignment(QtCore.Qt.AlignCenter)
-        self.table.item(2, 2).setTextAlignment(QtCore.Qt.AlignCenter)
+            # Add the QTableWidgetItem to the table
+            item1.setIcon(icon1)
+            self.table.setItem(0, 2, item1)
+            item2.setIcon(icon2)
+            self.table.setItem(1, 2, item2)
+            item3.setIcon(icon1)
+            self.table.setItem(2, 2, item3)
+            self.table.item(0, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+            self.table.item(1, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+            self.table.item(2, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+            self.table.item(0, 2).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.item(1, 2).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.item(2, 2).setTextAlignment(QtCore.Qt.AlignCenter)
 
-        self.carbonCalculator["Result"].update(
-            {"Energy": energy_result, "Waste": waste_result, "Travel": travel_result, "Total": total})
+            self.carbonCalculator["Results"].update(
+                {"Energy": energy_result, "Waste": waste_result, "Travel": travel_result, "Total": total})
+        except Exception as e:
+            print(f"issue is with: {e}")
 
     def database_update(self):
+        self.tab5_calculate_button.blockSignals(True)
         try:
             mydb = mdb.connect(
                 host=HOST,
@@ -360,7 +351,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 password=PASSWORD,
                 database=DATABASE
             )
-            mycursor = mydb.cursor(dictionary=True)
+            mycursor = mydb.cursor()
 
             query = "SELECT * FROM cf_table WHERE User_Type=%s AND Name=%s AND Company_Name=%s AND Year=%s"
             values_check = (
@@ -369,9 +360,8 @@ class CarbonFootprintCalculator(QMainWindow):
                 self.carbonCalculator["Details"].get("CompanyName"),
                 self.carbonCalculator["Details"].get("Year")
             )
-            mycursor.execute(query, (values_check,))
+            mycursor.execute(query, values_check)
             result = mycursor.fetchone()
-
             if result:
                 # QMessageBox.about(self, 'Data Update', 'User already exists')
                 msg_box = QMessageBox()
@@ -382,7 +372,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 print("Data already exist for the user with same year, company name and user type")
             else:
                 avg_query = "SELECT * FROM eu_avgcf_table WHERE Year=%s"
-                mycursor.execute(avg_query, self.carbonCalculator["Details"].get("Year"))
+                mycursor.execute(avg_query, (self.carbonCalculator["Details"].get("Year"),))
                 result_avg = mycursor.fetchone()
 
                 insert_query = ("INSERT INTO cf_table (User_Type, Name, Company_Name, Year, Country, Ele_Energy, Nat_Gas_Energy, Fuel_Energy, Total_Energy, Generated_Waste, Recycled_Waste, Total_Waste, Kilometer_Travel, AvgFuelEff_Travel, Total_Travel, Total_CF, Europe_Avg_CF) "
@@ -396,31 +386,42 @@ class CarbonFootprintCalculator(QMainWindow):
                     self.carbonCalculator["Energy"].get("Electricity"),
                     self.carbonCalculator["Energy"].get("NaturalGas"),
                     self.carbonCalculator["Energy"].get("Fuel"),
-                    self.carbonCalculator["Result"].get("Energy"),
+                    self.carbonCalculator["Results"].get("Energy"),
                     self.carbonCalculator["Waste"].get("Waste_generated"),
                     self.carbonCalculator["Waste"].get("Waste_recycle"),
-                    self.carbonCalculator["Result"].get("Waste"),
+                    self.carbonCalculator["Results"].get("Waste"),
                     self.carbonCalculator["Travel"].get("Distance"),
                     self.carbonCalculator["Travel"].get("Fuel_Efficiency"),
-                    self.carbonCalculator["Result"].get("Travel"),
-                    self.carbonCalculator["Result"].get("Total"),
-                    result_avg["Europe_AvgCF_KgCO2"]
+                    self.carbonCalculator["Results"].get("Travel"),
+                    self.carbonCalculator["Results"].get("Total"),
+                    result_avg[2]
                 )
                 mycursor.execute(insert_query, values_insert)
                 mydb.commit()
                 msg_box = QMessageBox()
                 msg_box.setIcon(QMessageBox.Information)
                 msg_box.setWindowTitle("Database Update")
-                msg_box.setText("Data recorded successfull")
+                msg_box.setText("Data recorded successfully")
                 msg_box.exec_()
                 print("Data recorded successfully")
-
-            mydb.close()  # Always close the database connection after use
         except mdb.Error as e:
             print(f"Database not connected: {e}")
+        finally:
+            mycursor.close()
+            mydb.close()
+
+        self.tab5_calculate_button.blockSignals(False)
 
     def visualization(self):
         pass
 
     def switchTab(self, index):
         self.tabs.setCurrentIndex(index)
+
+
+# if __name__ == "__main__":
+#     windll.shcore.SetProcessDpiAwareness(0)
+#     app = QApplication(sys.argv)
+#     window = CarbonFootprintCalculator("AKRD")
+#     window.show()
+#     sys.exit(app.exec_())

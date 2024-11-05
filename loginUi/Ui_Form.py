@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 
 import MySQLdb as mdb
 
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from carbonFootprint.carbon_footprint import CarbonFootprintCalculator
 
@@ -79,7 +79,7 @@ class Ui_Form(CarbonFootprintCalculator):
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.widget)
         self.label_2.setGeometry(QtCore.QRect(40, 30, 280, 430))
-        self.label_2.setStyleSheet("background-color:rgba(0, 0, 0, 200);\n"
+        self.label_2.setStyleSheet("background-color:rgba(0, 0, 0, 300);\n"
                                    "border-top-left-radius: 50px;")
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
