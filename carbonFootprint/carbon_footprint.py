@@ -84,6 +84,7 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tabs.addTab(self.tab4, "Travel/Transport")
         self.tabs.addTab(self.tab5, "Results")
         self.tabs.addTab(self.tab6, "Visualization")
+    
 
         # Add widgets to the first tab
         self.tab1_layout = QGridLayout(self.tab1)
@@ -419,9 +420,9 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tabs.setCurrentIndex(index)
 
 
-#if __name__ == "__main__":
-#    windll.shcore.SetProcessDpiAwareness(0)
-#    app = QApplication(sys.argv)
-#    window = CarbonFootprintCalculator("AKRD")
-#    window.show()
- #    sys.exit(app.exec_())
+if __name__ == "__main__":
+    windll.shcore.SetProcessDpiAwareness(0)
+    app = QApplication(sys.argv)
+    window = CarbonFootprintCalculator("AKRD")
+    window.show()
+    sys.exit(app.exec_())
