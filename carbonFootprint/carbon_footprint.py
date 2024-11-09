@@ -8,8 +8,14 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QLineEdi
     QMessageBox
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtCore import Qt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
+# from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+# from matplotlib.figure import Figure
+import plotly.graph_objects as go
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtCore import QUrl
+import tempfile
+# import plotly.io as pio
+# from PIL.ImageQt import ImageQt
 import MySQLdb as mdb
 
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -78,12 +84,16 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab4 = QWidget()
         self.tab5 = QWidget()
         self.tab6 = QWidget()
+        self.tab7 = QWidget()
+        self.tab8 = QWidget()
         self.tabs.addTab(self.tab1, "Welcome")
         self.tabs.addTab(self.tab2, "Energy")
         self.tabs.addTab(self.tab3, "Waste")
         self.tabs.addTab(self.tab4, "Travel/Transport")
         self.tabs.addTab(self.tab5, "Results")
         self.tabs.addTab(self.tab6, "Visualization")
+        self.tabs.addTab(self.tab7, "Comparison")
+        self.tabs.addTab(self.tab8, "Feedback")
     
 
         # Add widgets to the first tab
@@ -147,7 +157,7 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab2_input_layout.addWidget(self.tab2_electricity_input, 0, 1)
         self.tab2_input_layout.addWidget(self.tab2_gas_input, 1, 1)
         self.tab2_input_layout.addWidget(self.tab2_fuel_input, 2, 1)
-        self.tab2_layout.addLayout(self.tab2_input_layout, 0, 0, 1, 4)
+        self.tab2_layout.addLayout(self.tab2_input_layout, 0, 0, 1, 0)
         self.tab2_electricity_input.editingFinished.connect(lambda: self.carbonCalculator_func("Energy"))
         self.tab2_gas_input.editingFinished.connect(lambda: self.carbonCalculator_func("Energy"))
         self.tab2_fuel_input.editingFinished.connect(lambda: self.carbonCalculator_func("Energy"))
@@ -218,24 +228,30 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab5_layout = QGridLayout(self.tab5)
         # self.tab5_layout.setAlignment(Qt.AlignCenter)
 
-        self.table = QTableWidget(4, 2)  # Set up a table with 3 columns
+        self.table = QTableWidget(5, 2)  # Set up a table with 2 columns
         self.table.verticalHeader().setVisible(False)
         # Set column headers
-        self.table.setHorizontalHeaderLabels(["Operators", "Carbon Footprint"])
+        self.table.setHorizontalHeaderLabels(["Operators", "Carbon Footprint (KgCO2)"])
         self.table.horizontalHeader().setFont(self.my_font)
         self.table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.table.horizontalHeader().setFixedHeight(40)
+        self.table.horizontalHeader().setStyleSheet("QHeaderView::section { background-color: #2aa183; color: white; }")
 
         # Populate the table with sample data
         self.table.setItem(0, 0, QTableWidgetItem("Energy"))
         self.table.setItem(1, 0, QTableWidgetItem("Waste"))
         self.table.setItem(2, 0, QTableWidgetItem("Business Travel"))
         self.table.setItem(3, 0, QTableWidgetItem("Total"))
+        self.table.setItem(4, 0, QTableWidgetItem("Europe Average"))
 
         for col in range(self.table.rowCount()):
-            self.table.item(col, 0).setFlags(Qt.ItemIsEnabled)
-            self.table.setItem(col, 1, QtWidgets.QTableWidgetItem())
-            # self.table.item(col, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+            if self.table.item(col, 0) is not None:  # Check if the item exists
+                self.table.item(col, 0).setFlags(Qt.ItemIsEnabled)
+
+            if self.table.item(col, 1) is None:  # Ensure the item exists before modifying
+                self.table.setItem(col, 1, QtWidgets.QTableWidgetItem())
             self.table.item(col, 1).setFlags(Qt.ItemIsEnabled)
+
 
         # Set custom delegate to the third column for displaying icons
         # delegate = IconDelegate(self.table)
@@ -257,20 +273,69 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab5_layout.addWidget(self.tab5_next_button, 1, 2)
         self.tab5_calculate_button.clicked.connect(lambda: self.carbonCalculator_func("Result"))
 
-        fig = Figure(figsize=(5, 4), dpi=100)
-        ax = fig.add_subplot(111)
-        ax.plot([1, 2, 3, 4, 5], [10, 20, 30, 40, 50])
-        canvas = FigureCanvas(fig)
-        canvas.setParent(self.tab6)
+        # fig = Figure(figsize=(5, 4), dpi=100)
+        # ax = fig.add_subplot(111)
+        # # ax.plot([1, 2, 3, 4, 5], [10, 20, 30, 40, 50])
+        # canvas = FigureCanvas(fig)
+        self.web_view = QWebEngineView()
+
+        self.web_view.setParent(self.tab7)
 
         # Add widgets to the sixth tab
-        self.tab6_layout = QVBoxLayout()
-        self.tab6_layout.addWidget(canvas)
-        self.tab6.setLayout(self.tab6_layout)
+        self.tab6gb = QGroupBox()
+        self.tab6layout = QGridLayout()
+        self.tab6gb.setLayout(self.tab6layout)
+
+        self.tab6_layout = QGridLayout(self.tab6)
+
+        self.tab6layout.addWidget(self.web_view)
+
+        # self.tab6layout.addWidget(self.table_comp, 0, 0)
 
         self.tab6_previous_button = QPushButton("Previous")
         self.tab6_previous_button.clicked.connect(lambda: self.switchTab(4))
-        self.tab6_layout.addWidget(self.tab6_previous_button)
+        self.tab6_next_button = QPushButton("Next")
+        self.tab6_next_button.clicked.connect(lambda: self.switchTab(6))
+        self.tab6_layout.addWidget(self.tab6gb, 0, 0, 1, 2)
+        self.tab6_layout.addWidget(self.tab6_previous_button, 1, 0)
+        self.tab6_layout.addWidget(self.tab6_next_button, 1, 1)
+
+        self.tab7gb = QGroupBox()
+        self.tab7layout = QGridLayout()
+        self.tab7gb.setLayout(self.tab7layout)
+
+        self.tab7_layout = QGridLayout(self.tab7)
+
+        self.table_comp = QTableWidget(5, 2)  # Set up a table with 3 columns
+        self.table_comp.verticalHeader().setVisible(False)
+        # Set column headers
+        self.table_comp.setHorizontalHeaderLabels(["Operators", "Carbon Footprint"])
+        self.table_comp.horizontalHeader().setFont(self.my_font)
+        self.table_comp.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+
+        # Populate the table with sample data
+        self.table_comp.setItem(1, 0, QTableWidgetItem("Energy"))
+        self.table_comp.setItem(2, 0, QTableWidgetItem("Waste"))
+        self.table_comp.setItem(3, 0, QTableWidgetItem("Business Travel"))
+        self.table_comp.setItem(4, 0, QTableWidgetItem("Total"))
+
+        for col in range(self.table_comp.rowCount()):
+            if self.table_comp.item(col, 0) is not None:  # Check if the item exists
+                self.table_comp.item(col, 0).setFlags(Qt.ItemIsEnabled)
+
+            if self.table_comp.item(col, 1) is None:  # Ensure the item exists before modifying
+                self.table_comp.setItem(col, 1, QtWidgets.QTableWidgetItem())
+            self.table_comp.item(col, 1).setFlags(Qt.ItemIsEnabled)
+
+        self.tab7layout.addWidget(self.table_comp)
+
+        self.tab7_previous_button = QPushButton("Previous")
+        self.tab7_previous_button.clicked.connect(lambda: self.switchTab(5))
+        self.tab7_next_button = QPushButton("Next")
+        self.tab7_next_button.clicked.connect(lambda: self.switchTab(7))
+        self.tab7_layout.addWidget(self.tab7gb, 0, 0, 1, 2)
+        self.tab7_layout.addWidget(self.tab7_previous_button, 1, 0)
+        self.tab7_layout.addWidget(self.tab7_next_button, 1, 1)
 
         # Add the tab widget to the main layout
         self.layout.addWidget(self.tabs)
@@ -299,6 +364,7 @@ class CarbonFootprintCalculator(QMainWindow):
         elif module == "Result":
             self.calculate()
             self.database_update()
+            # self.visualization([])
 
     def calculate(self):
         try:
@@ -313,6 +379,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.setItem(0, 1, QTableWidgetItem("%.2f" % energy_result))
             self.table.setItem(1, 1, QTableWidgetItem("%.2f" % waste_result))
             self.table.setItem(2, 1, QTableWidgetItem("%.2f" % travel_result))
+            self.table.setItem(3, 1, QTableWidgetItem("%.2f" % total))
 
             # table = QTableWidget(0, 2)
 
@@ -325,18 +392,11 @@ class CarbonFootprintCalculator(QMainWindow):
             # item1.setIcon(icon1)
 
             # Add the QTableWidgetItem to the table
-            item1.setIcon(icon1)
-            self.table.setItem(0, 2, item1)
-            item2.setIcon(icon2)
-            self.table.setItem(1, 2, item2)
-            item3.setIcon(icon1)
-            self.table.setItem(2, 2, item3)
             self.table.item(0, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(1, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(2, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
-            self.table.item(0, 2).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table.item(1, 2).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table.item(2, 2).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.item(3, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+
 
             self.carbonCalculator["Results"].update(
                 {"Energy": energy_result, "Waste": waste_result, "Travel": travel_result, "Total": total})
@@ -375,6 +435,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 avg_query = "SELECT * FROM eu_avgcf_table WHERE Year=%s"
                 mycursor.execute(avg_query, (self.carbonCalculator["Details"].get("Year"),))
                 result_avg = mycursor.fetchone()
+                self.carbonCalculator["Details"]["avg_europe"] = result_avg[2]
 
                 insert_query = ("INSERT INTO cf_table (User_Type, Name, Company_Name, Year, Country, Ele_Energy, Nat_Gas_Energy, Fuel_Energy, Total_Energy, Generated_Waste, Recycled_Waste, Total_Waste, Kilometer_Travel, AvgFuelEff_Travel, Total_Travel, Total_CF, Europe_Avg_CF) "
                                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
@@ -395,7 +456,7 @@ class CarbonFootprintCalculator(QMainWindow):
                     self.carbonCalculator["Travel"].get("Fuel_Efficiency"),
                     self.carbonCalculator["Results"].get("Travel"),
                     self.carbonCalculator["Results"].get("Total"),
-                    result_avg[2]
+                    self.carbonCalculator["Details"].get("avg_europe")
                 )
                 mycursor.execute(insert_query, values_insert)
                 mydb.commit()
@@ -405,24 +466,43 @@ class CarbonFootprintCalculator(QMainWindow):
                 msg_box.setText("Data recorded successfully")
                 msg_box.exec_()
                 print("Data recorded successfully")
+
         except mdb.Error as e:
             print(f"Database not connected: {e}")
         finally:
             mycursor.close()
             mydb.close()
+            self.table.setItem(4, 1, QTableWidgetItem("%.2f" % self.carbonCalculator["Details"].get("avg_europe")))
+            self.table.item(4, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+            self.visualization([self.carbonCalculator["Results"].get("Total"), self.carbonCalculator["Details"].get("avg_europe")])
 
         self.tab5_calculate_button.blockSignals(False)
 
-    def visualization(self):
-        pass
+    def visualization(self, values:list):
+        # Create a bar plot
+        categories = ["Total Carbon Footprint\n(KgCO2)", "Europe Avg.Carbon Footprint\n(KgCO2)"]  # Labels for each bar
+        # values = [10, 15]  # Heights of each bar
+
+        fig = go.Figure(data=[go.Bar(x=categories, y=values)])
+        fig.update_layout(title={
+        'text': 'Total Carbon Footprint vs Europe Average Carbon Footprint',
+        'x': 0.5,  # Center the title
+        'xanchor': 'center'
+        }, yaxis_title='KgCO2')
+
+        # Save the plot as an HTML file in a temporary location
+        temp_html_path = tempfile.mktemp(suffix='.html')
+        fig.write_html(temp_html_path)
+
+        self.web_view.setUrl(QUrl.fromLocalFile(temp_html_path))
 
     def switchTab(self, index):
         self.tabs.setCurrentIndex(index)
 
 
-if __name__ == "__main__":
-    windll.shcore.SetProcessDpiAwareness(0)
-    app = QApplication(sys.argv)
-    window = CarbonFootprintCalculator("AKRD")
-    window.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     windll.shcore.SetProcessDpiAwareness(0)
+#     app = QApplication(sys.argv)
+#     window = CarbonFootprintCalculator("AKRD")
+#     window.show()
+#     sys.exit(app.exec_())
