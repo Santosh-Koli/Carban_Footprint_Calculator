@@ -2,12 +2,20 @@ import os
 import sys
 from ctypes import windll
 
+import pymysql
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QMouseEvent
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
+from PyQt5.QtCore import QThread, pyqtSignal
 
+import mysql.connector
 import MySQLdb as mdb
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -379,22 +387,25 @@ class Ui_Form(CarbonFootprintCalculator):
             username = self.username.text()
             password = self.password.text()
 
-            mydb = mdb.connect(
-                host="localhost",
-                user="root",
-                password="25062000",
-                database="mydbcf"
+            mydb = pymysql.connect(
+                host="sql.freedb.tech",
+                user="freedb_saloni",
+                password="Xyk$b8T!MNGQh&T",
+                database="freedb_mydbcf"
             )
+            print("Successfully connected")
             mycursor = mydb.cursor()
+            print("Fetched cursor")
 
             # Using parameterized query to prevent SQL injection
             query = "SELECT * FROM login_table WHERE User=%s AND Password=%s"
             mycursor.execute(query, (username, password))
             result = mycursor.fetchone()
+            role = result[2]
 
             if result:
                 print("Login successful")
-                cfc = CarbonFootprintCalculator(username)
+                cfc = CarbonFootprintCalculator(username, role)
                 self.close()
                 cfc.show()
             else:
@@ -408,18 +419,61 @@ class Ui_Form(CarbonFootprintCalculator):
             self.login.blockSignals(False)
             self.register.blockSignals(False)
 
+    # def open_carbonfootprint(self):
+    #     chrome_options = Options()
+    #     chrome_options.add_argument("--headless")
+    #     chrome_options.add_argument("--disable-gpu")
+    #
+    #     # Specify the path to your ChromeDriver
+    #     service = Service('chromedriver.exe')  # Replace with your ChromeDriver path
+    #
+    #     # Initialize the WebDriver
+    #     driver = webdriver.Chrome(service=service, options=chrome_options)
+    #
+    #     # Navigate to the URL
+    #     driver.get('http://smmydomain.infinityfreeapp.com/database_api.php?operation=read&table=login_table')
+    #
+    #     # Get page source or response content
+    #     content = driver.page_source
+    #
+    #     # Extract the JSON part from the content
+    #     start = content.find('[')
+    #     end = content.rfind(']') + 1
+    #
+    #     if start != -1 and end != -1:
+    #         json_data = content[start:end]
+    #         try:
+    #             parsed_data = json.loads(json_data)  # Parse the JSON string into Python data
+    #             print(parsed_data)  # Print or use the parsed data
+    #             # print(type(parsed_data))
+    #         except json.JSONDecodeError:
+    #             print("Failed to parse JSON data")
+    #     else:
+    #         print("JSON data not found in the response")
+    #
+    #     # Close the browser
+    #     driver.quit()
+
     def register_details(self):
         try:
             username = self.username_reg.text()
             password = self.password_reg.text()
             role = self.user_role.currentText()
 
-            mydb = mdb.connect(
-                host="localhost",
-                user="root",
-                password="25062000",
-                database="mydbcf"
+            # mydb = mdb.connect(
+            #     host="localhost",
+            #     user="root",
+            #     password="25062000",
+            #     database="mydbcf"
+            # )
+
+            mydb = pymysql.connect(
+                host="sql.freedb.tech",
+                user="freedb_saloni",
+                password="Xyk$b8T!MNGQh&T",
+                database="freedb_mydbcf"
             )
+
             mycursor = mydb.cursor()
 
             # Check if user already exists
