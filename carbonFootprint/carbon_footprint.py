@@ -18,7 +18,7 @@ from PyQt5.QtCore import QUrl
 import tempfile
 import MySQLdb as mdb
 
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 HOST = "sql.freedb.tech"
 USERNAME = "freedb_saloni"
 PASSWORD = "Xyk$b8T!MNGQh&T"
