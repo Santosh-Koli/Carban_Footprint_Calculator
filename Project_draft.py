@@ -14,15 +14,15 @@ class IconDelegate(QStyledItemDelegate):
     def __init__(self, parent=None):
         super(IconDelegate, self).__init__(parent)
         # Load tick and cross icons
-        self.tick_icon = QIcon("tick.png")  # Path to tick icon image
-        self.cross_icon = QIcon("cross.png")  # Path to cross icon image
+        self.tick_icon = QIcon("tick.png")  
+        self.cross_icon = QIcon("cross.png")  
 
     def paint(self, painter, option, index):
-        # Get the value from the second column for comparison
-        table = index.model().parent()  # Get the QTableWidget
-        value = table.item(index.row(), 1).text()  # Second column value
+        
+        table = index.model().parent() 
+        value = table.item(index.row(), 1).text()  
 
-        # Choose the icon based on the condition
+    
         icon = self.cross_icon if value == "Warning" else self.tick_icon
 
         # Draw the icon in the third column
@@ -51,11 +51,11 @@ class CarbonFootprintCalculator(QMainWindow):
                 background-position: center;
             }
         """
-        validator = QtGui.QDoubleValidator()  # Create validator.
+        validator = QtGui.QDoubleValidator()  
         validator.setRange(0, 9999.0, 1)
 
-        # self.setStyleSheet()
-        # Create the main widget and layout
+        
+                                            # Created the main widget and layout
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
         self.layout = QVBoxLayout(self.central_widget)
@@ -63,7 +63,7 @@ class CarbonFootprintCalculator(QMainWindow):
         self.my_font = QtGui.QFont()
         self.my_font.setBold(True)
 
-        # Create the tab widget and add tabs
+                                            # Created the tab widget and add tabs
         self.tabs = QTabWidget()
         self.tab1 = QWidget()
         self.tab2 = QWidget()
@@ -81,19 +81,19 @@ class CarbonFootprintCalculator(QMainWindow):
         # Add widgets to the first tab
         self.tab1_layout = QGridLayout(self.tab1)
         background = QLabel()
-        # Load the image using QPixmap
+        
         pixmap = QPixmap('cfc_2.jpg')
         scaled_pixmap = pixmap.scaled(800, 600)
 
-        # Set the pixmap to the label
+    
         background.setPixmap(scaled_pixmap)
         background.setScaledContents(True)
         background.setToolTip(
             "Welcome to the Carbon Footprint Calculator!\n\nThis tool helps you understand and reduce your carbon footprint. "
             "Every small action counts toward a healthier planet.\nCalculate your emissions, get insights, and track your impact with tables & charts  for a sustainable future. ")
 
-        # self.tab1_title = QLabel("Carbon Footprint Calculator")
-        # self.tab1_title.setFont(QFont("Arial", 38, QFont.Bold))
+                                       # self.tab1_title = QLabel = Carbon Footprint Calculator
+        
         self.individual_rbtn = QRadioButton("Individual")
         self.individual_rbtn.setFont(QFont("Arial", 11, QFont.Bold))
         self.individual_rbtn.setChecked(True)
@@ -110,7 +110,8 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab1_year_input.setCurrentIndex(3)
         self.tab1_next_button = QPushButton("Next")
         self.tab1_next_button.clicked.connect(lambda: self.switchTab(1))
-        # self.tab1_layout.addWidget(self.tab1_title, 0, 0, 1, 8)
+        
+        
         self.tab1_layout.addWidget(background, 0, 0, 1, 8)
         self.tab1_layout.addWidget(self.individual_rbtn, 1, 0, 1, 2)
         self.tab1_layout.addWidget(self.sbusiness_rbtn, 1, 3, 1, 2)
@@ -122,7 +123,7 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab1_layout.addWidget(self.tab1_next_button, 4, 7, 1, 1)
         self.tab1_name_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
         self.tab1_year_input.currentIndexChanged.connect(lambda: self.carbonCalculator_func("Details"))
-        # self.tab1_layout.setAlignment(Qt.AlignAbsolute)
+        
 
         # Add widgets to the second tab
         self.tab2_layout = QGridLayout(self.tab2)
@@ -153,8 +154,8 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab2_next_button.clicked.connect(lambda: self.switchTab(2))
         self.tab2_layout.addWidget(self.tab2_previous_button, 5, 0)
         self.tab2_layout.addWidget(self.tab2_next_button, 5, 3)
-
-        # Add widgets to the third tab
+ 
+                                             # Add  widgets to the third tab
         self.tab3_layout = QGridLayout(self.tab3)
         self.tab3_layout.setAlignment(Qt.AlignCenter)
 
@@ -178,7 +179,7 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab3_layout.addWidget(self.tab3_previous_button, 4, 0)
         self.tab3_layout.addWidget(self.tab3_next_button, 4, 3)
 
-        # Add widgets to the fourth tab
+                                               # Add widgets to the fourth tab
         self.tab4_layout = QGridLayout(self.tab4)
         self.tab4_layout.setAlignment(Qt.AlignCenter)
 
@@ -205,22 +206,21 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab4_layout.addWidget(self.tab4_previous_button, 4, 0)
         self.tab4_layout.addWidget(self.tab4_next_button, 4, 3)
 
-        # Add widgets to the fifth tab
+                                           # Add widgets to the fifth tab
         self.tab5gb = QGroupBox()
         self.tab5layout = QGridLayout()
         self.tab5gb.setLayout(self.tab5layout)
 
         self.tab5_layout = QGridLayout(self.tab5)
-        # self.tab5_layout.setAlignment(Qt.AlignCenter)
-
-        self.table = QTableWidget(3, 3)  # Set up a table with 3 columns
+        self.table = QTableWidget(3, 3) 
         self.table.verticalHeader().setVisible(False)
-        # Set column headers
+        
+                                         #setting a cloumns title
         self.table.setHorizontalHeaderLabels(["Operators", "Carbon Footprint", "Status"])
         self.table.horizontalHeader().setFont(self.my_font)
         self.table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
 
-        # Populate the table with sample data
+                                         # adding row titles
         self.table.setItem(0, 0, QTableWidgetItem("Energy"))
         self.table.setItem(1, 0, QTableWidgetItem("Waste"))
         self.table.setItem(2, 0, QTableWidgetItem("Business Travel"))
@@ -228,10 +228,8 @@ class CarbonFootprintCalculator(QMainWindow):
         for col in range(self.table.rowCount()):
             self.table.item(col, 0).setFlags(Qt.ItemIsEnabled)
             self.table.setItem(col, 1, QtWidgets.QTableWidgetItem())
-            # self.table.item(col, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(col, 1).setFlags(Qt.ItemIsEnabled)
             self.table.setItem(col, 2, QtWidgets.QTableWidgetItem())
-            # self.table.item(col, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(col, 2).setFlags(Qt.ItemIsEnabled)
 
         # Set custom delegate to the third column for displaying icons
@@ -293,6 +291,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.carbonCalculator["Travel"].update(
                 {"Distance": self.tab4_distance.text(), "Fuel_Efficiency": self.tab4_fuel_efficiency.text()})
         # elif module == "Result":
+        
         #     self.calculate()
             # energy_result = (float(self.carbonCalculator["Energy"]["Electricity"]) * 12 * 0.0005) + (float(self.carbonCalculator["Energy"]["NaturalGas"]) * 12 * 0.0053) + (float(self.carbonCalculator["Energy"]["Fuel"]) * 12 * 2.32)
             # waste_result = (float(self.carbonCalculator["Waste"]["Waste_generated"] * 12 * (0.57 - (float(self.carbonCalculator["Waste"]["Waste_generated"]/100)))))
@@ -318,17 +317,17 @@ class CarbonFootprintCalculator(QMainWindow):
         self.table.setItem(1, 1, QTableWidgetItem("%.2f" % waste_result))
         self.table.setItem(2, 1, QTableWidgetItem("%.2f" % travel_result))
 
-        # table = QTableWidget(0, 2)
+    
 
-        # Create an icon and set it to a QTableWidgetItem
+                                           # added an icon and set it to a QTableWidgetItem
         icon1 = QIcon("positive-vote.png")
         icon2 = QIcon("negative-vote.png")
         item1 = QTableWidgetItem()
         item2 = QTableWidgetItem()
         item3 = QTableWidgetItem()
-        # item1.setIcon(icon1)
+        
 
-        # Add the QTableWidgetItem to the table
+        
         item1.setIcon(icon1)
         self.table.setItem(0, 2, item1)
         item2.setIcon(icon2)
@@ -341,19 +340,15 @@ class CarbonFootprintCalculator(QMainWindow):
         self.table.item(0, 2).setTextAlignment(QtCore.Qt.AlignCenter)
         self.table.item(1, 2).setTextAlignment(QtCore.Qt.AlignCenter)
         self.table.item(2, 2).setTextAlignment(QtCore.Qt.AlignCenter)
-        # msg_box = QMessageBox()
-        # msg_box.setIcon(QMessageBox.Information)
-        # msg_box.setWindowTitle("Information")
-        # msg_box.setText("Under Development")
-        # msg_box.exec_()
+        
 
     def switchTab(self, index):
         self.tabs.setCurrentIndex(index)
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = CarbonFootprintCalculator()
-    window.show()
-    sys.exit(app.exec_())
+   app = QApplication(sys.argv)
+   window = CarbonFootprintCalculator()
+   window.show()
+   sys.exit(app.exec_())
 

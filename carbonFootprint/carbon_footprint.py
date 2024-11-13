@@ -683,9 +683,9 @@ class CarbonFootprintCalculator(QMainWindow):
 
 
 
-# if __name__ == "__main__":
-#     windll.shcore.SetProcessDpiAwareness(0)
-#     app = QApplication(sys.argv)
-#     window = CarbonFootprintCalculator("AKRD")
-#     window.show()
-#     sys.exit(app.exec_())
+if __name__ == "__main__":
+  windll.shcore.SetProcessDpiAwareness(0)
+  app = QApplication(sys.argv)
+  window = CarbonFootprintCalculator("AKRD")
+  window.show()
+  sys.exit(app.exec_())

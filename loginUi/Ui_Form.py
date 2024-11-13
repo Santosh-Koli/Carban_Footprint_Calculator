@@ -9,7 +9,7 @@ from PyQt5.QtGui import QPixmap, QMouseEvent
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 from PyQt5.QtCore import QThread, pyqtSignal
 
-import mysql.connector
+import mysql.connector 
 import MySQLdb as mdb
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -402,6 +402,8 @@ class Ui_Form(CarbonFootprintCalculator):
             mycursor.execute(query, (username, password))
             result = mycursor.fetchone()
             role = result[2]
+
+            
 
             if result:
                 print("Login successful")
