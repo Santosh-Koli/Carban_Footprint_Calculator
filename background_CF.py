@@ -724,7 +724,9 @@ class CarbonFootprintCalculator(QMainWindow):
 
 
             #Add widgets to the eighth tab
-            
+            #self.tab2_layout = QGridLayout(self.tab8)
+            #self.tab2_layout.setAlignment(Qt.AlignCenter)
+            #self.tab2_input_layout = QGridLayout()
 
 
 
