@@ -112,12 +112,12 @@ class CarbonFootprintCalculator(QMainWindow):
                 "Welcome to the Carbon Footprint Calculator!\n\nThis tool helps you understand and reduce your carbon footprint. "
                 "Every small action counts toward a healthier planet.\nCalculate your emissions, get insights, and track your impact with tables & charts  for a sustainable future. ")
 
-            self.individual_rbtn = QRadioButton("Individual (5 to 10 employee)")
+            self.individual_rbtn = QRadioButton("Individual")
             self.individual_rbtn.setFont(QFont("Arial", 11, QFont.Bold))
             self.individual_rbtn.setChecked(True)
-            self.sbusiness_rbtn = QRadioButton("Small Business Firm (10 to 100 employee)")
+            self.sbusiness_rbtn = QRadioButton("Small Business Firm")
             self.sbusiness_rbtn.setFont(QFont("Arial", 11, QFont.Bold))
-            self.bbusiness_rbtn = QRadioButton("Big Business Firm (more than 100 employee)")
+            self.bbusiness_rbtn = QRadioButton("Big Business Firm")
             self.bbusiness_rbtn.setFont(QFont("Arial", 11, QFont.Bold))
             self.tab1_name_label = QLabel("Name:")
             self.tab1_name_input = QLineEdit()
@@ -143,6 +143,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Add widgets to the second tab
             self.tab2_layout = QGridLayout(self.tab2)
+
             self.tab2.setObjectName("tab2")
             
             image_path = os.path.abspath("images/carbon_footprint_background.png")
@@ -150,6 +151,11 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab2.setStyleSheet(f"""
                 QWidget#tab2 {{                    
                     background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
                     background-attachment: fixed;
@@ -205,6 +211,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab2_electricity_input.setValidator(validator)
             self.tab2_gas_input.setValidator(validator)
             self.tab2_fuel_input.setValidator(validator)
+            
             self.tab2_input_layout.addWidget(self.tab2_electricity_input, 0, 1)
             self.tab2_input_layout.addWidget(self.tab2_gas_input, 1, 1)
             self.tab2_input_layout.addWidget(self.tab2_fuel_input, 2, 1)
@@ -229,6 +236,11 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab3.setStyleSheet(f"""
                 QWidget#tab3 {{                    
                     background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
                     background-attachment: fixed;
@@ -302,6 +314,11 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab4.setStyleSheet(f"""
                 QWidget#tab4 {{                    
                     background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
                     background-attachment: fixed;
@@ -371,21 +388,93 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Add widgets to the fifth tab
             self.tab5gb = QGroupBox()
+            self.tab5.setObjectName("tab5")
+
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab5.setStyleSheet(f"""
+                QWidget#tab5 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                }}
+    
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 1);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QFrame#tableContainer {{
+                    background-color: rgba(0, 51, 102, 0.8); /* Dark blue padding color */
+                    border-radius: 12px; /* Rounded corners */
+                    padding: 10px; /* Space around the table */
+                }}
+
+                QTableWidget {{
+                    background-color: rgba(255, 255, 255, 0.9); /* Light white background for the table */
+                    color: #004d40;
+                    font-size: 12pt;
+                    border: 2px solid #00796b; 
+                    border-radius: 8px;
+                    gridline-color: #00796b;
+                }}
+    
+                QTableWidget::item {{
+                    background-color: rgba(255, 255, 255, 1); /* Solid white for table items */
+                    color: #004d40;
+                }}
+
+                QHeaderView::section {{
+                    background-color: rgba(42, 161, 131, 1); /* Header background color */
+                    color: white;
+                    font-weight: bold;
+                    padding: 5px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
             self.tab5layout = QGridLayout()
             self.tab5gb.setLayout(self.tab5layout)
 
             self.tab5_layout = QGridLayout(self.tab5)
             # self.tab5_layout.setAlignment(Qt.AlignCenter)
 
+
             self.table = QTableWidget(5, 2)  # Set up a table with 2 columns
             self.table.verticalHeader().setVisible(False)
+        
             # Set column headers
             self.table.setHorizontalHeaderLabels(["Operators", "Carbon Footprint (KgCO2)"])
             self.table.horizontalHeader().setFont(self.my_font)
             self.table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
             self.table.horizontalHeader().setFixedHeight(40)
             self.table.horizontalHeader().setStyleSheet("QHeaderView::section { background-color: #2aa183; color: white; }")
-
+            
+    
+            
             # Populate the table with sample data
             self.table.setItem(0, 0, QTableWidgetItem("Energy"))
             self.table.setItem(1, 0, QTableWidgetItem("Waste"))
@@ -393,15 +482,15 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.setItem(3, 0, QTableWidgetItem("Total"))
             self.table.setItem(4, 0, QTableWidgetItem("Europe Average"))
 
-            for col in range(self.table.rowCount()):
-                if self.table.item(col, 0) is not None:  # Check if the item exists
-                    self.table.item(col, 0).setFlags(Qt.ItemIsEnabled)
+            for row in range(self.table.rowCount()):
+                if self.table.item(row, 0) is not None:  # Check if the item exists
+                    self.table.item(row, 0).setFlags(Qt.ItemIsEnabled)
 
-                if self.table.item(col, 1) is None:  # Ensure the item exists before modifying
-                    self.table.setItem(col, 1, QtWidgets.QTableWidgetItem())
-                self.table.item(col, 1).setFlags(Qt.ItemIsEnabled)
+                if self.table.item(row, 1) is None:  # Ensure the item exists before modifying
+                    self.table.setItem(row, 1, QtWidgets.QTableWidgetItem())
+                self.table.item(row, 1).setFlags(Qt.ItemIsEnabled)
 
-
+            
             # Set custom delegate to the third column for displaying icons
             # delegate = IconDelegate(self.table)
             # self.table.setItemDelegateForColumn(2, delegate)
