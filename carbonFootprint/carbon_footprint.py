@@ -80,6 +80,37 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Create the tab widget and add tabs
             self.tabs = QTabWidget()
+            
+            self.tabs.setStyleSheet("""
+                QTabWidget::pane {
+                    border: 1px solid #004d40; /* Border around the tab widget */
+                    background: #e0f7fa; /* Light background for the pane */
+                }
+
+                QTabBar::tab {
+                    background: #00796b; /* Default background color for tabs */
+                    color: white; /* Default text color for tab labels */
+                    font-weight: bold; /* Bold text for better visibility */
+                    border: 1px solid #004d40; /* Border around each tab */
+                    border-bottom: none; /* Prevent overlap with content pane */
+                    padding: 8px 20px; /* Adjust padding for proper alignment */
+                    margin: 2px; /* Space between tabs */
+                    min-width: 100px; /* Minimum width for each tab */
+                    border-top-left-radius: 10px; /* Rounded corners for tabs */
+                    border-top-right-radius: 10px;
+                }
+
+                QTabBar::tab:selected {
+                    background: #004d40; /* Background for the selected tab */
+                    color: #e0f7fa; /* Text color for the selected tab */
+                }
+
+                QTabBar::tab:hover {
+                    background: #005b4f; /* Hover effect for tabs */
+                }
+            """)
+ 
+
             self.tab1 = QWidget()
             self.tab2 = QWidget()
             self.tab3 = QWidget()
@@ -686,6 +717,6 @@ class CarbonFootprintCalculator(QMainWindow):
 if __name__ == "__main__":
   windll.shcore.SetProcessDpiAwareness(0)
   app = QApplication(sys.argv)
-  window = CarbonFootprintCalculator("AKRD")
+  window = CarbonFootprintCalculator("AKRD", "User")
   window.show()
   sys.exit(app.exec_())
