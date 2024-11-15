@@ -80,6 +80,35 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Create the tab widget and add tabs
             self.tabs = QTabWidget()
+            self.tabs.setStyleSheet("""
+                QTabWidget::pane {
+                    border: 1px solid #004d40; /* Border around the tab widget */
+                    background: #e0f7fa; /* Light background for the pane */
+                }
+
+                QTabBar::tab {
+                    background: #00796b; /* Default background color for tabs */
+                    color: white; /* Default text color for tab labels */
+                    font-weight: bold; /* Bold text for better visibility */
+                    border: 1px solid #004d40; /* Border around each tab */
+                    border-bottom: none; /* Prevent overlap with content pane */
+                    padding: 8px 20px; /* Adjust padding for proper alignment */
+                    margin: 2px; /* Space between tabs */
+                    min-width: 100px; /* Minimum width for each tab */
+                    border-top-left-radius: 10px; /* Rounded corners for tabs */
+                    border-top-right-radius: 10px;
+                }
+
+                QTabBar::tab:selected {
+                    background: #004d40; /* Background for the selected tab */
+                    color: #e0f7fa; /* Text color for the selected tab */
+                }
+
+                QTabBar::tab:hover {
+                    background: #005b4f; /* Hover effect for tabs */
+                }
+            """)
+
             self.tab1 = QWidget()
             self.tab2 = QWidget()
             self.tab3 = QWidget()
@@ -561,7 +590,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab5_calculate_button.setFont(self.my_font)
             self.tab5_calculate_button.setStyleSheet("""
                 QPushButton {
-                    background-color: #4CAF50; /* Green color */
+                    background-color: #DC143C; /* Green color */
                     color: white;
                     font-size: 16px;
                     font-weight: bold;
@@ -570,7 +599,7 @@ class CarbonFootprintCalculator(QMainWindow):
                     border-radius: 8px;
                 }
                 QPushButton:hover {
-                    background-color: #45a049; /* Slightly lighter green */
+                    background-color: #FF6347; /* Slightly lighter green */
                 }
             """)
 
@@ -590,6 +619,27 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Add widgets to the sixth tab
             self.tab6gb = QGroupBox()
+            
+            self.tab6.setObjectName("tab6")
+            
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab6.setStyleSheet(f"""
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
             self.tab6layout = QGridLayout()
             self.tab6gb.setLayout(self.tab6layout)
 
@@ -605,8 +655,34 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab6_layout.addWidget(self.tab6gb, 0, 0, 1, 2)
             self.tab6_layout.addWidget(self.tab6_previous_button, 1, 0)
             self.tab6_layout.addWidget(self.tab6_next_button, 1, 1)
+            
 
+
+
+
+            #Add widgets to the seven tab
             self.tab7gb = QGroupBox()
+            
+            self.tab7.setObjectName("tab7")
+            
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab7.setStyleSheet(f"""
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
             self.tab7layout = QGridLayout()
             self.tab7gb.setLayout(self.tab7layout)
 
@@ -617,8 +693,22 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab7_compare_button = QPushButton("Compare")
             self.tab7_compare_button.setFixedHeight(50)
             self.tab7_compare_button.setFont(self.my_font)
-            self.tab7_compare_button.setStyleSheet(
-                'QPushButton {background-color: rgba(42, 161, 131); color: rgba(232, 237, 235); font-size: 16px}')
+            self.tab7_compare_button.setStyleSheet("""
+                QPushButton {
+                    background-color: #DC143C; /* Crimson */
+                    color: white;
+                    font-size: 16px;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 8px;
+                }
+                QPushButton:hover {
+                    background-color: #FF6347; /* Tomato Red */
+                }
+            """)
+
+                
             self.tab7_compare_button.clicked.connect(self.visualization_comparison)
 
             self.tab7layout.addWidget(self.web_view2)
@@ -631,6 +721,18 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab7_layout.addWidget(self.tab7_previous_button, 1, 0)
             self.tab7_layout.addWidget(self.tab7_compare_button, 1, 1)
             self.tab7_layout.addWidget(self.tab7_next_button, 1, 2)
+
+
+            #Add widgets to the eighth tab
+            
+
+
+
+
+
+
+
+
 
             if self.role == "Admin":
                 self.tab9 = QWidget()
