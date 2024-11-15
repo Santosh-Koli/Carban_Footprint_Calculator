@@ -100,6 +100,62 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Add widgets to the first tab
             self.tab1_layout = QGridLayout(self.tab1)
+            
+            self.tab2.setObjectName("tab1")
+            
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab1.setStyleSheet(f"""
+                QWidget#tab1 {{                    
+                    background-image: url('images/carbonfootprint_login.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbonfootprint_login.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                
+                }}
+            
+        
+        
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 1);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QLineEdit {{
+                    background-color: rgba(255, 255, 255, 1);
+                    color: #004d40;
+                    font-size: 12pt;
+                    padding: 8px;
+                    border: 2px solid #00796b; 
+                    border-radius: 8px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
+
             background = QLabel()
             # Load the image using QPixmap
             pixmap = QPixmap("images/carbonfootprint_login.png")
@@ -503,8 +559,22 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab5_calculate_button = QPushButton("Calculate")
             self.tab5_calculate_button.setFixedHeight(50)
             self.tab5_calculate_button.setFont(self.my_font)
-            self.tab5_calculate_button.setStyleSheet(
-                'QPushButton {background-color: rgba(42, 161, 131); color: rgba(232, 237, 235); font-size: 16px}')
+            self.tab5_calculate_button.setStyleSheet("""
+                QPushButton {
+                    background-color: #4CAF50; /* Green color */
+                    color: white;
+                    font-size: 16px;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 8px;
+                }
+                QPushButton:hover {
+                    background-color: #45a049; /* Slightly lighter green */
+                }
+            """)
+
+                
             self.tab5_layout.addWidget(self.tab5gb, 0, 0, 1, 3)
             self.tab5_layout.addWidget(self.tab5_previous_button, 1, 0)
             self.tab5_layout.addWidget(self.tab5_calculate_button, 1, 1)
