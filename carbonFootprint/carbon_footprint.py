@@ -131,6 +131,62 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Add widgets to the first tab
             self.tab1_layout = QGridLayout(self.tab1)
+            
+            self.tab1.setObjectName("tab1")
+            
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab1.setStyleSheet(f"""
+                QWidget#tab1 {{                    
+                    background-image: url('images/carbonfootprint_login.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbonfootprint_login.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                
+                }}
+            
+        
+        
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 1);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QLineEdit {{
+                    background-color: rgba(255, 255, 255, 1);
+                    color: #004d40;
+                    font-size: 12pt;
+                    padding: 8px;
+                    border: 2px solid #00796b; 
+                    border-radius: 8px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
+
             background = QLabel()
             # Load the image using QPixmap
             pixmap = QPixmap("images/carbonfootprint_login.png")
@@ -143,13 +199,25 @@ class CarbonFootprintCalculator(QMainWindow):
                 "Welcome to the Carbon Footprint Calculator!\n\nThis tool helps you understand and reduce your carbon footprint. "
                 "Every small action counts toward a healthier planet.\nCalculate your emissions, get insights, and track your impact with tables & charts  for a sustainable future. ")
 
-            self.individual_rbtn = QRadioButton("Individual (5 to 10 employee)")
-            self.individual_rbtn.setFont(QFont("Arial", 11, QFont.Bold))
+            self.individual_rbtn = QRadioButton("Individual")
+            self.individual_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
+            self.individual_rbtn.setStyleSheet("""
+                color: #FFFFFF;  /* Bright white */
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);  /* Adds a subtle shadow effect */
+            """)
             self.individual_rbtn.setChecked(True)
-            self.sbusiness_rbtn = QRadioButton("Small Business Firm (10 to 100 employee)")
-            self.sbusiness_rbtn.setFont(QFont("Arial", 11, QFont.Bold))
-            self.bbusiness_rbtn = QRadioButton("Big Business Firm (more than 100 employee)")
-            self.bbusiness_rbtn.setFont(QFont("Arial", 11, QFont.Bold))
+            self.sbusiness_rbtn = QRadioButton("Small Business Firm")
+            self.sbusiness_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
+            self.sbusiness_rbtn.setStyleSheet("""
+                color: #FFFFFF;  /* Bright white */
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);  /* Adds a subtle shadow effect */
+            """)
+            self.bbusiness_rbtn = QRadioButton("Big Business Firm")
+            self.bbusiness_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
+            self.bbusiness_rbtn.setStyleSheet("""
+                color: #FFFFFF;  /* Bright white */
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);  /* Adds a subtle shadow effect */
+            """)
             self.tab1_name_label = QLabel("Name:")
             self.tab1_name_input = QLineEdit()
             self.tab1_name_input.setPlaceholderText("Enter your name")
