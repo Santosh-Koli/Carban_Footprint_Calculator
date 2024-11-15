@@ -143,6 +143,55 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Add widgets to the second tab
             self.tab2_layout = QGridLayout(self.tab2)
+            self.tab2.setObjectName("tab2")
+            
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab2.setStyleSheet(f"""
+                QWidget#tab2 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                
+                }}
+            
+        
+        
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 1);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QLineEdit {{
+                    background-color: rgba(255, 255, 255, 1);
+                    color: #004d40;
+                    font-size: 12pt;
+                    padding: 8px;
+                    border: 2px solid #00796b; 
+                    border-radius: 8px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
             self.tab2_layout.setAlignment(Qt.AlignCenter)
 
             self.tab2_input_layout = QGridLayout()
@@ -173,6 +222,55 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Add widgets to the third tab
             self.tab3_layout = QGridLayout(self.tab3)
+            self.tab3.setObjectName("tab3")
+            
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab3.setStyleSheet(f"""
+                QWidget#tab3 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                
+                }}
+            
+        
+        
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 1);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QLineEdit {{
+                    background-color: rgba(255, 255, 255, 1);
+                    color: #004d40;
+                    font-size: 12pt;
+                    padding: 8px;
+                    border: 2px solid #00796b; 
+                    border-radius: 8px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
             self.tab3_layout.setAlignment(Qt.AlignCenter)
 
             self.tab3_input_layout = QGridLayout()
@@ -197,6 +295,55 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Add widgets to the fourth tab
             self.tab4_layout = QGridLayout(self.tab4)
+            self.tab4.setObjectName("tab4")
+            
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab4.setStyleSheet(f"""
+                QWidget#tab4 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                
+                }}
+            
+        
+        
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 1);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QLineEdit {{
+                    background-color: rgba(255, 255, 255, 1);
+                    color: #004d40;
+                    font-size: 12pt;
+                    padding: 8px;
+                    border: 2px solid #00796b; 
+                    border-radius: 8px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
             self.tab4_layout.setAlignment(Qt.AlignCenter)
 
             self.tab4_input_layout = QGridLayout()
@@ -686,6 +833,6 @@ class CarbonFootprintCalculator(QMainWindow):
 if __name__ == "__main__":
   windll.shcore.SetProcessDpiAwareness(0)
   app = QApplication(sys.argv)
-  window = CarbonFootprintCalculator("AKRD")
+  window = CarbonFootprintCalculator("AKRD", "User")
   window.show()
   sys.exit(app.exec_())
