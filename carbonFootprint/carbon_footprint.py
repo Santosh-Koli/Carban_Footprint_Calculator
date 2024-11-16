@@ -855,8 +855,53 @@ class CarbonFootprintCalculator(QMainWindow):
 
 
             #Add widgets to the ninth tab
-            if  self.role == "Admin":
-                self.tab9 = QWidget()
+            self.tab9 = QWidget()
+            self.tab9.setObjectName("tab9")
+
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab9.setStyleSheet(f"""
+                QWidget#tab9 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                }}
+    
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 0.6);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}
+            """)
+
+            
+            
+            
+            if self.role == "Admin":
                 self.tabs.addTab(self.tab9, "Admin Viewer")
                 self.tab9_layout = QGridLayout(self.tab9)
                 self.combo1 = QComboBox()
