@@ -183,7 +183,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab1.setStyleSheet(f"""
                 QWidget#tab1 {{                    
-                    background-image: url('images/carbonfootprint_login.png');
+                    background-image: url('images/image.png');
                     background = QLabel()
                     pixmap = QPixmap("images/carbonfootprint_login.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
@@ -191,8 +191,6 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
-                
-                    
                 
                 }}
             
@@ -247,18 +245,18 @@ class CarbonFootprintCalculator(QMainWindow):
             self.individual_rbtn = QRadioButton("Individual")
             self.individual_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
             self.individual_rbtn.setStyleSheet("""
-                color: #FFFFFF;  /* Bright white */
+                color: #000000;  /* Bright white */
             """)
             self.individual_rbtn.setChecked(True)
             self.sbusiness_rbtn = QRadioButton("Small Business Firm")
             self.sbusiness_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
             self.sbusiness_rbtn.setStyleSheet("""
-                color: #FFFFFF;  /* Bright white */
+                color: #000000;  /* Bright white */
             """)
             self.bbusiness_rbtn = QRadioButton("Big Business Firm")
             self.bbusiness_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
             self.bbusiness_rbtn.setStyleSheet("""
-                color: #FFFFFF;  /* Bright white */
+                color: #000000;  /* Bright white */
             """)
             self.tab1_name_label = QLabel("Name:")
             self.tab1_name_input = QLineEdit()
@@ -875,6 +873,19 @@ class CarbonFootprintCalculator(QMainWindow):
             
             image_path = os.path.abspath("images/carbon_footprint_background.png")
             self.tab8.setStyleSheet(f"""
+                QWidget#tab8 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    
+                }}
+                
+                                    
                 QPushButton {{
                     background-color: rgba(0, 51, 102, 1);
                     color: #ffffff;
