@@ -146,8 +146,8 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-attachment: fixed;
-                    background-size: cover;
+                
+                    
                 
                 }}
             
@@ -203,20 +203,17 @@ class CarbonFootprintCalculator(QMainWindow):
             self.individual_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
             self.individual_rbtn.setStyleSheet("""
                 color: #FFFFFF;  /* Bright white */
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);  /* Adds a subtle shadow effect */
             """)
             self.individual_rbtn.setChecked(True)
             self.sbusiness_rbtn = QRadioButton("Small Business Firm")
             self.sbusiness_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
             self.sbusiness_rbtn.setStyleSheet("""
                 color: #FFFFFF;  /* Bright white */
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);  /* Adds a subtle shadow effect */
             """)
             self.bbusiness_rbtn = QRadioButton("Big Business Firm")
             self.bbusiness_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
             self.bbusiness_rbtn.setStyleSheet("""
                 color: #FFFFFF;  /* Bright white */
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);  /* Adds a subtle shadow effect */
             """)
             self.tab1_name_label = QLabel("Name:")
             self.tab1_name_input = QLineEdit()
@@ -257,9 +254,7 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-attachment: fixed;
-                    background-size: cover;
-                
+                    
                 }}
             
         
@@ -343,8 +338,8 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-attachment: fixed;
-                    background-size: cover;
+                    
+                    
                 
                 }}
             
@@ -423,9 +418,7 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-attachment: fixed;
-                    background-size: cover;
-                
+                    
                 }}
             
         
@@ -506,8 +499,6 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-attachment: fixed;
-                    background-size: cover;
                 }}
     
                 QLabel {{ 
@@ -649,8 +640,6 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-attachment: fixed;
-                    background-size: cover;
                 }}
     
                 QLabel {{ 
@@ -739,8 +728,6 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-attachment: fixed;
-                    background-size: cover;
                 }}
     
                 QLabel {{ 
@@ -919,8 +906,6 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-attachment: fixed;
-                    background-size: cover;
                 }}
     
                 QLabel {{ 
