@@ -735,9 +735,51 @@ class CarbonFootprintCalculator(QMainWindow):
 
 
 
+            #add widgetsto to the ninth tab
+            self.tab9 = QWidget()
+            self.tab9.setObjectName("tab9")
+                
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab9.setStyleSheet(f"""
+                QWidget#tab9 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                }}
+    
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 0.6);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}
+            """)
 
             if self.role == "Admin":
-                self.tab9 = QWidget()
                 self.tabs.addTab(self.tab9, "Admin Viewer")
                 self.tab9_layout = QGridLayout(self.tab9)
                 self.combo1 = QComboBox()
@@ -745,8 +787,20 @@ class CarbonFootprintCalculator(QMainWindow):
                 generate = QPushButton("Generate")
                 generate.setFixedHeight(50)
                 generate.setFont(self.my_font)
-                generate.setStyleSheet(
-                    'QPushButton {background-color: rgba(42, 161, 131); color: rgba(232, 237, 235); font-size: 16px}')
+                generate.setStyleSheet("""
+                    QPushButton {
+                        background-color: #DC143C; /* Crimson */
+                        color: white;
+                        font-size: 16px;
+                        font-weight: bold;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 8px;
+                    }
+                    QPushButton:hover {
+                        background-color: #FF6347; /* Tomato Red */
+                    }
+                """)
                 generate.clicked.connect(self.admin_gui)
                 self.webview_admin = QWebEngineView()
                 self.tab9_layout.addWidget(self.combo1, 0, 0)
@@ -754,6 +808,10 @@ class CarbonFootprintCalculator(QMainWindow):
                 self.tab9_layout.addWidget(generate, 0, 2)
                 self.tab9_layout.addWidget(self.webview_admin, 1, 0, 1, 3)
 
+            
+            
+            
+            
             self.tabs.currentChanged.connect(self.on_tab_change)
             # Add the tab widget to the main layout
             self.layout.addWidget(self.tabs)
@@ -1096,6 +1154,6 @@ class CarbonFootprintCalculator(QMainWindow):
 if __name__ == "__main__":
   windll.shcore.SetProcessDpiAwareness(0)
   app = QApplication(sys.argv)
-  window = CarbonFootprintCalculator("AKRD", "User")
+  window = CarbonFootprintCalculator("AKRD", "Admin")
   window.show()
   sys.exit(app.exec_())
