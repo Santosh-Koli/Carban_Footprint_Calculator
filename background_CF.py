@@ -64,6 +64,41 @@ class CarbonFootprintCalculator(QMainWindow):
         # self.log_App = UI_Form()
         # self.log_App.show()
 
+    def update_feedback(self, total_cf, europe_avg):
+                # Generate feedback message based on the comparison
+        if total_cf <= europe_avg:
+            feedback = (
+                "<b>Good/Positive Result:</b><br>"
+                "Fantastic work! Your carbon footprint is below the European average.<br>"
+                "Keep up these sustainable habits, and consider additional ways to further reduce your impact.<br><br>"
+                "<b>Energy:</b> You're doing great! Consider adding renewable energy options, like solar panels, to take it a step further.<br>"
+                "<b>Waste:</b> Keep up the progress! Composting organic waste and promoting recycling can make an even bigger difference.<br>"
+                "<b>Travel:</b> Excellent choices! Continue carpooling or using public transport whenever possible to maintain a low travel footprint."
+            )
+        else:
+            feedback = (
+                "<b>Bad/Negative Result:</b><br>"
+                "Your carbon footprint is above the European average, but small changes can help!<br>"
+                "Try adopting sustainable practices in energy, waste, and travel to lower your impact.<br><br>"
+                "<b>Energy:</b><br>"
+                "Switch to energy-efficient appliances and consider renewable options like solar panels.<br>"
+                "Improve home insulation to cut down on heating and cooling needs.<br>"
+                "Unplug devices when not in use to save energy.<br><br>"
+                "<b>Waste:</b><br>"
+                "Try composting organic waste and using reusable bags to reduce single-use plastics.<br>"
+                "Join a recycling program to ensure proper waste processing.<br>"
+                "Donate items you no longer need instead of discarding them.<br><br>"
+                "<b>Travel:</b><br>"
+                "Carpool or use public transport whenever possible.<br>"
+                "Walk or bike short distances to reduce emissions.<br>"
+                "Opt for virtual meetings to minimize travel when you can."
+            )
+
+            # Update the feedback label in Tab 8
+            self.tab8_feedback_label.setText(feedback)
+            print(f"Feedback updated: {feedback}")
+
+
     def init_ui(self):
         try:
             validator = QtGui.QDoubleValidator()  # Create validator.
@@ -236,15 +271,10 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab2.setStyleSheet(f"""
                 QWidget#tab2 {{                    
                     background-image: url('images/carbon_footprint_background.png');
-                    background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
-                    scaled_pixmap = pixmap.scaled(400, 400)
-                    background.setPixmap(scaled_pixmap)
-                    background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
                     background-attachment: fixed;
-                    background-size: cover;
+                    
                 
                 }}
             
@@ -321,15 +351,11 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab3.setStyleSheet(f"""
                 QWidget#tab3 {{                    
                     background-image: url('images/carbon_footprint_background.png');
-                    background = QLabel()
                     pixmap = QPixmap("images/carbon_footprint_background.png")
-                    scaled_pixmap = pixmap.scaled(400, 400)
-                    background.setPixmap(scaled_pixmap)
-                    background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
                     background-attachment: fixed;
-                    background-size: cover;
+                    
                 
                 }}
             
@@ -399,15 +425,10 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab4.setStyleSheet(f"""
                 QWidget#tab4 {{                    
                     background-image: url('images/carbon_footprint_background.png');
-                    background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
-                    scaled_pixmap = pixmap.scaled(400, 400)
-                    background.setPixmap(scaled_pixmap)
-                    background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
                     background-attachment: fixed;
-                    background-size: cover;
+                    
                 
                 }}
             
@@ -480,15 +501,10 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab5.setStyleSheet(f"""
                 QWidget#tab5 {{                    
                     background-image: url('images/carbon_footprint_background.png');
-                    background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
-                    scaled_pixmap = pixmap.scaled(400, 400)
-                    background.setPixmap(scaled_pixmap)
-                    background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
                     background-attachment: fixed;
-                    background-size: cover;
+                    
                 }}
     
                 QLabel {{ 
@@ -724,15 +740,58 @@ class CarbonFootprintCalculator(QMainWindow):
 
 
             #Add widgets to the eighth tab
-            #self.tab2_layout = QGridLayout(self.tab8)
-            #self.tab2_layout.setAlignment(Qt.AlignCenter)
-            #self.tab2_input_layout = QGridLayout()
+            self.tab8gb = QGroupBox()
 
+            self.tab8gb.setTitle("Feedback")
+            self.tab8gb.setFont(QtGui.QFont("Arial", 12, QtGui.QFont.Bold))
+            
+            self.tab8.setObjectName("tab8")
+            
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            self.tab8.setStyleSheet(f"""
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
 
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
 
+            # Grid layout for Tab 8
+            self.tab8layout = QVBoxLayout()
+            self.tab8gb.setLayout(self.tab8layout)
 
+            # Add feedback dynamically here
+            self.tab8_feedback_label = QLabel()
+            self.tab8_feedback_label.setWordWrap(True)
+            self.tab8_feedback_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+            self.tab8_feedback_label.setFont(QtGui.QFont("Arial", 11))
 
+            # Add the feedback label to the layout
+            self.tab8layout.addWidget(self.tab8_feedback_label)
 
+            # Buttons for navigation in Tab 8
+            self.tab8_previous_button = QPushButton("Previous")
+            self.tab8_previous_button.clicked.connect(lambda: self.switchTab(6))
+
+            self.tab8_next_button = QPushButton("Next")
+            self.tab8_next_button.clicked.connect(lambda: self.switchTab(8))
+
+            # Main grid layout for the tab
+            self.tab8_layout = QGridLayout(self.tab8)
+            self.tab8_layout.addWidget(self.tab8gb, 0, 0, 1, 2)
+            self.tab8_layout.addWidget(self.tab8_previous_button, 1, 0)
+            self.tab8_layout.addWidget(self.tab8_next_button, 1, 1)
+
+            
+            
 
 
             #add widgetsto to the ninth tab
@@ -854,6 +913,10 @@ class CarbonFootprintCalculator(QMainWindow):
             travel_result = float(self.carbonCalculator["Travel"]["Distance"]) * (
                     1 / float(self.carbonCalculator["Travel"]["Fuel_Efficiency"]) * 2.31)
             total = energy_result+waste_result+travel_result
+            europe_avg = self.carbonCalculator["Details"].get("avg_europe", 0)
+
+
+
             self.table.setItem(0, 1, QTableWidgetItem("%.2f" % energy_result))
             self.table.setItem(1, 1, QTableWidgetItem("%.2f" % waste_result))
             self.table.setItem(2, 1, QTableWidgetItem("%.2f" % travel_result))
@@ -870,9 +933,20 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.carbonCalculator["Results"].update(
                 {"Energy": energy_result, "Waste": waste_result, "Travel": travel_result, "Total": total})
+            
+            # Update feedback dynamically
+            self.update_feedback(total, europe_avg)
         except Exception as e:
-            print(f"issue is with: {e}")
+            print(f"Error in calculation: {e}")
 
+    
+    
+    
+    
+    
+    
+    
+    #database setup
     def database_update(self):
         self.tab5_calculate_button.blockSignals(True)
         try:
@@ -1157,3 +1231,4 @@ if __name__ == "__main__":
   window = CarbonFootprintCalculator("AKRD", "Admin")
   window.show()
   sys.exit(app.exec_())
+
