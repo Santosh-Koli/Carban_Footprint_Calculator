@@ -64,6 +64,51 @@ class CarbonFootprintCalculator(QMainWindow):
         # self.log_App = UI_Form()
         # self.log_App.show()
 
+    def generate_feedback(self):
+
+        #Generate feedback based on the total carbon footprint compared to the European average.
+    
+        try:
+            total_cf = self.carbonCalculator["Results"].get("Total", 0)
+            avg_cf = self.carbonCalculator["Details"].get("avg_europe", 0)
+
+            if total_cf < avg_cf:
+                # Positive Feedback
+                feedback_text = (
+                    "<b>Good/Positive Result:</b><br>"
+                    "Fantastic work! Your carbon footprint is below the European average.<br>"
+                    "Keep up these sustainable habits, and consider additional ways to further reduce your impact.<br><br>"
+                    "<b>Energy:</b> You're doing great! Consider adding renewable energy options, like solar panels, to take it a step further.<br>"
+                    "<b>Waste:</b> Keep up the progress! Composting organic waste and promoting recycling can make an even bigger difference.<br>"
+                    "<b>Travel:</b> Excellent choices! Continue carpooling or using public transport whenever possible to maintain a low travel footprint."
+                )
+            else:
+                # Negative Feedback
+                feedback_text = (
+                    "<b>Bad/Negative Result:</b><br>"
+                    "Your carbon footprint is above the European average, but small changes can help!<br>"
+                    "Try adopting sustainable practices in energy, waste, and travel to lower your impact.<br><br>"
+                    "<b>Energy:</b><br>"
+                    "- Switch to energy-efficient appliances and consider renewable options like solar panels.<br>"
+                    "- Improve home insulation to cut down on heating and cooling needs.<br>"
+                    "- Unplug devices when not in use to save energy.<br><br>"
+                    "<b>Waste:</b><br>"
+                    "- Try composting organic waste and using reusable bags to reduce single-use plastics.<br>"
+                    "- Join a recycling program to ensure proper waste processing.<br>"
+                    "- Donate items you no longer need instead of discarding them.<br><br>"
+                    "<b>Travel:</b><br>"
+                    "- Carpool or use public transport whenever possible.<br>"
+                    "- Walk or bike short distances to reduce emissions.<br>"
+                    "- Opt for virtual meetings to minimize travel when you can."
+                )
+
+            # Update the feedback label in Tab 8
+            self.tab8_feedback_label.setText(feedback_text)
+
+        except Exception as e:
+            print(f"Error generating feedback: {e}")
+
+
     def init_ui(self):
         try:
             validator = QtGui.QDoubleValidator()  # Create validator.
@@ -994,6 +1039,8 @@ class CarbonFootprintCalculator(QMainWindow):
         elif module == "Result":
             self.calculate()
             self.database_update()
+            self.generate_feedback()
+
             # self.visualization([])
 
     def calculate(self):
