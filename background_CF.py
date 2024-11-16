@@ -177,13 +177,15 @@ class CarbonFootprintCalculator(QMainWindow):
             # Add widgets to the first tab
             self.tab1_layout = QGridLayout(self.tab1)
             
-            self.tab2.setObjectName("tab1")
+            self.tab1.setObjectName("tab1")
             
             image_path = os.path.abspath("images/carbon_footprint_background.png")
 
+
+
             self.tab1.setStyleSheet(f"""
-                QWidget#tab1 {{                    
-                    background-image: url('images/carbonfootprint_login.png');
+                QWidget#tab1 {{
+                    background-image: url('images/image.png');
                     background = QLabel()
                     pixmap = QPixmap("images/carbonfootprint_login.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
@@ -191,9 +193,6 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
-                
-                    
-                
                 }}
             
         
@@ -209,7 +208,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
                 QLineEdit {{
                     background-color: rgba(255, 255, 255, 1);
-                    color: #004d40;
+                    color: #FFFFFF;
                     font-size: 12pt;
                     padding: 8px;
                     border: 2px solid #00796b; 
@@ -227,7 +226,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 }}
 
                 QPushButton:hover {{
-                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                    background-color: rgba(0, 137, 123, 0.9);  
                 }}                    
             """)
 
@@ -236,6 +235,9 @@ class CarbonFootprintCalculator(QMainWindow):
             # Load the image using QPixmap
             pixmap = QPixmap("images/carbonfootprint_login.png")
             scaled_pixmap = pixmap.scaled(400, 400)
+            
+            
+
 
             # Set the pixmap to the label
             background.setPixmap(scaled_pixmap)
