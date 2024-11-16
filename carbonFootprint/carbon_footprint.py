@@ -491,6 +491,76 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Add widgets to the fifth tab
             self.tab5gb = QGroupBox()
+            
+            self.tab5.setObjectName("tab5")
+
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab5.setStyleSheet(f"""
+                QWidget#tab5 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                }}
+    
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 1);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QFrame#tableContainer {{
+                    background-color: rgba(0, 51, 102, 0.8); /* Dark blue padding color */
+                    border-radius: 12px; /* Rounded corners */
+                    padding: 10px; /* Space around the table */
+                }}
+
+                QTableWidget {{
+                    background-color: rgba(255, 255, 255, 0.9); /* Light white background for the table */
+                    color: #004d40;
+                    font-size: 12pt;
+                    border: 2px solid #00796b; 
+                    border-radius: 8px;
+                    gridline-color: #00796b;
+                }}
+    
+                QTableWidget::item {{
+                    background-color: rgba(255, 255, 255, 1); /* Solid white for table items */
+                    color: #004d40;
+                }}
+
+                QHeaderView::section {{
+                    background-color: rgba(42, 161, 131, 1); /* Header background color */
+                    color: white;
+                    font-weight: bold;
+                    padding: 5px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
             self.tab5layout = QGridLayout()
             self.tab5gb.setLayout(self.tab5layout)
 
@@ -534,8 +604,21 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab5_calculate_button = QPushButton("Calculate")
             self.tab5_calculate_button.setFixedHeight(50)
             self.tab5_calculate_button.setFont(self.my_font)
-            self.tab5_calculate_button.setStyleSheet(
-                'QPushButton {background-color: rgba(42, 161, 131); color: rgba(232, 237, 235); font-size: 16px}')
+            self.tab5_calculate_button.setStyleSheet("""
+                QPushButton {
+                    background-color: #DC143C; /* Green color */
+                    color: white;
+                    font-size: 16px;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 8px;
+                }
+                QPushButton:hover {
+                    background-color: #FF6347; /* Slightly lighter green */
+                }
+            """)
+            
             self.tab5_layout.addWidget(self.tab5gb, 0, 0, 1, 3)
             self.tab5_layout.addWidget(self.tab5_previous_button, 1, 0)
             self.tab5_layout.addWidget(self.tab5_calculate_button, 1, 1)
