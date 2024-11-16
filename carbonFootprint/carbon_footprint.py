@@ -722,7 +722,7 @@ class CarbonFootprintCalculator(QMainWindow):
             
 
 
-            ## Add widgets to the seventh tab
+            # Add widgets to the seventh tab
             self.tab7gb = QGroupBox()
             
             self.tab7.setObjectName("tab7")
@@ -832,7 +832,30 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab7_layout.addWidget(self.tab7_compare_button, 1, 1)
             self.tab7_layout.addWidget(self.tab7_next_button, 1, 2)
 
-            if self.role == "Admin":
+
+            #Add widgets to the Eighth tab
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            #Add widgets to the ninth tab
+            if  self.role == "Admin":
                 self.tab9 = QWidget()
                 self.tabs.addTab(self.tab9, "Admin Viewer")
                 self.tab9_layout = QGridLayout(self.tab9)
@@ -841,8 +864,20 @@ class CarbonFootprintCalculator(QMainWindow):
                 generate = QPushButton("Generate")
                 generate.setFixedHeight(50)
                 generate.setFont(self.my_font)
-                generate.setStyleSheet(
-                    'QPushButton {background-color: rgba(42, 161, 131); color: rgba(232, 237, 235); font-size: 16px}')
+                generate.setStyleSheet("""
+                    QPushButton {
+                        background-color: #DC143C; /* Crimson */
+                        color: white;
+                        font-size: 16px;
+                        font-weight: bold;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 8px;
+                    }
+                    QPushButton:hover {
+                        background-color: #FF6347; /* Tomato Red */
+                    }
+                """)
                 generate.clicked.connect(self.admin_gui)
                 self.webview_admin = QWebEngineView()
                 self.tab9_layout.addWidget(self.combo1, 0, 0)
@@ -1192,6 +1227,6 @@ class CarbonFootprintCalculator(QMainWindow):
 if __name__ == "__main__":
   windll.shcore.SetProcessDpiAwareness(0)
   app = QApplication(sys.argv)
-  window = CarbonFootprintCalculator("AKRD", "User")
+  window = CarbonFootprintCalculator("AKRD", "Admin")
   window.show()
   sys.exit(app.exec_())
