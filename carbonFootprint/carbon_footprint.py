@@ -719,8 +719,82 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab6_layout.addWidget(self.tab6gb, 0, 0, 1, 2)
             self.tab6_layout.addWidget(self.tab6_previous_button, 1, 0)
             self.tab6_layout.addWidget(self.tab6_next_button, 1, 1)
+            
 
+
+            ## Add widgets to the seventh tab
             self.tab7gb = QGroupBox()
+            
+            self.tab7.setObjectName("tab7")
+
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab7.setStyleSheet(f"""
+                QWidget#tab7 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                }}
+    
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 1);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QFrame#tableContainer {{
+                    background-color: rgba(0, 51, 102, 0.8); /* Dark blue padding color */
+                    border-radius: 12px; /* Rounded corners */
+                    padding: 10px; /* Space around the table */
+                }}
+
+                QTableWidget {{
+                    background-color: rgba(255, 255, 255, 0.9); /* Light white background for the table */
+                    color: #004d40;
+                    font-size: 12pt;
+                    border: 2px solid #00796b; 
+                    border-radius: 8px;
+                    gridline-color: #00796b;
+                }}
+    
+                QTableWidget::item {{
+                    background-color: rgba(255, 255, 255, 1); /* Solid white for table items */
+                    color: #004d40;
+                }}
+
+                QHeaderView::section {{
+                    background-color: rgba(42, 161, 131, 1); /* Header background color */
+                    color: white;
+                    font-weight: bold;
+                    padding: 5px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
+
             self.tab7layout = QGridLayout()
             self.tab7gb.setLayout(self.tab7layout)
 
@@ -731,8 +805,20 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab7_compare_button = QPushButton("Compare")
             self.tab7_compare_button.setFixedHeight(50)
             self.tab7_compare_button.setFont(self.my_font)
-            self.tab7_compare_button.setStyleSheet(
-                'QPushButton {background-color: rgba(42, 161, 131); color: rgba(232, 237, 235); font-size: 16px}')
+            self.tab7_compare_button.setStyleSheet("""
+                QPushButton {
+                    background-color: #DC143C; /* Crimson */
+                    color: white;
+                    font-size: 16px;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 8px;
+                }
+                QPushButton:hover {
+                    background-color: #FF6347; /* Tomato Red */
+                }
+            """)
             self.tab7_compare_button.clicked.connect(self.visualization_comparison)
 
             self.tab7layout.addWidget(self.web_view2)
