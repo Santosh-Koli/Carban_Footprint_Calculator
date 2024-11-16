@@ -834,7 +834,56 @@ class CarbonFootprintCalculator(QMainWindow):
 
 
             #Add widgets to the Eighth tab
+            self.tab8gb = QGroupBox()
 
+            self.tab8gb.setTitle("Feedback")
+            self.tab8gb.setFont(QtGui.QFont("Arial", 12, QtGui.QFont.Bold))
+            
+            self.tab8.setObjectName("tab8")
+            
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            self.tab8.setStyleSheet(f"""
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
+
+
+            self.tab8layout = QVBoxLayout()
+            self.tab8gb.setLayout(self.tab8layout)
+
+            # Add feedback dynamically here
+            self.tab8_feedback_label = QLabel()
+            self.tab8_feedback_label.setWordWrap(True)
+            self.tab8_feedback_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+            self.tab8_feedback_label.setFont(QtGui.QFont("Arial", 11))
+
+            # Add the feedback label to the layout
+            self.tab8layout.addWidget(self.tab8_feedback_label)
+
+            # Buttons for navigation in Tab 8
+            self.tab8_previous_button = QPushButton("Previous")
+            self.tab8_previous_button.clicked.connect(lambda: self.switchTab(6))
+
+            self.tab8_next_button = QPushButton("Next")
+            self.tab8_next_button.clicked.connect(lambda: self.switchTab(8))
+
+            # Main grid layout for the tab
+            self.tab8_layout = QGridLayout(self.tab8)
+            self.tab8_layout.addWidget(self.tab8gb, 0, 0, 1, 2)
+            self.tab8_layout.addWidget(self.tab8_previous_button, 1, 0)
+            self.tab8_layout.addWidget(self.tab8_next_button, 1, 1)
 
 
 
