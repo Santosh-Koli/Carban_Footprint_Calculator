@@ -117,6 +117,10 @@ class CarbonFootprintCalculator(QMainWindow):
     
     
     def generate_pdf(self):
+        graph_spacing = 300  # Space between each graph
+        graph_width = 500    # Width of the graph in the PDF
+        graph_height = 250   # Height of the graph in the PDF
+
         try:
             # File  path to save the PDF
             file_path, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Save PDF", "", "PDF Files (*.pdf)")
@@ -155,28 +159,44 @@ class CarbonFootprintCalculator(QMainWindow):
                 c.drawString(50, y_position, line.strip().replace("<b>", "").replace("</b>", ""))
                 y_position -= 20
 
-            # Add Graphs
-            graph_spacing = 220
-            try:
-                if hasattr(self, 'total_cf_graph_path') and os.path.exists(self.total_cf_graph_path):
-                   c.drawImage(self.total_cf_graph_path, 50, y_position - graph_spacing, width=550, height=300)
-                   y_position -= graph_spacing + 10
-                else:
-                    print("Total CF Graph path does not exist or is not accessible.")
+            # Leave enough space for graphs
+            y_position -= 50
+            graph_spacing = 300  # Adjust spacing for graphs
+            graph_width = 500
+            graph_height = 300
 
+            # Add Graphs
+            graph_spacing = 300  # Space between each graph
+            graph_width = 500    # Width of the graph in the PDF
+            graph_height = 250   # Height of the graph in the PDF
+
+            try:
+                # Draw Total CF Graph
+                if hasattr(self, 'total_cf_graph_path') and os.path.exists(self.total_cf_graph_path):
+                    if y_position - (graph_height + graph_spacing) < 50:
+                        c.showPage()
+                        y_position = 750
+                c.drawImage(self.total_cf_graph_path, 50, y_position - graph_height, width=graph_width, height=graph_height)
+                y_position -= (graph_height + graph_spacing)
+
+                # Draw Sub Graph
                 if hasattr(self, 'sub_graph_path') and os.path.exists(self.sub_graph_path):
-                   c.drawImage(self.sub_graph_path, 50, y_position - graph_spacing - 350, width=550, height=300)
-                   y_position -= graph_spacing + 10
-                else:
-                    print("Sub Graph path does not exist or is not accessible.")
-                
+                    if y_position - (graph_height + graph_spacing) < 50:
+                        c.showPage()
+                        y_position = 750
+                    c.drawImage(self.sub_graph_path, 50, y_position - graph_height, width=graph_width, height=graph_height)
+                    y_position -= (graph_height + graph_spacing)
+
+                # Draw Comparison Graph
                 if hasattr(self, 'comparison_graph_path') and os.path.exists(self.comparison_graph_path):
-                   c.drawImage(self.comparison_graph_path, 50, y_position - graph_spacing - 700, width=550, height=300)
-                   y_position -= graph_spacing + 10
-                else:
-                    print("Comparison graph path does not exist or is not accessible.")
+                    if y_position - (graph_height + graph_spacing) < 50:
+                        c.showPage()
+                        y_position = 750
+                    c.drawImage(self.comparison_graph_path, 50, y_position - graph_height, width=graph_width, height=graph_height)
+                    y_position -= (graph_height + graph_spacing)
             except Exception as e:
                 print(f"Error adding graphs to PDF: {e}")
+
 
             # Finalize and save the PDF
             c.save()
@@ -1337,7 +1357,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Save the plot as a PNG file for PDF
             self.total_cf_graph_path = os.path.join(tempfile.gettempdir(), "total_cf_graph.png")
-            fig.write_image(self.total_cf_graph_path, width=800, height=600, scale=2)  # Higher resolution
+            fig.write_image(self.total_cf_graph_path, width=1200, height=800, scale=2)  # Higher resolution
 
 
             # Save the plot as an HTML file in a temporary location
@@ -1365,7 +1385,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Save the plot as a PNG file for PDF
             self.sub_graph_path = os.path.join(tempfile.gettempdir(), "sub_graph.png")
-            fig.write_image(self.sub_graph_path, width=800, height=600, scale=2)  # Higher resolution
+            fig.write_image(self.sub_graph_path, width=1200, height=800, scale=2)  # Higher resolution
 
 
             # Save the plot as an HTML file in a temporary location
@@ -1408,7 +1428,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Save the plot as a PNG file for the PDF
             self.comparison_graph_path = os.path.join(tempfile.gettempdir(), "comparison_graph.png")
-            fig.write_image(self.comparison_graph_path, width=800, height=600, scale=2) 
+            fig.write_image(self.comparison_graph_path, width=1200, height=800, scale=2) 
 
 
             # Save the plot as an HTML file in a temporary location
