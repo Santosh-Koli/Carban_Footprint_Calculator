@@ -181,10 +181,8 @@ class CarbonFootprintCalculator(QMainWindow):
             
             image_path = os.path.abspath("images/carbon_footprint_background.png")
 
-
-
             self.tab1.setStyleSheet(f"""
-                QWidget#tab1 {{
+                QWidget#tab1 {{                    
                     background-image: url('images/image.png');
                     background = QLabel()
                     pixmap = QPixmap("images/carbonfootprint_login.png")
@@ -193,6 +191,7 @@ class CarbonFootprintCalculator(QMainWindow):
                     background.setScaledContents(True)
                     background-repeat: no-repeat;
                     background-position: center;
+                
                 }}
             
         
@@ -208,7 +207,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
                 QLineEdit {{
                     background-color: rgba(255, 255, 255, 1);
-                    color: #FFFFFF;
+                    color: #004d40;
                     font-size: 12pt;
                     padding: 8px;
                     border: 2px solid #00796b; 
@@ -226,7 +225,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 }}
 
                 QPushButton:hover {{
-                    background-color: rgba(0, 137, 123, 0.9);  
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
                 }}                    
             """)
 
@@ -235,9 +234,6 @@ class CarbonFootprintCalculator(QMainWindow):
             # Load the image using QPixmap
             pixmap = QPixmap("images/carbonfootprint_login.png")
             scaled_pixmap = pixmap.scaled(400, 400)
-            
-            
-
 
             # Set the pixmap to the label
             background.setPixmap(scaled_pixmap)
@@ -603,8 +599,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab5gb.setLayout(self.tab5layout)
 
             self.tab5_layout = QGridLayout(self.tab5)
-            #self.tab5_layout.setAlignment(Qt.AlignCenter)
-            
+            # self.tab5_layout.setAlignment(Qt.AlignCenter)
 
             self.table = QTableWidget(5, 2)  # Set up a table with 2 columns
             self.table.verticalHeader().setVisible(False)
@@ -670,12 +665,6 @@ class CarbonFootprintCalculator(QMainWindow):
             # canvas = FigureCanvas(fig)
             self.web_view = QWebEngineView()
             self.web_view_sub = QWebEngineView()
-
-            # Remove extra margins and set compact layout
-            self.tab5layout.setContentsMargins(10, 10, 10, 10)  # Compact margins
-            self.tab5layout.setVerticalSpacing(5)  # Reduce vertical spacing
-            self.tab5layout.setRowStretch(0, 1)  # Give most space to the table
-            self.tab5layout.setRowStretch(1, 0)  # Minimize space for buttons
 
             # Add widgets to the sixth tab
             self.tab6gb = QGroupBox()
@@ -877,13 +866,31 @@ class CarbonFootprintCalculator(QMainWindow):
             #Add widgets to the Eighth tab
             self.tab8gb = QGroupBox()
 
-            self.tab8gb.setTitle("Feedback")
+            self.tab8gb.setTitle("Suggestions and Remarks")
             self.tab8gb.setFont(QtGui.QFont("Arial", 12, QtGui.QFont.Bold))
+            self.tab8gb.setStyleSheet("""
+                QGroupBox {
+                    color: red;
+                    }
+            """)
             
             self.tab8.setObjectName("tab8")
             
             image_path = os.path.abspath("images/carbon_footprint_background.png")
             self.tab8.setStyleSheet(f"""
+                QWidget#tab8 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    
+                }}
+                
+                                    
                 QPushButton {{
                     background-color: rgba(0, 51, 102, 1);
                     color: #ffffff;
@@ -909,6 +916,16 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab8_feedback_label.setWordWrap(True)
             self.tab8_feedback_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
             self.tab8_feedback_label.setFont(QtGui.QFont("Arial", 11))
+            self.tab8_feedback_label.setStyleSheet("""
+                QLabel {
+                    background-color: rgba(0, 80, 0, 0.8); /* Dark green */
+                    color: #FFFFFF;
+                    font-size: 13pt;
+                    font-weight: bold; /* Make the text bold */
+                    padding: 10px; /* Padding to add spacing around text */
+                    border-radius: 8px; /* Rounded corners for a polished look */
+                }
+            """)
 
             # Add the feedback label to the layout
             self.tab8layout.addWidget(self.tab8_feedback_label)

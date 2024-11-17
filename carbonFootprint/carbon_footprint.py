@@ -866,8 +866,13 @@ class CarbonFootprintCalculator(QMainWindow):
             #Add widgets to the Eighth tab
             self.tab8gb = QGroupBox()
 
-            self.tab8gb.setTitle("Feedback")
+            self.tab8gb.setTitle("Suggestions and Remarks")
             self.tab8gb.setFont(QtGui.QFont("Arial", 12, QtGui.QFont.Bold))
+            self.tab8gb.setStyleSheet("""
+                QGroupBox {
+                    color: Red; /* Change the title text color to blue */
+                    }
+            """)
             
             self.tab8.setObjectName("tab8")
             
@@ -911,6 +916,16 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab8_feedback_label.setWordWrap(True)
             self.tab8_feedback_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
             self.tab8_feedback_label.setFont(QtGui.QFont("Arial", 11))
+            self.tab8_feedback_label.setStyleSheet("""
+                QLabel {
+                    background-color: rgba(0, 80, 0, 0.8); /* Dark green */
+                    color: #FFFFFF;
+                    font-size: 13pt;
+                    font-weight: bold; /* Make the text bold */
+                    padding: 10px; /* Padding to add spacing around text */
+                    border-radius: 8px; /* Rounded corners for a polished look */
+                }
+            """)
 
             # Add the feedback label to the layout
             self.tab8layout.addWidget(self.tab8_feedback_label)
@@ -1364,6 +1379,6 @@ class CarbonFootprintCalculator(QMainWindow):
 if __name__ == "__main__":
   windll.shcore.SetProcessDpiAwareness(0)
   app = QApplication(sys.argv)
-  window = CarbonFootprintCalculator("AKRD", "Admin")
+  window = CarbonFootprintCalculator("AKRD", "User")
   window.show()
   sys.exit(app.exec_())
