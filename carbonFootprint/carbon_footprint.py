@@ -263,8 +263,8 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_name_input.setPlaceholderText("Enter your name")
             self.tab1_year_label = QLabel("Year:")
             self.tab1_year_input = QComboBox()
-            self.tab1_year_input.addItems(["2021", "2022", "2023", "2024", "2025"])
-            self.tab1_year_input.setCurrentIndex(3)
+            self.tab1_year_input.addItems(["2020", "2021", "2022", "2023", "2024",])
+            self.tab1_year_input.setCurrentIndex(4)
             self.tab1_next_button = QPushButton("Next")
             self.tab1_next_button.clicked.connect(lambda: self.switchTab(1))
 
