@@ -1,4 +1,4 @@
-import os
+
 import sys
 from ctypes import windll
 
@@ -15,7 +15,11 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.utils import ImageReader
 import tempfile
+import os
 import MySQLdb as mdb
 
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -107,6 +111,81 @@ class CarbonFootprintCalculator(QMainWindow):
 
         except Exception as e:
             print(f"Error generating feedback: {e}")
+
+    
+    
+    
+    
+    def generate_pdf(self):
+        try:
+            # File  path to save the PDF
+            file_path, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Save PDF", "", "PDF Files (*.pdf)")
+            if not file_path:
+                return  # User canceled saving
+
+            # Create a PDF canvas
+            c = canvas.Canvas(file_path, pagesize=letter)
+
+            # Add Title
+            c.setFont("Helvetica-Bold", 20)
+            c.drawString(50, 750, "Carbon Footprint Report")
+
+            # Add User Details
+            c.setFont("Helvetica", 12)
+            y_position = 720
+            for key, value in self.carbonCalculator["Details"].items():
+                c.drawString(50, y_position, f"{key}: {value}")
+                y_position -= 20
+
+            # Add Results
+            c.setFont("Helvetica-Bold", 14)
+            c.drawString(50, y_position - 10, "Results:")
+            y_position -= 30
+            for key, value in self.carbonCalculator["Results"].items():
+                c.drawString(50, y_position, f"{key}: {value:.2f} KgCO2")
+                y_position -= 20
+
+            # Add Feedback
+            c.setFont("Helvetica-Bold", 14)
+            c.drawString(50, y_position - 10, "Feedback:")
+            y_position -= 30
+            feedback_text = self.tab8_feedback_label.text()
+            c.setFont("Helvetica", 12)
+            for line in feedback_text.split("<br>"):  # Handle HTML line breaks
+                c.drawString(50, y_position, line.strip().replace("<b>", "").replace("</b>", ""))
+                y_position -= 20
+
+            # Add Graphs
+            graph_spacing = 220
+            try:
+                if hasattr(self, 'total_cf_graph_path') and os.path.exists(self.total_cf_graph_path):
+                   c.drawImage(self.total_cf_graph_path, 50, y_position - graph_spacing, width=550, height=300)
+                   y_position -= graph_spacing + 10
+                else:
+                    print("Total CF Graph path does not exist or is not accessible.")
+
+                if hasattr(self, 'sub_graph_path') and os.path.exists(self.sub_graph_path):
+                   c.drawImage(self.sub_graph_path, 50, y_position - graph_spacing - 350, width=550, height=300)
+                   y_position -= graph_spacing + 10
+                else:
+                    print("Sub Graph path does not exist or is not accessible.")
+                
+                if hasattr(self, 'comparison_graph_path') and os.path.exists(self.comparison_graph_path):
+                   c.drawImage(self.comparison_graph_path, 50, y_position - graph_spacing - 700, width=550, height=300)
+                   y_position -= graph_spacing + 10
+                else:
+                    print("Comparison graph path does not exist or is not accessible.")
+            except Exception as e:
+                print(f"Error adding graphs to PDF: {e}")
+
+            # Finalize and save the PDF
+            c.save()
+            QtWidgets.QMessageBox.information(self, "Success", f"PDF saved successfully at: {file_path}")
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"Error generating PDF: {e}")
+
+           
+
 
 
     def init_ui(self):
@@ -382,8 +461,6 @@ class CarbonFootprintCalculator(QMainWindow):
                     background-repeat: no-repeat;
                     background-position: center;
                     
-                    
-                
                 }}
             
         
@@ -934,14 +1011,36 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab8_previous_button = QPushButton("Previous")
             self.tab8_previous_button.clicked.connect(lambda: self.switchTab(6))
 
-            self.tab8_next_button = QPushButton("Next")
-            self.tab8_next_button.clicked.connect(lambda: self.switchTab(8))
+            #pdf generater
+            self.download_pdf_button = QPushButton("Download PDF")
+            self.download_pdf_button.setFixedHeight(50)
+            self.download_pdf_button.setFont(QtGui.QFont("Arial", 12, QtGui.QFont.Bold))
+            self.download_pdf_button.setStyleSheet("""
+                QPushButton {
+                    background-color: #DC143C; /* Crimson */
+                    color: white;
+                    font-size: 16px;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 8px;
+                }
+                QPushButton:hover {
+                    background-color: #FF6347; /* Darker green */
+                }
+            """)
+            self.download_pdf_button.clicked.connect(self.generate_pdf)
+
+            self.tab8layout.addWidget(self.download_pdf_button)
+
+
 
             # Main grid layout for the tab
             self.tab8_layout = QGridLayout(self.tab8)
             self.tab8_layout.addWidget(self.tab8gb, 0, 0, 1, 2)
             self.tab8_layout.addWidget(self.tab8_previous_button, 1, 0)
-            self.tab8_layout.addWidget(self.tab8_next_button, 1, 1)
+            self.tab8_layout.addWidget(self.download_pdf_button, 1, 1)
+            
 
 
 
@@ -1236,9 +1335,15 @@ class CarbonFootprintCalculator(QMainWindow):
             'xanchor': 'center'
             }, yaxis_title='KgCO2')
 
+            # Save the plot as a PNG file for PDF
+            self.total_cf_graph_path = os.path.join(tempfile.gettempdir(), "total_cf_graph.png")
+            fig.write_image(self.total_cf_graph_path, width=800, height=600, scale=2)  # Higher resolution
+
+
             # Save the plot as an HTML file in a temporary location
             temp_html_path = tempfile.mktemp(suffix='.html')
             fig.write_html(temp_html_path)
+
 
             self.web_view.setUrl(QUrl.fromLocalFile(temp_html_path))
         except Exception as e:
@@ -1257,6 +1362,11 @@ class CarbonFootprintCalculator(QMainWindow):
                 'x': 0.5,  # Center the title
                 'xanchor': 'center'
             }, yaxis_title='KgCO2')
+
+            # Save the plot as a PNG file for PDF
+            self.sub_graph_path = os.path.join(tempfile.gettempdir(), "sub_graph.png")
+            fig.write_image(self.sub_graph_path, width=800, height=600, scale=2)  # Higher resolution
+
 
             # Save the plot as an HTML file in a temporary location
             temp_html_path = tempfile.mktemp(suffix='.html')
@@ -1295,11 +1405,18 @@ class CarbonFootprintCalculator(QMainWindow):
             'xanchor': 'center'
             }, yaxis_title='Total Carbon Footprint KgCO2')
 
+
+            # Save the plot as a PNG file for the PDF
+            self.comparison_graph_path = os.path.join(tempfile.gettempdir(), "comparison_graph.png")
+            fig.write_image(self.comparison_graph_path, width=800, height=600, scale=2) 
+
+
             # Save the plot as an HTML file in a temporary location
             temp_html_path = tempfile.mktemp(suffix='.html')
             fig.write_html(temp_html_path)
-
             self.web_view2.setUrl(QUrl.fromLocalFile(temp_html_path))
+
+            
         except mdb.Error as e:
             print(f"Database not connected: {e}")
         finally:
@@ -1379,6 +1496,6 @@ class CarbonFootprintCalculator(QMainWindow):
 if __name__ == "__main__":
   windll.shcore.SetProcessDpiAwareness(0)
   app = QApplication(sys.argv)
-  window = CarbonFootprintCalculator("AKRD", "User")
+  window = CarbonFootprintCalculator("SM", "User")
   window.show()
   sys.exit(app.exec_())
