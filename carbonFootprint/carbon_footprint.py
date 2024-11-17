@@ -961,12 +961,14 @@ class CarbonFootprintCalculator(QMainWindow):
             #Add widgets to the Eighth tab
             self.tab8gb = QGroupBox()
 
-            self.tab8gb.setTitle("Suggestions and Remarks")
-            self.tab8gb.setFont(QtGui.QFont("Arial", 12, QtGui.QFont.Bold))
+            self.tab8gb.setTitle("Remarks:")
+            self.tab8gb.setFont(QtGui.QFont("Arial", 17, QtGui.QFont.Bold))
             self.tab8gb.setStyleSheet("""
                 QGroupBox {
-                    color: Red; /* Change the title text color to blue */
-                    }
+                    color: #FF0000;
+                    font-size: 16pt;
+                    font-weight: bold;
+                }
             """)
             
             self.tab8.setObjectName("tab8")
@@ -1013,8 +1015,8 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab8_feedback_label.setFont(QtGui.QFont("Arial", 11))
             self.tab8_feedback_label.setStyleSheet("""
                 QLabel {
-                    background-color: rgba(0, 80, 0, 0.8); /* Dark green */
-                    color: #FFFFFF;
+                    background-color: rgba(255, 255, 255, 0.8); /* white*/
+                    color: #000000;
                     font-size: 13pt;
                     font-weight: bold; /* Make the text bold */
                     padding: 10px; /* Padding to add spacing around text */
