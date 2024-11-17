@@ -340,6 +340,12 @@ class CarbonFootprintCalculator(QMainWindow):
             background.setToolTip(
                 "Welcome to the Carbon Footprint Calculator!\n\nThis tool helps you understand and reduce your carbon footprint. "
                 "Every small action counts toward a healthier planet.\nCalculate your emissions, get insights, and track your impact with tables & charts  for a sustainable future. ")
+            
+
+            self.tab1_staff_label = QLabel("Staff Headcount:")
+            self.tab1_staff_input = QLineEdit()
+            self.tab1_staff_input.setPlaceholderText("Enter number of staff")
+            self.tab1_staff_input.setValidator(QtGui.QIntValidator())  # Ensures only integer input
 
             self.individual_rbtn = QRadioButton("Individual")
             self.individual_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
@@ -366,18 +372,26 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_year_input.setCurrentIndex(4)
             self.tab1_next_button = QPushButton("Next")
             self.tab1_next_button.clicked.connect(lambda: self.switchTab(1))
+            
+
 
             self.tab1_layout.addWidget(background, 0, 0, 1, 8)
-            self.tab1_layout.addWidget(self.individual_rbtn, 1, 0, 1, 2)
-            self.tab1_layout.addWidget(self.sbusiness_rbtn, 1, 3, 1, 2)
-            self.tab1_layout.addWidget(self.bbusiness_rbtn, 1, 6, 1, 2)
-            self.tab1_layout.addWidget(self.tab1_name_label, 2, 0, 1, 1)
-            self.tab1_layout.addWidget(self.tab1_name_input, 2, 1, 1, 7)
-            self.tab1_layout.addWidget(self.tab1_year_label, 3, 0, 1, 1)
-            self.tab1_layout.addWidget(self.tab1_year_input, 3, 1, 1, 7)
-            self.tab1_layout.addWidget(self.tab1_next_button, 4, 7, 1, 1)
+            self.tab1_layout.addWidget(self.tab1_staff_label, 1, 0, 1, 1)
+            self.tab1_layout.addWidget(self.tab1_staff_input, 1, 1, 1, 7)
+            self.tab1_layout.addWidget(self.individual_rbtn, 2, 3, 1, 1)
+            self.tab1_layout.addWidget(self.sbusiness_rbtn, 2, 4, 1, 1)
+            self.tab1_layout.addWidget(self.bbusiness_rbtn, 2, 5, 1, 1)
+            self.tab1_layout.addWidget(self.tab1_name_label, 3, 0, 1, 1)
+            self.tab1_layout.addWidget(self.tab1_name_input, 3, 1, 1, 7)
+            self.tab1_layout.addWidget(self.tab1_year_label, 4, 0, 1, 1)
+            self.tab1_layout.addWidget(self.tab1_year_input, 4, 1, 1, 7)
+            self.tab1_layout.addWidget(self.tab1_next_button, 5, 6, 1, 2)
+
+
+            self.tab1_staff_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
             self.tab1_name_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
             self.tab1_year_input.currentIndexChanged.connect(lambda: self.carbonCalculator_func("Details"))
+            
 
             # Add widgets to the second tab
             self.tab2_layout = QGridLayout(self.tab2)
