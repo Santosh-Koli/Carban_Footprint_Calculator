@@ -85,7 +85,6 @@ class CarbonFootprintCalculator(QMainWindow):
             # Handle invalid or empty input
             QMessageBox.warning(self, "Invalid Input", "Please enter a valid number for the staff headcount.")
 
-
     def generate_feedback(self):
 
         #Generate feedback based on the total carbon footprint compared to the European average.
@@ -190,11 +189,11 @@ class CarbonFootprintCalculator(QMainWindow):
 
             try:
                 # Draw Total CF Graph
-                if hasattr(self, 'total_cf_graph_path') and os.path.exists(self.total_cf_graph_path):
+                if hasattr(self, 'per_capita_cf_graph_path') and os.path.exists(self.per_capita_cf_graph_path):
                     if y_position - (graph_height + graph_spacing) < 50:
                         c.showPage()
                         y_position = 750
-                c.drawImage(self.total_cf_graph_path, 50, y_position - graph_height, width=graph_width, height=graph_height)
+                c.drawImage(self.per_capita_cf_graph_path, 50, y_position - graph_height, width=graph_width, height=graph_height)
                 y_position -= (graph_height + graph_spacing)
 
                 # Draw Sub Graph
@@ -393,6 +392,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_staff_input = QLineEdit()
             self.tab1_staff_input.editingFinished.connect(self.check_employee_count)
 
+            
 
 
             self.tab1_layout.addWidget(background, 0, 0, 1, 8)
@@ -1244,6 +1244,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.setItem(2, 1, QTableWidgetItem("%.2f" % travel_result))
             self.table.setItem(3, 1, QTableWidgetItem("%.2f" % total))
             self.table.setItem(5, 1, QTableWidgetItem("%.2f" % per_capita_cf))
+        
 
             # table = QTableWidget(0, 2)
 
@@ -1253,6 +1254,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.item(2, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(3, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(5, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+            
 
 
             self.carbonCalculator["Results"].update(
@@ -1309,15 +1311,17 @@ class CarbonFootprintCalculator(QMainWindow):
                     avg_query = "SELECT * FROM eu_avgcf_table WHERE Year=%s"
                     mycursor.execute(avg_query, (self.carbonCalculator["Details"].get("Year"),))
                     result_avg = mycursor.fetchone()
-                    self.carbonCalculator["Details"]["avg_europe"] = result_avg[2]
+                    self.carbonCalculator["Details"]["avg_europe"] = result_avg[2]  # Europe Avg Total CF
+                        
+            
 
                     update_query = """
                             UPDATE cf_table
                             SET Ele_Energy=%s, Nat_Gas_Energy=%s, Fuel_Energy=%s, Total_Energy=%s,
                                 Generated_Waste=%s, Recycled_Waste=%s, Total_Waste=%s,
-                                Kilometer_Travel=%s, AvgFuelEff_Travel=%s, Total_Travel=%s, Total_CF=%s, Europe_Avg_CF=%s, staff_headcount=%s, per_capita_cf=%s,
+                                Kilometer_Travel=%s, AvgFuelEff_Travel=%s, Total_Travel=%s, Total_CF=%s, Europe_Avg_CF=%s, staff_headcount=%s, per_capita_cf=%s
                             WHERE Sr_No=%s
-                            """
+                        """
                     values_update = (
                         self.carbonCalculator["Energy"].get("Electricity"),
                         self.carbonCalculator["Energy"].get("NaturalGas"),
@@ -1393,7 +1397,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 self.table.setItem(4, 1, QTableWidgetItem("%.2f" % self.carbonCalculator["Details"].get("avg_europe")))
                 self.table.item(4, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
 
-                self.visualization([self.carbonCalculator["Results"].get("Total"), self.carbonCalculator["Details"].get("avg_europe")])
+                self.visualization([self.carbonCalculator["Results"].get("PerCapitaCF"), self.carbonCalculator["Details"].get("avg_europe")])
                 self.visualization_sub([self.carbonCalculator["Results"].get("Energy"), self.carbonCalculator["Results"].get("Waste"),
                      self.carbonCalculator["Results"].get("Travel")])
 
@@ -1409,19 +1413,24 @@ class CarbonFootprintCalculator(QMainWindow):
     def visualization(self, values:list):
         try:
             # Create a bar plot
-            categories = ["Total Carbon Footprint\n(KgCO2)", "Europe Avg.Carbon Footprint\n(KgCO2)"]  # Labels for each bar
+            categories = ["Per Capita CF\n(KgCO2)", "Europe Avg. Per Capita CF\n(KgCO2)"]  # Labels for each bar
             # values = [10, 15]  # Heights of each bar
+
+             # Extract values for comparison
+            per_capita_cf = self.carbonCalculator["Results"].get("PerCapitaCF", 0)
+            europe_avg_per_capita = self.carbonCalculator["Details"].get("avg_europe", 0)
+            values = [per_capita_cf, europe_avg_per_capita]
 
             fig = go.Figure(data=[go.Bar(x=categories, y=values)])
             fig.update_layout(title={
-            'text': 'Total Carbon Footprint vs Europe Average Carbon Footprint',
+            'text': 'Per Capita Carbon Footprint vs Europe Average Carbon Footprint',
             'x': 0.5,  # Center the title
             'xanchor': 'center'
             }, yaxis_title='KgCO2')
 
             # Save the plot as a PNG file for PDF
-            self.total_cf_graph_path = os.path.join(tempfile.gettempdir(), "total_cf_graph.png")
-            fig.write_image(self.total_cf_graph_path, width=1200, height=800, scale=2)  # Higher resolution
+            self.per_capita_cf_graph_path = os.path.join(tempfile.gettempdir(), "per_capita_cf_graph.png")
+            fig.write_image(self.per_capita_cf_graph_path, width=1200, height=800, scale=2)  # Higher resolution
 
 
             # Save the plot as an HTML file in a temporary location
@@ -1431,7 +1440,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.web_view.setUrl(QUrl.fromLocalFile(temp_html_path))
         except Exception as e:
-            print(e)
+            print(f"Visualization error: {e}")
             pass
 
     def visualization_sub(self, values_sub:list):
