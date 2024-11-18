@@ -130,8 +130,8 @@ class CarbonFootprintCalculator(QMainWindow):
                     "- Opt for virtual meetings to minimize travel when you can."
                 )
 
-            # Update the feedback label in Tab 8
-            self.tab8_feedback_label.setText(feedback_text)
+            # Update the feedback label in Tab 9
+            self.tab9_feedback_label.setText(feedback_text)
 
         except Exception as e:
             print(f"Error generating feedback: {e}")
@@ -177,7 +177,7 @@ class CarbonFootprintCalculator(QMainWindow):
             c.setFont("Helvetica-Bold", 14)
             c.drawString(50, y_position - 10, "Feedback:")
             y_position -= 30
-            feedback_text = self.tab8_feedback_label.text()
+            feedback_text = self.tab9_feedback_label.text()
             c.setFont("Helvetica", 12)
             for line in feedback_text.split("<br>"):  # Handle HTML line breaks
                 c.drawString(50, y_position, line.strip().replace("<b>", "").replace("</b>", ""))
@@ -287,14 +287,16 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab6 = QWidget()
             self.tab7 = QWidget()
             self.tab8 = QWidget()
+            self.tab9 = QWidget()
             self.tabs.addTab(self.tab1, "Welcome")
             self.tabs.addTab(self.tab2, "Energy")
             self.tabs.addTab(self.tab3, "Waste")
             self.tabs.addTab(self.tab4, "Travel/Transport")
             self.tabs.addTab(self.tab5, "Results")
-            self.tabs.addTab(self.tab6, "Visualization")
-            self.tabs.addTab(self.tab7, "Comparison")
-            self.tabs.addTab(self.tab8, "Feedback")
+            self.tabs.addTab(self.tab6, "Visualization_EuropeAvg")
+            self.tabs.addTab(self.tab7, "Visualization_Parameters")
+            self.tabs.addTab(self.tab8, "Comparison")
+            self.tabs.addTab(self.tab9, "Feedback")
 
 
             # Add widgets to the first tab
@@ -802,6 +804,11 @@ class CarbonFootprintCalculator(QMainWindow):
             self.web_view = QWebEngineView()
             self.web_view_sub = QWebEngineView()
 
+            
+            
+            
+            
+            
             # Add widgets to the sixth tab
             self.tab6gb = QGroupBox()
 
@@ -878,7 +885,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab6_layout = QGridLayout(self.tab6)
 
             self.tab6layout.addWidget(self.web_view, 0, 0)
-            self.tab6layout.addWidget(self.web_view_sub, 1, 0)
+        
 
             self.tab6_previous_button = QPushButton("Previous")
             self.tab6_previous_button.clicked.connect(lambda: self.switchTab(4))
@@ -888,11 +895,13 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab6_layout.addWidget(self.tab6_previous_button, 1, 0)
             self.tab6_layout.addWidget(self.tab6_next_button, 1, 1)
             
-
-
-            # Add widgets to the seventh tab
-            self.tab7gb = QGroupBox()
             
+            
+            
+            
+            # Add widgets to the 7th tab
+            self.tab7gb = QGroupBox()
+
             self.tab7.setObjectName("tab7")
 
             image_path = os.path.abspath("images/carbon_footprint_background.png")
@@ -960,18 +969,113 @@ class CarbonFootprintCalculator(QMainWindow):
                 }}                    
             """)
 
-
             self.tab7layout = QGridLayout()
+
             self.tab7gb.setLayout(self.tab7layout)
 
             self.tab7_layout = QGridLayout(self.tab7)
 
+            self.tab7layout.addWidget(self.web_view_sub, 0, 0)
+
+        
+
+            self.tab7_previous_button = QPushButton("Previous")
+            self.tab7_previous_button.clicked.connect(lambda: self.switchTab(5))
+            self.tab7_next_button = QPushButton("Next")
+            self.tab7_next_button.clicked.connect(lambda: self.switchTab(7))
+            self.tab7_layout.addWidget(self.tab7gb, 0, 0, 1, 2)
+            self.tab7_layout.addWidget(self.tab7_previous_button, 1, 0)
+            self.tab7_layout.addWidget(self.tab7_next_button, 1, 1)
+            
+            
+
+
+
+            
+
+            # Add widgets to the 8th tab
+            self.tab8gb = QGroupBox()
+            
+            self.tab8.setObjectName("tab8")
+
+            image_path = os.path.abspath("images/carbon_footprint_background.png")
+
+            self.tab8.setStyleSheet(f"""
+                QWidget#tab8 {{                    
+                    background-image: url('images/carbon_footprint_background.png');
+                    background = QLabel()
+                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    scaled_pixmap = pixmap.scaled(400, 400)
+                    background.setPixmap(scaled_pixmap)
+                    background.setScaledContents(True)
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }}
+    
+                QLabel {{ 
+                    color: #ffffff;
+                    font-size: 13pt;
+                    font-weight: bold;
+                    background-color: rgba(0, 0, 0, 1);
+                    padding: 8px;
+                    border-radius: 8px;
+                }}
+
+                QFrame#tableContainer {{
+                    background-color: rgba(0, 51, 102, 0.8); /* Dark blue padding color */
+                    border-radius: 12px; /* Rounded corners */
+                    padding: 10px; /* Space around the table */
+                }}
+
+                QTableWidget {{
+                    background-color: rgba(255, 255, 255, 0.9); /* Light white background for the table */
+                    color: #004d40;
+                    font-size: 12pt;
+                    border: 2px solid #00796b; 
+                    border-radius: 8px;
+                    gridline-color: #00796b;
+                }}
+    
+                QTableWidget::item {{
+                    background-color: rgba(255, 255, 255, 1); /* Solid white for table items */
+                    color: #004d40;
+                }}
+
+                QHeaderView::section {{
+                    background-color: rgba(42, 161, 131, 1); /* Header background color */
+                    color: white;
+                    font-weight: bold;
+                    padding: 5px;
+                }}
+
+                QPushButton {{
+                    background-color: rgba(0, 51, 102, 1);
+                    color: #ffffff;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    border: none;                
+                    border-radius: 8px;
+                }}
+
+                QPushButton:hover {{
+                    background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
+                }}                    
+            """)
+
+
+            self.tab8layout = QGridLayout()
+
+            self.tab8gb.setLayout(self.tab8layout)
+
+            self.tab8_layout = QGridLayout(self.tab8)
+
             self.web_view2 = QWebEngineView()
 
-            self.tab7_compare_button = QPushButton("Compare")
-            self.tab7_compare_button.setFixedHeight(50)
-            self.tab7_compare_button.setFont(self.my_font)
-            self.tab7_compare_button.setStyleSheet("""
+            self.tab8_compare_button = QPushButton("Compare")
+            self.tab8_compare_button.setFixedHeight(50)
+            self.tab8_compare_button.setFont(self.my_font)
+            self.tab8_compare_button.setStyleSheet("""
                 QPushButton {
                     background-color: #DC143C; /* Crimson */
                     color: white;
@@ -985,27 +1089,27 @@ class CarbonFootprintCalculator(QMainWindow):
                     background-color: #FF6347; /* Tomato Red */
                 }
             """)
-            self.tab7_compare_button.clicked.connect(self.visualization_comparison)
+            self.tab8_compare_button.clicked.connect(self.visualization_comparison)
 
-            self.tab7layout.addWidget(self.web_view2)
+            self.tab8layout.addWidget(self.web_view2)
 
-            self.tab7_previous_button = QPushButton("Previous")
-            self.tab7_previous_button.clicked.connect(lambda: self.switchTab(5))
-            self.tab7_next_button = QPushButton("Next")
-            self.tab7_next_button.clicked.connect(lambda: self.switchTab(7))
-            self.tab7_layout.addWidget(self.tab7gb, 0, 0, 1, 3)
-            self.tab7_layout.addWidget(self.tab7_previous_button, 1, 0)
-            self.tab7_layout.addWidget(self.tab7_compare_button, 1, 1)
-            self.tab7_layout.addWidget(self.tab7_next_button, 1, 2)
+            self.tab8_previous_button = QPushButton("Previous")
+            self.tab8_previous_button.clicked.connect(lambda: self.switchTab(6))
+            self.tab8_next_button = QPushButton("Next")
+            self.tab8_next_button.clicked.connect(lambda: self.switchTab(8))
+            self.tab8_layout.addWidget(self.tab8gb, 0, 0, 1, 3)
+            self.tab8_layout.addWidget(self.tab8_previous_button, 1, 0)
+            self.tab8_layout.addWidget(self.tab8_compare_button, 1, 1)
+            self.tab8_layout.addWidget(self.tab8_next_button, 1, 2)
 
 
-            #Add widgets to the Eighth tab
-            self.tab8gb = QGroupBox()
+            #Add widgets to the 9th tab
+            self.tab9gb = QGroupBox()
 
             
-            self.tab8gb.setTitle("Remarks:")
-            self.tab8gb.setFont(QtGui.QFont("Arial", 19, QtGui.QFont.Bold))
-            self.tab8gb.setStyleSheet("""
+            self.tab9gb.setTitle("Remarks:")
+            self.tab9gb.setFont(QtGui.QFont("Arial", 19, QtGui.QFont.Bold))
+            self.tab9gb.setStyleSheet("""
                 QGroupBox {
                     color: #FF0000;
                     font-size: 16pt;
@@ -1013,11 +1117,12 @@ class CarbonFootprintCalculator(QMainWindow):
                 }
             """)
             
-            self.tab8.setObjectName("tab8")
+            self.tab9.setObjectName("tab9")
             
             image_path = os.path.abspath("images/carbon_footprint_background.png")
-            self.tab8.setStyleSheet(f"""
-                QWidget#tab8 {{                    
+
+            self.tab9.setStyleSheet(f"""
+                QWidget#tab9 {{                    
                     background-image: url('images/carbon_footprint_background.png');
                     background = QLabel()
                     pixmap = QPixmap("images/carbon_footprint_background.png")
@@ -1047,15 +1152,15 @@ class CarbonFootprintCalculator(QMainWindow):
 
 
 
-            self.tab8layout = QVBoxLayout()
-            self.tab8gb.setLayout(self.tab8layout)
+            self.tab9layout = QVBoxLayout()
+            self.tab9gb.setLayout(self.tab9layout)
 
             # Add feedback dynamically here
-            self.tab8_feedback_label = QLabel()
-            self.tab8_feedback_label.setWordWrap(True)
-            self.tab8_feedback_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
-            self.tab8_feedback_label.setFont(QtGui.QFont("Arial", 11))
-            self.tab8_feedback_label.setStyleSheet("""
+            self.tab9_feedback_label = QLabel()
+            self.tab9_feedback_label.setWordWrap(True)
+            self.tab9_feedback_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+            self.tab9_feedback_label.setFont(QtGui.QFont("Arial", 11))
+            self.tab9_feedback_label.setStyleSheet("""
                 QLabel {
                     background-color: rgba(255, 255, 255, 0.8); 
                     color: #000000;
@@ -1067,11 +1172,14 @@ class CarbonFootprintCalculator(QMainWindow):
             """)
 
             # Add the feedback label to the layout
-            self.tab8layout.addWidget(self.tab8_feedback_label)
+            self.tab9layout.addWidget(self.tab9_feedback_label)
 
-            # Buttons for navigation in Tab 8
-            self.tab8_previous_button = QPushButton("Previous")
-            self.tab8_previous_button.clicked.connect(lambda: self.switchTab(6))
+            # Buttons for navigation in Tab 10
+            self.tab9_previous_button = QPushButton("Previous")
+            self.tab9_previous_button.clicked.connect(lambda: self.switchTab(6))
+            
+            
+
 
             #pdf generater
             self.download_pdf_button = QPushButton("Download PDF")
@@ -1093,15 +1201,16 @@ class CarbonFootprintCalculator(QMainWindow):
             """)
             self.download_pdf_button.clicked.connect(self.generate_pdf)
 
-            self.tab8layout.addWidget(self.download_pdf_button)
+            self.tab9layout.addWidget(self.download_pdf_button)
 
 
 
             # Main grid layout for the tab
-            self.tab8_layout = QGridLayout(self.tab8)
-            self.tab8_layout.addWidget(self.tab8gb, 0, 0, 1, 2)
-            self.tab8_layout.addWidget(self.tab8_previous_button, 1, 0)
-            self.tab8_layout.addWidget(self.download_pdf_button, 1, 1)
+            self.tab9_layout = QGridLayout(self.tab9)
+            self.tab9_layout.addWidget(self.tab9gb, 0, 0, 1, 2)
+            self.tab9_layout.addWidget(self.tab9_previous_button, 1, 0)
+            self.tab9_layout.addWidget(self.download_pdf_button, 1, 1)
+            
             
 
 
@@ -1122,14 +1231,15 @@ class CarbonFootprintCalculator(QMainWindow):
 
 
 
-            #Add widgets to the ninth tab
-            self.tab9 = QWidget()
-            self.tab9.setObjectName("tab9")
+            #Add widgets to the 10th tab
+            self.tab10 = QWidget()
+
+            self.tab10.setObjectName("tab10")
 
             image_path = os.path.abspath("images/carbon_footprint_background.png")
 
-            self.tab9.setStyleSheet(f"""
-                QWidget#tab9 {{                    
+            self.tab10.setStyleSheet(f"""
+                QWidget#tab10 {{                    
                     background-image: url('images/carbon_footprint_background.png');
                     background = QLabel()
                     pixmap = QPixmap("images/carbon_footprint_background.png")
@@ -1168,8 +1278,8 @@ class CarbonFootprintCalculator(QMainWindow):
             
             
             if self.role == "Admin":
-                self.tabs.addTab(self.tab9, "Admin Viewer")
-                self.tab9_layout = QGridLayout(self.tab9)
+                self.tabs.addTab(self.tab10, "Admin Viewer")
+                self.tab10_layout = QGridLayout(self.tab10)
                 self.combo1 = QComboBox()
                 self.combo2 = QComboBox()
                 generate = QPushButton("Generate")
@@ -1191,10 +1301,10 @@ class CarbonFootprintCalculator(QMainWindow):
                 """)
                 generate.clicked.connect(self.admin_gui)
                 self.webview_admin = QWebEngineView()
-                self.tab9_layout.addWidget(self.combo1, 0, 0)
-                self.tab9_layout.addWidget(self.combo2, 0, 1)
-                self.tab9_layout.addWidget(generate, 0, 2)
-                self.tab9_layout.addWidget(self.webview_admin, 1, 0, 1, 3)
+                self.tab10_layout.addWidget(self.combo1, 0, 0)
+                self.tab10_layout.addWidget(self.combo2, 0, 1)
+                self.tab10_layout.addWidget(generate, 0, 2)
+                self.tab10_layout.addWidget(self.webview_admin, 1, 0, 1, 3)
 
             self.tabs.currentChanged.connect(self.on_tab_change)
             # Add the tab widget to the main layout
@@ -1202,6 +1312,9 @@ class CarbonFootprintCalculator(QMainWindow):
         except Exception as e:
             print(e)
 
+    
+    
+    
     def carbonCalculator_func(self, module: str):
         if module == "Details":
             mod = str
@@ -1596,6 +1709,6 @@ class CarbonFootprintCalculator(QMainWindow):
 if __name__ == "__main__":
   windll.shcore.SetProcessDpiAwareness(0)
   app = QApplication(sys.argv)
-  window = CarbonFootprintCalculator("SM", "User")
+  window = CarbonFootprintCalculator("SM", "Admin")
   window.show()
   sys.exit(app.exec_())
