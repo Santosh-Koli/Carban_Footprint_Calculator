@@ -248,7 +248,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # Create the tab widget and add tabs
             self.tabs = QTabWidget()
-            
+
             self.tabs.setStyleSheet("""
                 QTabWidget::pane {
                     border: 1px solid #004d40; /* Border around the tab widget */
@@ -261,9 +261,9 @@ class CarbonFootprintCalculator(QMainWindow):
                     font-weight: bold; /* Bold text for better visibility */
                     border: 1px solid #004d40; /* Border around each tab */
                     border-bottom: none; /* Prevent overlap with content pane */
-                    padding: 8px 20px; /* Adjust padding for proper alignment */
+                    padding: 8px 10px; /* Adjust padding for proper alignment */
                     margin: 2px; /* Space between tabs */
-                    min-width: 100px; /* Minimum width for each tab */
+                    min-width: 150px; /* Minimum width for each tab to fit titles */
                     border-top-left-radius: 10px; /* Rounded corners for tabs */
                     border-top-right-radius: 10px;
                 }
@@ -277,8 +277,10 @@ class CarbonFootprintCalculator(QMainWindow):
                     background: #005b4f; /* Hover effect for tabs */
                 }
             """)
- 
 
+        
+
+            # Add tabs
             self.tab1 = QWidget()
             self.tab2 = QWidget()
             self.tab3 = QWidget()
@@ -297,7 +299,6 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tabs.addTab(self.tab7, "Visualization_Parameters")
             self.tabs.addTab(self.tab8, "Comparison")
             self.tabs.addTab(self.tab9, "Feedback")
-
 
             # Add widgets to the first tab
             self.tab1_layout = QGridLayout(self.tab1)
@@ -1212,15 +1213,6 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab9_layout.addWidget(self.download_pdf_button, 1, 1)
             
             
-
-
-
-
-
-
-
-
-
 
 
 
