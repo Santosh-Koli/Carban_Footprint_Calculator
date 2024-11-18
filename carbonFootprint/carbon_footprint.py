@@ -111,6 +111,10 @@ class CarbonFootprintCalculator(QMainWindow):
         except Exception as e:
             print(f"Error generating feedback: {e}")
 
+    
+    
+    
+    
     def generate_pdf(self):
         graph_spacing = 300  # Space between each graph
         graph_width = 500    # Width of the graph in the PDF
@@ -200,7 +204,6 @@ class CarbonFootprintCalculator(QMainWindow):
             QtWidgets.QMessageBox.critical(self, "Error", f"Error generating PDF: {e}")
 
            
-
 
 
 
@@ -342,7 +345,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_staff_input = QLineEdit()
             self.tab1_staff_input.setPlaceholderText("Enter number of staff")
             self.tab1_staff_input.setValidator(QtGui.QIntValidator())  # Ensures only integer input
-            
+
             self.individual_rbtn = QRadioButton("Individual")
             self.individual_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
             self.individual_rbtn.setStyleSheet("""
@@ -364,10 +367,12 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_name_input.setPlaceholderText("Enter your name")
             self.tab1_year_label = QLabel("Year:")
             self.tab1_year_input = QComboBox()
-            self.tab1_year_input.addItems(["2020", "2021", "2022", "2023", "2024",])
+            self.tab1_year_input.addItems(["2020","2021", "2022", "2023", "2024",])
             self.tab1_year_input.setCurrentIndex(4)
             self.tab1_next_button = QPushButton("Next")
             self.tab1_next_button.clicked.connect(lambda: self.switchTab(1))
+            
+
 
             self.tab1_layout.addWidget(background, 0, 0, 1, 8)
             self.tab1_layout.addWidget(self.tab1_staff_label, 1, 0, 1, 1)
@@ -381,8 +386,11 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_layout.addWidget(self.tab1_year_input, 4, 1, 1, 7)
             self.tab1_layout.addWidget(self.tab1_next_button, 5, 6, 1, 2)
 
+
+            self.tab1_staff_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
             self.tab1_name_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
             self.tab1_year_input.currentIndexChanged.connect(lambda: self.carbonCalculator_func("Details"))
+            
 
             # Add widgets to the second tab
             self.tab2_layout = QGridLayout(self.tab2)
@@ -486,8 +494,6 @@ class CarbonFootprintCalculator(QMainWindow):
                     background-repeat: no-repeat;
                     background-position: center;
                     
-                    
-                
                 }}
             
         
@@ -722,7 +728,6 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.setItem(4, 0, QTableWidgetItem("Europe Average"))
             self.table.setItem(5, 0, QTableWidgetItem("Per Capita CF"))  # Add label for Per Capita CF
 
-
             for col in range(self.table.rowCount()):
                 if self.table.item(col, 0) is not None:  # Check if the item exists
                     self.table.item(col, 0).setFlags(Qt.ItemIsEnabled)
@@ -731,10 +736,7 @@ class CarbonFootprintCalculator(QMainWindow):
                     self.table.setItem(col, 1, QtWidgets.QTableWidgetItem())
                 self.table.item(col, 1).setFlags(Qt.ItemIsEnabled)
             self.table.item(5, 0).setFlags(Qt.ItemIsEnabled)
-
-            # Set custom delegate to the third column for displaying icons
-            # delegate = IconDelegate(self.table)
-            # self.table.setItemDelegateForColumn(2, delegate)
+            
             self.tab5layout.addWidget(self.table, 0, 0)
 
             self.tab5_previous_button = QPushButton("Previous")
@@ -972,8 +974,9 @@ class CarbonFootprintCalculator(QMainWindow):
             #Add widgets to the Eighth tab
             self.tab8gb = QGroupBox()
 
+            
             self.tab8gb.setTitle("Remarks:")
-            self.tab8gb.setFont(QtGui.QFont("Arial", 17, QtGui.QFont.Bold))
+            self.tab8gb.setFont(QtGui.QFont("Arial", 19, QtGui.QFont.Bold))
             self.tab8gb.setStyleSheet("""
                 QGroupBox {
                     color: #FF0000;
@@ -1026,7 +1029,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab8_feedback_label.setFont(QtGui.QFont("Arial", 11))
             self.tab8_feedback_label.setStyleSheet("""
                 QLabel {
-                    background-color: rgba(255, 255, 255, 0.8); /* white*/
+                    background-color: rgba(255, 255, 255, 0.8); 
                     color: #000000;
                     font-size: 13pt;
                     font-weight: bold; /* Make the text bold */
@@ -1064,11 +1067,14 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab8layout.addWidget(self.download_pdf_button)
 
+
+
             # Main grid layout for the tab
             self.tab8_layout = QGridLayout(self.tab8)
             self.tab8_layout.addWidget(self.tab8gb, 0, 0, 1, 2)
             self.tab8_layout.addWidget(self.tab8_previous_button, 1, 0)
             self.tab8_layout.addWidget(self.download_pdf_button, 1, 1)
+            
 
 
 
@@ -1178,7 +1184,7 @@ class CarbonFootprintCalculator(QMainWindow):
             elif self.bbusiness_rbtn.isChecked():
                 mod = "Big Business Firm"
             self.carbonCalculator["Details"].update(
-                {"Username": self.username, "Module": mod, "CompanyName": self.tab1_name_input.text(), "Year": self.tab1_year_input.currentText()})
+                {"Username": self.username, "Module": mod, "CompanyName": self.tab1_name_input.text(), "Year": self.tab1_year_input.currentText(), "StaffHeadcount": self.tab1_staff_input.text()}) 
         elif module == "Energy":
             self.carbonCalculator["Energy"].update(
                 {"Electricity": self.tab2_electricity_input.text(), "NaturalGas": self.tab2_gas_input.text(),
@@ -1212,7 +1218,6 @@ class CarbonFootprintCalculator(QMainWindow):
             per_capita_cf = total / staff_headcount if staff_headcount > 0 else 0
             self.carbonCalculator["Results"].update({"PerCapitaCF": per_capita_cf})
 
-
             self.table.setItem(0, 1, QTableWidgetItem("%.2f" % energy_result))
             self.table.setItem(1, 1, QTableWidgetItem("%.2f" % waste_result))
             self.table.setItem(2, 1, QTableWidgetItem("%.2f" % travel_result))
@@ -1229,11 +1234,16 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.item(5, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
 
 
-
             self.carbonCalculator["Results"].update(
-                {"Energy": energy_result, "Waste": waste_result, "Travel": travel_result, "Total": total})
+                {"Energy": energy_result, "Waste": waste_result, "Travel": travel_result, "Total": total, "PerCapitaCF": per_capita_cf, "StaffHeadcount": staff_headcount})
         except Exception as e:
             print(f"issue is with: {e}")
+
+
+
+
+
+
 
     def database_update(self):
         
@@ -1373,7 +1383,8 @@ class CarbonFootprintCalculator(QMainWindow):
     
     
     
-
+    
+    
     def visualization(self, values:list):
         try:
             # Create a bar plot
@@ -1429,8 +1440,6 @@ class CarbonFootprintCalculator(QMainWindow):
             print(e)
             pass
 
-            
-
     def visualization_comparison(self):
         try:
             mydb = pymysql.connect(
@@ -1476,7 +1485,6 @@ class CarbonFootprintCalculator(QMainWindow):
         finally:
             mycursor.close()
             mydb.close()
-
 
     def switchTab(self, index):
         self.tabs.setCurrentIndex(index)
@@ -1551,6 +1559,6 @@ class CarbonFootprintCalculator(QMainWindow):
 if __name__ == "__main__":
   windll.shcore.SetProcessDpiAwareness(0)
   app = QApplication(sys.argv)
-  window = CarbonFootprintCalculator("AKRD", "User")
+  window = CarbonFootprintCalculator("SM", "User")
   window.show()
   sys.exit(app.exec_())
