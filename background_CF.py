@@ -69,18 +69,25 @@ class CarbonFootprintCalculator(QMainWindow):
         # self.log_App.show()
 
     def check_employee_count(self):
-    
         try:
             # Get the input from the staff headcount field
             staff_count = int(self.tab1_staff_input.text())  # Convert to integer
-            if staff_count < 250:
+        
+            if staff_count == 1:
+                # Show a suggestion for individual user type
+                QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Individual User'.")
+                self.individual_rbtn.setChecked(True)  # Automatically select the Individual radio button
+            elif 2 <= staff_count <= 250:
                 # Show a suggestion for small business
                 QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Small Enterprises'.")
                 self.sbusiness_rbtn.setChecked(True)  # Automatically select the Small Business radio button
-            else:
+            elif staff_count > 250:
                 # Show a suggestion for big business
                 QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Large Enterprises'.")
-                self.bbusiness_rbtn.setChecked(True)  # Automatically select the Big Business radio button
+                self.bbusiness_rbtn.setChecked(True)  # Automatically select the Large Business radio button
+            else:
+                # Handle cases where staff count is invalid
+                QMessageBox.warning(self, "Invalid Input", "Please enter a valid number for the staff headcount.")
         except ValueError:
             # Handle invalid or empty input
             QMessageBox.warning(self, "Invalid Input", "Please enter a valid number for the staff headcount.")
