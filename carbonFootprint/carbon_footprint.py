@@ -1314,7 +1314,7 @@ class CarbonFootprintCalculator(QMainWindow):
                             UPDATE cf_table
                             SET Ele_Energy=%s, Nat_Gas_Energy=%s, Fuel_Energy=%s, Total_Energy=%s,
                                 Generated_Waste=%s, Recycled_Waste=%s, Total_Waste=%s,
-                                Kilometer_Travel=%s, AvgFuelEff_Travel=%s, Total_Travel=%s, Total_CF=%s, Europe_Avg_CF=%s, staff_headcount=%s, per_capita_cf=%s,
+                                Kilometer_Travel=%s, AvgFuelEff_Travel=%s, Total_Travel=%s, Total_CF=%s, Europe_Avg_CF=%s, staff_headcount=%s, per_capita_cf=%s
                             WHERE Sr_No=%s
                             """
                     values_update = (
