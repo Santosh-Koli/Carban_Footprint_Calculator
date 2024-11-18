@@ -67,6 +67,23 @@ class CarbonFootprintCalculator(QMainWindow):
         # self.log_App = UI_Form()
         # self.log_App.show()
 
+    def check_employee_count(self):
+    
+        try:
+            # Get the input from the staff headcount field
+            staff_count = int(self.tab1_staff_input.text())  # Convert to integer
+            if staff_count < 250:
+                # Show a suggestion for small business
+                QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Small Enterprises'.")
+                self.sbusiness_rbtn.setChecked(True)  # Automatically select the Small Business radio button
+            else:
+                # Show a suggestion for big business
+                QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Large Enterprises'.")
+                self.bbusiness_rbtn.setChecked(True)  # Automatically select the Big Business radio button
+        except ValueError:
+            # Handle invalid or empty input
+            QMessageBox.warning(self, "Invalid Input", "Please enter a valid number for the staff headcount.")
+
     def generate_feedback(self):
 
         #Generate feedback based on the total carbon footprint compared to the European average.
@@ -352,12 +369,12 @@ class CarbonFootprintCalculator(QMainWindow):
                 color: #000000;  /* Bright white */
             """)
             self.individual_rbtn.setChecked(True)
-            self.sbusiness_rbtn = QRadioButton("Small Business Firm")
+            self.sbusiness_rbtn = QRadioButton("Small Enterprises")
             self.sbusiness_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
             self.sbusiness_rbtn.setStyleSheet("""
                 color: #000000;  /* Bright white */
             """)
-            self.bbusiness_rbtn = QRadioButton("Big Business Firm")
+            self.bbusiness_rbtn = QRadioButton("Large Enterprises")
             self.bbusiness_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
             self.bbusiness_rbtn.setStyleSheet("""
                 color: #000000;  /* Bright white */
@@ -371,6 +388,9 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_year_input.setCurrentIndex(4)
             self.tab1_next_button = QPushButton("Next")
             self.tab1_next_button.clicked.connect(lambda: self.switchTab(1))
+            self.tab1_staff_input = QLineEdit()
+            self.tab1_staff_input.editingFinished.connect(self.check_employee_count)
+
             
 
 
