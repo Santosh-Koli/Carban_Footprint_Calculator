@@ -705,7 +705,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab5_layout = QGridLayout(self.tab5)
             # self.tab5_layout.setAlignment(Qt.AlignCenter)
 
-            self.table = QTableWidget(5, 2)  # Set up a table with 2 columns
+            self.table = QTableWidget(6, 2)  # Set up a table with 2 columns
             self.table.verticalHeader().setVisible(False)
             # Set column headers
             self.table.setHorizontalHeaderLabels(["Operators", "Carbon Footprint (KgCO2)"])
@@ -720,6 +720,8 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.setItem(2, 0, QTableWidgetItem("Business Travel"))
             self.table.setItem(3, 0, QTableWidgetItem("Total"))
             self.table.setItem(4, 0, QTableWidgetItem("Europe Average"))
+            self.table.setItem(5, 0, QTableWidgetItem("Per Capita CF"))  # Add label for Per Capita CF
+
 
             for col in range(self.table.rowCount()):
                 if self.table.item(col, 0) is not None:  # Check if the item exists
@@ -728,7 +730,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 if self.table.item(col, 1) is None:  # Ensure the item exists before modifying
                     self.table.setItem(col, 1, QtWidgets.QTableWidgetItem())
                 self.table.item(col, 1).setFlags(Qt.ItemIsEnabled)
-
+            self.table.item(5, 0).setFlags(Qt.ItemIsEnabled)
 
             # Set custom delegate to the third column for displaying icons
             # delegate = IconDelegate(self.table)
@@ -1196,6 +1198,8 @@ class CarbonFootprintCalculator(QMainWindow):
 
     def calculate(self):
         try:
+            staff_headcount = int(self.carbonCalculator["Details"].get("StaffHeadcount", 1))  
+
             energy_result = (float(self.carbonCalculator["Energy"]["Electricity"]) * 12 * 0.0005) + (
                     float(self.carbonCalculator["Energy"]["NaturalGas"]) * 12 * 0.0053) + (
                                     float(self.carbonCalculator["Energy"]["Fuel"]) * 12 * 2.32)
@@ -1204,10 +1208,16 @@ class CarbonFootprintCalculator(QMainWindow):
             travel_result = float(self.carbonCalculator["Travel"]["Distance"]) * (
                     1 / float(self.carbonCalculator["Travel"]["Fuel_Efficiency"]) * 2.31)
             total = energy_result+waste_result+travel_result
+
+            per_capita_cf = total / staff_headcount if staff_headcount > 0 else 0
+            self.carbonCalculator["Results"].update({"PerCapitaCF": per_capita_cf})
+
+
             self.table.setItem(0, 1, QTableWidgetItem("%.2f" % energy_result))
             self.table.setItem(1, 1, QTableWidgetItem("%.2f" % waste_result))
             self.table.setItem(2, 1, QTableWidgetItem("%.2f" % travel_result))
             self.table.setItem(3, 1, QTableWidgetItem("%.2f" % total))
+            self.table.setItem(5, 1, QTableWidgetItem("%.2f" % per_capita_cf))
 
             # table = QTableWidget(0, 2)
 
@@ -1216,6 +1226,8 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.item(1, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(2, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(3, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+            self.table.item(5, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+
 
 
             self.carbonCalculator["Results"].update(
@@ -1224,7 +1236,11 @@ class CarbonFootprintCalculator(QMainWindow):
             print(f"issue is with: {e}")
 
     def database_update(self):
+        
         self.tab5_calculate_button.blockSignals(True)
+        
+
+
         try:
             mydb = pymysql.connect(
                 host=HOST,
@@ -1268,7 +1284,7 @@ class CarbonFootprintCalculator(QMainWindow):
                             UPDATE cf_table
                             SET Ele_Energy=%s, Nat_Gas_Energy=%s, Fuel_Energy=%s, Total_Energy=%s,
                                 Generated_Waste=%s, Recycled_Waste=%s, Total_Waste=%s,
-                                Kilometer_Travel=%s, AvgFuelEff_Travel=%s, Total_Travel=%s, Total_CF=%s, Europe_Avg_CF=%s
+                                Kilometer_Travel=%s, AvgFuelEff_Travel=%s, Total_Travel=%s, Total_CF=%s, Europe_Avg_CF=%s, staff_headcount=%s, per_capita_cf=%s,
                             WHERE Sr_No=%s
                             """
                     values_update = (
@@ -1284,6 +1300,8 @@ class CarbonFootprintCalculator(QMainWindow):
                         self.carbonCalculator["Results"].get("Travel"),
                         self.carbonCalculator["Results"].get("Total"),
                         self.carbonCalculator["Details"].get("avg_europe"),
+                        self.carbonCalculator["Details"].get("StaffHeadcount"),
+                        self.carbonCalculator["Results"].get("PerCapitaCF"),
                         sr_no
                     )
                     try:
@@ -1302,8 +1320,8 @@ class CarbonFootprintCalculator(QMainWindow):
                 result_avg = mycursor.fetchone()
                 self.carbonCalculator["Details"]["avg_europe"] = result_avg[2]
 
-                insert_query = ("INSERT INTO cf_table (User_Type, Name, Company_Name, Year, Country, Ele_Energy, Nat_Gas_Energy, Fuel_Energy, Total_Energy, Generated_Waste, Recycled_Waste, Total_Waste, Kilometer_Travel, AvgFuelEff_Travel, Total_Travel, Total_CF, Europe_Avg_CF) "
-                                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+                insert_query = ("INSERT INTO cf_table (User_Type, Name, Company_Name, Year, Country, Ele_Energy, Nat_Gas_Energy, Fuel_Energy, Total_Energy, Generated_Waste, Recycled_Waste, Total_Waste, Kilometer_Travel, AvgFuelEff_Travel, Total_Travel, Total_CF, Europe_Avg_CF, staff_headcount, per_capita_cf) "
+                                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
                 values_insert = (
                     self.carbonCalculator["Details"].get("Module"),
                     self.carbonCalculator["Details"].get("Username"),
@@ -1321,7 +1339,9 @@ class CarbonFootprintCalculator(QMainWindow):
                     self.carbonCalculator["Travel"].get("Fuel_Efficiency"),
                     self.carbonCalculator["Results"].get("Travel"),
                     self.carbonCalculator["Results"].get("Total"),
-                    self.carbonCalculator["Details"].get("avg_europe")
+                    self.carbonCalculator["Details"].get("avg_europe"),
+                    self.carbonCalculator["Details"].get("StaffHeadcount"),
+                    self.carbonCalculator["Results"].get("PerCapitaCF")  # Add this line
                 )
                 mycursor.execute(insert_query, values_insert)
                 mydb.commit()
@@ -1347,6 +1367,12 @@ class CarbonFootprintCalculator(QMainWindow):
                      self.carbonCalculator["Results"].get("Travel")])
 
         self.tab5_calculate_button.blockSignals(False)
+
+    
+    
+    
+    
+    
 
     def visualization(self, values:list):
         try:
