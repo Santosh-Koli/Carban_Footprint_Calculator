@@ -764,6 +764,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.setItem(2, 0, QTableWidgetItem("Business Travel"))
             self.table.setItem(3, 0, QTableWidgetItem("Total"))
             self.table.setItem(4, 0, QTableWidgetItem("Europe Average"))
+            self.table.setItem(4, 0, QTableWidgetItem("Industry Avg CF"))
             self.table.setItem(5, 0, QTableWidgetItem("Per Capita CF"))  # Add label for Per Capita CF
 
             for col in range(self.table.rowCount()):
@@ -803,7 +804,13 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab5_layout.addWidget(self.tab5_previous_button, 1, 0)
             self.tab5_layout.addWidget(self.tab5_calculate_button, 1, 1)
             self.tab5_layout.addWidget(self.tab5_next_button, 1, 2)
+            try:
+                self.tab5_calculate_button.clicked.disconnect()
+            except Exception:
+                pass
             self.tab5_calculate_button.clicked.connect(lambda: self.carbonCalculator_func("Result"))
+
+
 
             # fig = Figure(figsize=(5, 4), dpi=100)
             # ax = fig.add_subplot(111)
@@ -1553,14 +1560,7 @@ class CarbonFootprintCalculator(QMainWindow):
                     "Industry_Avg_CO2": industry_avg_co2
                 })
 
-                # Update Industry_Avg_CF in the database
-                update_query = """
-                    UPDATE cf_table
-                    SET Industry_Avg_CF = %s
-                    WHERE Year = %s AND staff_headcount = %s
-                """
-                mycursor.execute(update_query, (industry_avg_co2, year, self.carbonCalculator["Details"].get("StaffHeadcount")))
-                mydb.commit()
+                
 
 
                 # Update the Results table with Industry Avg CO2

@@ -70,27 +70,24 @@ class CarbonFootprintCalculator(QMainWindow):
 
     def check_employee_count(self):
         try:
-            # Get the input from the staff headcount field
             staff_count = int(self.tab1_staff_input.text())  # Convert to integer
-        
+            year = self.tab1_year_input.currentText()  # Get the selected year from the dropdown
+
             if staff_count == 1:
-                # Show a suggestion for individual user type
-                QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Individual User'.")
-                self.individual_rbtn.setChecked(True)  # Automatically select the Individual radio button
+                QMessageBox.information(self, "Suggestion", "Recommended: 'Individual User'.")
+                self.individual_rbtn.setChecked(True)
             elif 2 <= staff_count <= 250:
-                # Show a suggestion for small business
-                QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Small Enterprises'.")
-                self.sbusiness_rbtn.setChecked(True)  # Automatically select the Small Business radio button
+                QMessageBox.information(self, "Suggestion", "Recommended: 'Small Enterprises'.")
+                self.sbusiness_rbtn.setChecked(True)
+                self.fetch_europe_avg("Small Enterprises", year)  # Fetch data for small enterprises
             elif staff_count > 250:
-                # Show a suggestion for big business
-                QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Large Enterprises'.")
-                self.bbusiness_rbtn.setChecked(True)  # Automatically select the Large Business radio button
+                QMessageBox.information(self, "Suggestion", "Recommended: 'Large Enterprises'.")
+                self.bbusiness_rbtn.setChecked(True)
+                self.fetch_europe_avg("Large Enterprises", year)  # Fetch data for large enterprises
             else:
-                # Handle cases where staff count is invalid
-                QMessageBox.warning(self, "Invalid Input", "Please enter a valid number for the staff headcount.")
+                QMessageBox.warning(self, "Invalid Input", "Enter a valid number for the staff headcount.")
         except ValueError:
-            # Handle invalid or empty input
-            QMessageBox.warning(self, "Invalid Input", "Please enter a valid number for the staff headcount.")
+            QMessageBox.warning(self, "Invalid Input", "Enter a valid number for the staff headcount.")
 
     def generate_feedback(self):
 
@@ -1356,6 +1353,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.setItem(1, 1, QTableWidgetItem("%.2f" % waste_result))
             self.table.setItem(2, 1, QTableWidgetItem("%.2f" % travel_result))
             self.table.setItem(3, 1, QTableWidgetItem("%.2f" % total))
+            self.table.setItem(4, 1, QTableWidgetItem(f"{self.carbonCalculator['Details']['industry_avg']:.2f}"))
             self.table.setItem(5, 1, QTableWidgetItem("%.2f" % per_capita_cf))
         
 
@@ -1366,6 +1364,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.item(1, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(2, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(3, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+            self.table.item(4, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(5, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             
 
@@ -1424,7 +1423,12 @@ class CarbonFootprintCalculator(QMainWindow):
                     avg_query = "SELECT * FROM eu_avgcf_table WHERE Year=%s"
                     mycursor.execute(avg_query, (self.carbonCalculator["Details"].get("Year"),))
                     result_avg = mycursor.fetchone()
-                    self.carbonCalculator["Details"]["avg_europe"] = result_avg[2]  # Europe Avg Total CF
+                    europe_avg = result_avg[0]
+                    europe_industry_avg = result_avg[1]
+                    industry_avg_co2 = europe_avg / europe_industry_avg if europe_industry_avg != 0 else 0
+                    self.carbonCalculator["Details"]["avg_europe"] = europe_avg
+                    self.carbonCalculator["Details"]["industry_avg"] = industry_avg_co2
+
                         
             
 
@@ -1466,7 +1470,12 @@ class CarbonFootprintCalculator(QMainWindow):
                 avg_query = "SELECT * FROM eu_avgcf_table WHERE Year=%s"
                 mycursor.execute(avg_query, (self.carbonCalculator["Details"].get("Year"),))
                 result_avg = mycursor.fetchone()
-                self.carbonCalculator["Details"]["avg_europe"] = result_avg[2]
+                europe_avg = result_avg[0]
+                europe_industry_avg = result_avg[1]
+                industry_avg_co2 = europe_avg / europe_industry_avg if europe_industry_avg != 0 else 0
+                self.carbonCalculator["Details"]["avg_europe"] = europe_avg
+                self.carbonCalculator["Details"]["industry_avg"] = industry_avg_co2
+
 
                 insert_query = ("INSERT INTO cf_table (User_Type, Name, Company_Name, Year, Country, Ele_Energy, Nat_Gas_Energy, Fuel_Energy, Total_Energy, Generated_Waste, Recycled_Waste, Total_Waste, Kilometer_Travel, AvgFuelEff_Travel, Total_Travel, Total_CF, Europe_Avg_CF, staff_headcount, per_capita_cf) "
                                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
@@ -1489,7 +1498,8 @@ class CarbonFootprintCalculator(QMainWindow):
                     self.carbonCalculator["Results"].get("Total"),
                     self.carbonCalculator["Details"].get("avg_europe"),
                     self.carbonCalculator["Details"].get("StaffHeadcount"),
-                    self.carbonCalculator["Results"].get("PerCapitaCF")  # Add this line
+                    self.carbonCalculator["Results"].get("PerCapitaCF")
+                    
                 )
                 mycursor.execute(insert_query, values_insert)
                 mydb.commit()
@@ -1517,44 +1527,126 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tab5_calculate_button.blockSignals(False)
 
     
-    
-    
-    
-    
-    
-    
-    def visualization(self, values:list):
+    def fetch_europe_avg(self, module_type, year):
         try:
-            # Create a bar plot
-            categories = ["Per Capita CF\n(KgCO2)", "Europe Avg. Per Capita CF\n(KgCO2)"]  # Labels for each bar
-            # values = [10, 15]  # Heights of each bar
+            mydb = pymysql.connect(
+                host=HOST,
+                user=USERNAME,
+                password=PASSWORD,
+                database=DATABASE
+            )
+            mycursor = mydb.cursor()
 
-             # Extract values for comparison
+            # Query to fetch Europe Avg CO2 and Industry Avg CO2 for the selected year
+            query = """
+                SELECT Europe_AvgCF_KgCO2, Europe_industry_AvgCF_KgCO2
+                FROM eu_avgcf_table
+                WHERE Year = %s
+            """
+            mycursor.execute(query, (year,))
+            result = mycursor.fetchone()
+        
+            if result:
+                europe_avg = result[0]
+                europe_industry_avg = result[1]
+            
+                # Apply the formula
+                industry_avg_co2 = europe_avg / europe_industry_avg
+
+                
+                self.carbonCalculator["Details"]["industry_avg"] = industry_avg_co2
+            
+                # Update the result table
+                self.update_result_table()
+            else:
+                QMessageBox.warning(self, "Data Error", f"No data found for year: {year}")
+        except pymysql.Error as e:
+            QMessageBox.critical(self, "Database Error", f"Error fetching data: {e}")
+        finally:
+            mycursor.close()
+            mydb.close()
+
+
+
+
+    def update_result_table(self):
+        try:
+            is_business = self.sbusiness_rbtn.isChecked() or self.bbusiness_rbtn.isChecked()
+            avg_europe = self.carbonCalculator["Details"].get("avg_europe", 0)
+            industry_avg = self.carbonCalculator["Details"].get("industry_avg", 0)
             per_capita_cf = self.carbonCalculator["Results"].get("PerCapitaCF", 0)
-            europe_avg_per_capita = self.carbonCalculator["Details"].get("avg_europe", 0)
-            values = [per_capita_cf, europe_avg_per_capita]
 
+            # Adjust table structure for businesses
+            self.table.setRowCount(6 if is_business else 5)
+            self.table.setHorizontalHeaderLabels(["Category", "Carbon Footprint (KgCO2)"])
+
+            # Fill rows
+            self.table.setItem(0, 0, QTableWidgetItem("Energy"))
+            self.table.setItem(1, 0, QTableWidgetItem("Waste"))
+            self.table.setItem(2, 0, QTableWidgetItem("Business Travel"))
+            self.table.setItem(3, 0, QTableWidgetItem("Total"))
+
+            if is_business:
+                # Add Industry Avg CO2
+                self.table.setItem(4, 0, QTableWidgetItem("Industry Avg CO2"))
+                self.table.setItem(4, 1, QTableWidgetItem(f"{industry_avg:.2f}"))
+                self.table.setItem(5, 0, QTableWidgetItem("Per Capita CF"))
+                self.table.setItem(5, 1, QTableWidgetItem(f"{per_capita_cf:.2f}"))
+            else:
+                # For individuals, display Europe Average
+                self.table.setItem(4, 0, QTableWidgetItem("Europe Average"))
+                self.table.setItem(4, 1, QTableWidgetItem(f"{avg_europe:.2f}"))
+                self.table.setItem(5, 0, QTableWidgetItem("Per Capita CF"))
+                self.table.setItem(5, 1, QTableWidgetItem(f"{per_capita_cf:.2f}"))
+
+            # Align values to center
+            for row in range(self.table.rowCount()):
+                for col in range(self.table.columnCount()):
+                    if self.table.item(row, col):
+                        self.table.item(row, col).setTextAlignment(QtCore.Qt.AlignCenter)
+        except Exception as e:
+            QMessageBox.critical(self, "Table Update Error", f"Error updating the table: {e}")
+
+
+    
+    
+    
+    
+    
+    def visualization(self, values: list):
+        try:
+            # Determine if the user selected Individual or Business
+            is_business = self.sbusiness_rbtn.isChecked() or self.bbusiness_rbtn.isChecked()
+
+            # Define categories and values based on the selection
+            if is_business:
+                categories = ["Per Capita CF", "Industry Avg CO2"]
+            else:
+                categories = ["Per Capita CF", "Europe Avg CO2"]
+
+            # Create a bar plot
             fig = go.Figure(data=[go.Bar(x=categories, y=values)])
-            fig.update_layout(title={
-            'text': 'Per Capita Carbon Footprint vs Europe Average Carbon Footprint',
-            'x': 0.5,  # Center the title
-            'xanchor': 'center'
-            }, yaxis_title='KgCO2')
+            fig.update_layout(
+               title={
+                   'text': 'Per Capita CF vs Comparison Metric',
+                   'x': 0.5,
+                   'xanchor': 'center'
+                },
+                yaxis_title='KgCO2'
+            )
 
-            # Save the plot as a PNG file for PDF
-            self.per_capita_cf_graph_path = os.path.join(tempfile.gettempdir(), "per_capita_cf_graph.png")
-            fig.write_image(self.per_capita_cf_graph_path, width=1200, height=800, scale=2)  # Higher resolution
-
-
-            # Save the plot as an HTML file in a temporary location
+            # Save the plot as an HTML file for display in QWebEngineView
             temp_html_path = tempfile.mktemp(suffix='.html')
             fig.write_html(temp_html_path)
-
-
             self.web_view.setUrl(QUrl.fromLocalFile(temp_html_path))
         except Exception as e:
             print(f"Visualization error: {e}")
-            pass
+
+
+
+
+
+
 
     def visualization_sub(self, values_sub:list):
         try:
