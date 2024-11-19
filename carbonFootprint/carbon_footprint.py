@@ -96,10 +96,10 @@ class CarbonFootprintCalculator(QMainWindow):
         #Generate feedback based on the total carbon footprint compared to the European average.
     
         try:
-            total_cf = self.carbonCalculator["Results"].get("Total", 0)
+            percapita_AvgCF = self.carbonCalculator["Results"].get("PerCapitaCF", 0)
             avg_cf = self.carbonCalculator["Details"].get("avg_europe", 0)
 
-            if total_cf < avg_cf:
+            if percapita_AvgCF < avg_cf:
                 # Positive Feedback
                 feedback_text = (
                     "<b>Good/Positive Result:</b><br>"
