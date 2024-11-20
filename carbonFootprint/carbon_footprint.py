@@ -1336,7 +1336,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
     def calculate(self):
         try:
-            staff_headcount = int(self.carbonCalculator["Details"].get("StaffHeadcount", 1))  
+            staff_headcount = max(int(self.carbonCalculator["Details"].get("StaffHeadcount", 1)), 1)  # Ensure non-zero 
 
             energy_result = (float(self.carbonCalculator["Energy"]["Electricity"]) * 12 * 0.0005) + (
                     float(self.carbonCalculator["Energy"]["NaturalGas"]) * 12 * 0.0053) + (
