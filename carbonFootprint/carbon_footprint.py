@@ -1348,7 +1348,7 @@ class CarbonFootprintCalculator(QMainWindow):
             total = energy_result+waste_result+travel_result
 
             per_capita_cf = total / staff_headcount if staff_headcount > 0 else 0
-            self.carbonCalculator["Results"].update({"PerCapitaCF": per_capita_cf})
+            
 
             self.table.setItem(0, 1, QTableWidgetItem("%.2f" % energy_result))
             self.table.setItem(1, 1, QTableWidgetItem("%.2f" % waste_result))
