@@ -28,25 +28,6 @@ PASSWORD = "Xyk$b8T!MNGQh&T"
 DATABASE = "freedb_mydbcf"
 
 
-class IconDelegate(QStyledItemDelegate):
-    def __init__(self, parent=None):
-        super(IconDelegate, self).__init__(parent)
-        # Load tick and cross icons
-        self.tick_icon = QIcon("tick.png")  # Path to tick icon image
-        self.cross_icon = QIcon("cross.png")  # Path to cross icon image
-
-    def paint(self, painter, option, index):
-        # Get the value from the second column for comparison
-        table = index.model().parent()  # Get the QTableWidget
-        value = table.item(index.row(), 1).text()  # Second column value
-
-        # Choose the icon based on the condition
-        icon = self.cross_icon if value == "Warning" else self.tick_icon
-
-        # Draw the icon in the third column
-        icon.paint(painter, option.rect)
-
-
 class CarbonFootprintCalculator(QMainWindow):
     def __init__(self, username, role):
         super().__init__()
@@ -135,10 +116,6 @@ class CarbonFootprintCalculator(QMainWindow):
         except Exception as e:
             print(f"Error generating feedback: {e}")
 
-    
-    
-    
-    
     def generate_pdf(self):
         graph_spacing = 300  # Space between each graph
         graph_width = 500    # Width of the graph in the PDF
@@ -227,14 +204,13 @@ class CarbonFootprintCalculator(QMainWindow):
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"Error generating PDF: {e}")
 
-           
-
-
-
     def init_ui(self):
         try:
             validator = QtGui.QDoubleValidator()  # Create validator.
-            validator.setRange(0, 9999.0, 1)
+            validator.setRange(0, 9999999.0, 1)
+
+            percentage_validator = QtGui.QDoubleValidator()
+            percentage_validator.setRange(0, 55, 1)
 
             # self.setStyleSheet()
             # Create the main widget and layout
@@ -416,11 +392,9 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_layout.addWidget(self.tab1_year_input, 4, 1, 1, 7)
             self.tab1_layout.addWidget(self.tab1_next_button, 5, 6, 1, 2)
 
-
             self.tab1_staff_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
             self.tab1_name_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
             self.tab1_year_input.currentIndexChanged.connect(lambda: self.carbonCalculator_func("Details"))
-            
 
             # Add widgets to the second tab
             self.tab2_layout = QGridLayout(self.tab2)
@@ -570,7 +544,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab3_waste_generated = QLineEdit()
             self.tab3_waste_recycle = QLineEdit()
             self.tab3_waste_generated.setValidator(validator)
-            self.tab3_waste_recycle.setValidator(validator)
+            self.tab3_waste_recycle.setValidator(percentage_validator)
             self.tab3_input_layout.addWidget(self.tab3_waste_generated, 0, 1)
             self.tab3_input_layout.addWidget(self.tab3_waste_recycle, 1, 1)
             self.tab3_layout.addLayout(self.tab3_input_layout, 0, 0, 1, 4)
@@ -804,11 +778,6 @@ class CarbonFootprintCalculator(QMainWindow):
             self.web_view = QWebEngineView()
             self.web_view_sub = QWebEngineView()
 
-            
-            
-            
-            
-            
             # Add widgets to the sixth tab
             self.tab6gb = QGroupBox()
 
@@ -986,11 +955,6 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab7_layout.addWidget(self.tab7gb, 0, 0, 1, 2)
             self.tab7_layout.addWidget(self.tab7_previous_button, 1, 0)
             self.tab7_layout.addWidget(self.tab7_next_button, 1, 1)
-            
-            
-
-
-
             
 
             # Add widgets to the 8th tab
@@ -1303,9 +1267,6 @@ class CarbonFootprintCalculator(QMainWindow):
         except Exception as e:
             print(e)
 
-    
-    
-    
     def carbonCalculator_func(self, module: str):
         if module == "Details":
             mod = str
@@ -1321,6 +1282,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.carbonCalculator["Energy"].update(
                 {"Electricity": self.tab2_electricity_input.text(), "NaturalGas": self.tab2_gas_input.text(),
                  "Fuel": self.tab2_fuel_input.text()})
+            # print(self.carbonCalculator["Energy"])
         elif module == "Waste":
             self.carbonCalculator["Waste"].update(
                 {"Waste_generated": self.tab3_waste_generated.text(), "Waste_recycle": self.tab3_waste_recycle.text()})
@@ -1336,8 +1298,8 @@ class CarbonFootprintCalculator(QMainWindow):
 
     def calculate(self):
         try:
+            per_capita_cf = 0.0
             staff_headcount = max(int(self.carbonCalculator["Details"].get("StaffHeadcount", 1)), 1)  # Ensure non-zero 
-
             energy_result = (float(self.carbonCalculator["Energy"]["Electricity"]) * 12 * 0.0005) + (
                     float(self.carbonCalculator["Energy"]["NaturalGas"]) * 12 * 0.0053) + (
                                     float(self.carbonCalculator["Energy"]["Fuel"]) * 12 * 2.32)
@@ -1347,15 +1309,17 @@ class CarbonFootprintCalculator(QMainWindow):
                     1 / float(self.carbonCalculator["Travel"]["Fuel_Efficiency"]) * 2.31)
             total = energy_result+waste_result+travel_result
 
-            per_capita_cf = total / staff_headcount if staff_headcount > 0 else 0
-            
+            if staff_headcount > 0:
+                per_capita_cf = total / staff_headcount
+            else:
+                per_capita_cf = 0.0
+            # self.carbonCalculator["Results"].update({"PerCapitaCF": per_capita_cf})
 
             self.table.setItem(0, 1, QTableWidgetItem("%.2f" % energy_result))
             self.table.setItem(1, 1, QTableWidgetItem("%.2f" % waste_result))
             self.table.setItem(2, 1, QTableWidgetItem("%.2f" % travel_result))
             self.table.setItem(3, 1, QTableWidgetItem("%.2f" % total))
             self.table.setItem(5, 1, QTableWidgetItem("%.2f" % per_capita_cf))
-        
 
             # table = QTableWidget(0, 2)
 
@@ -1365,26 +1329,17 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.item(2, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(3, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(5, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
-            
-
 
             self.carbonCalculator["Results"].update(
                 {"Energy": energy_result, "Waste": waste_result, "Travel": travel_result, "Total": total, "PerCapitaCF": per_capita_cf, "StaffHeadcount": staff_headcount})
+            print(self.carbonCalculator)
         except Exception as e:
             print(f"issue is with: {e}")
-
-
-
-
-
-
 
     def database_update(self):
         
         self.tab5_calculate_button.blockSignals(True)
         
-
-
         try:
             mydb = pymysql.connect(
                 host=HOST,
@@ -1423,8 +1378,6 @@ class CarbonFootprintCalculator(QMainWindow):
                     mycursor.execute(avg_query, (self.carbonCalculator["Details"].get("Year"),))
                     result_avg = mycursor.fetchone()
                     self.carbonCalculator["Details"]["avg_europe"] = result_avg[2]  # Europe Avg Total CF
-                        
-            
 
                     update_query = """
                             UPDATE cf_table
@@ -1509,18 +1462,10 @@ class CarbonFootprintCalculator(QMainWindow):
                 self.table.item(4, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
 
                 self.visualization([self.carbonCalculator["Results"].get("PerCapitaCF"), self.carbonCalculator["Details"].get("avg_europe")])
-                self.visualization_sub([self.carbonCalculator["Results"].get("Energy"), self.carbonCalculator["Results"].get("Waste"),
-                     self.carbonCalculator["Results"].get("Travel")])
+                self.visualization_sub([self.carbonCalculator["Results"].get("Energy"), self.carbonCalculator["Results"].get("Waste"), self.carbonCalculator["Results"].get("Travel")])
 
         self.tab5_calculate_button.blockSignals(False)
 
-    
-    
-    
-    
-    
-    
-    
     def visualization(self, values:list):
         try:
             # Create a bar plot
@@ -1540,14 +1485,12 @@ class CarbonFootprintCalculator(QMainWindow):
             }, yaxis_title='KgCO2')
 
             # Save the plot as a PNG file for PDF
-            self.per_capita_cf_graph_path = os.path.join(tempfile.gettempdir(), "per_capita_cf_graph.png")
-            fig.write_image(self.per_capita_cf_graph_path, width=1200, height=800, scale=2)  # Higher resolution
-
+            # self.per_capita_cf_graph_path = os.path.join(tempfile.gettempdir(), "per_capita_cf_graph.png")
+            # fig.write_image(self.per_capita_cf_graph_path, width=1200, height=800, scale=2)  # Higher resolution
 
             # Save the plot as an HTML file in a temporary location
             temp_html_path = tempfile.mktemp(suffix='.html')
             fig.write_html(temp_html_path)
-
 
             self.web_view.setUrl(QUrl.fromLocalFile(temp_html_path))
         except Exception as e:
@@ -1693,8 +1636,6 @@ class CarbonFootprintCalculator(QMainWindow):
         finally:
             mycursor.close()
             mydb.close()
-
-
 
 
 if __name__ == "__main__":
