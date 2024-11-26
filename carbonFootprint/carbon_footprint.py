@@ -1462,7 +1462,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 self.table.item(4, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
 
                 self.visualization([self.carbonCalculator["Results"].get("PerCapitaCF"), self.carbonCalculator["Details"].get("avg_europe")])
-                self.visualization_sub([self.carbonCalculator["Results"].get("Energy"), self.carbonCalculator["Results"].get("Waste"), self.carbonCalculator["Results"].get("Travel")])
+                self.visualization_pie([self.carbonCalculator["Results"].get("Energy"), self.carbonCalculator["Results"].get("Waste"), self.carbonCalculator["Results"].get("Travel")])
 
         self.tab5_calculate_button.blockSignals(False)
 
@@ -1497,32 +1497,59 @@ class CarbonFootprintCalculator(QMainWindow):
             print(f"Visualization error: {e}")
             pass
 
-    def visualization_sub(self, values_sub:list):
+    # def visualization_sub(self, values_sub:list):
+    #     try:
+    #         # Create a bar plot
+    #         categories = ["Energy", "Waste", "Business Travel"]  # Labels for each bar
+    #         # values = [10, 15]  # Heights of each bar
+
+    #         fig = go.Figure(data=[go.Bar(x=categories, y=values_sub)])
+    #         fig.update_layout(title={
+    #             'text': 'Energy vs Waste vs Business travel',
+    #             'x': 0.5,  # Center the title
+    #             'xanchor': 'center'
+    #         }, yaxis_title='KgCO2')
+
+    #         # Save the plot as a PNG file for PDF
+    #         self.sub_graph_path = os.path.join(tempfile.gettempdir(), "sub_graph.png")
+    #         fig.write_image(self.sub_graph_path, width=1200, height=800, scale=2)  # Higher resolution
+
+
+    #         # Save the plot as an HTML file in a temporary location
+    #         temp_html_path = tempfile.mktemp(suffix='.html')
+    #         fig.write_html(temp_html_path)
+
+    #         self.web_view_sub.setUrl(QUrl.fromLocalFile(temp_html_path))
+    #     except Exception as e:
+    #         print(e)
+    #         pass
+
+
+    def visualization_pie(self, values):
         try:
-            # Create a bar plot
-            categories = ["Energy", "Waste", "Business Travel"]  # Labels for each bar
-            # values = [10, 15]  # Heights of each bar
+            # Define labels and values for the pie chart
+            labels = ["Energy", "Waste", "Business Travel"]
 
-            fig = go.Figure(data=[go.Bar(x=categories, y=values_sub)])
+            # Use the passed values argument directly
+            fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0.4)])
             fig.update_layout(title={
-                'text': 'Energy vs Waste vs Business travel',
-                'x': 0.5,  # Center the title
+                'text': 'Carbon Footprint Distribution',
+                'x': 0.5,
                 'xanchor': 'center'
-            }, yaxis_title='KgCO2')
+            })
 
-            # Save the plot as a PNG file for PDF
+            #Save the plot as a PNG file for PDF
             self.sub_graph_path = os.path.join(tempfile.gettempdir(), "sub_graph.png")
             fig.write_image(self.sub_graph_path, width=1200, height=800, scale=2)  # Higher resolution
-
 
             # Save the plot as an HTML file in a temporary location
             temp_html_path = tempfile.mktemp(suffix='.html')
             fig.write_html(temp_html_path)
 
+            # Set the QWebEngineView to display the pie chart
             self.web_view_sub.setUrl(QUrl.fromLocalFile(temp_html_path))
         except Exception as e:
-            print(e)
-            pass
+            print(f"Visualization Pie Chart Error: {e}")
 
     def visualization_comparison(self):
         try:
