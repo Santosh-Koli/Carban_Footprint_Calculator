@@ -953,6 +953,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab7_previous_button.clicked.connect(lambda: self.switchTab(5))
             self.tab7_next_button = QPushButton("Next")
             self.tab7_next_button.clicked.connect(lambda: self.switchTab(7))
+
             self.tab7_layout.addWidget(self.tab7gb, 0, 0, 1, 2)
             self.tab7_layout.addWidget(self.tab7_previous_button, 1, 0)
             self.tab7_layout.addWidget(self.tab7_next_button, 1, 1)
@@ -1498,13 +1499,45 @@ class CarbonFootprintCalculator(QMainWindow):
             print(f"Visualization error: {e}")
             pass
 
+    # def visualization_pie(self):
+    #     try:
+    #         # Define labels and values for the pie chart
+    #         labels = ["Energy", "Waste", "Business Travel"]
+    #         values = [
+    #             self.carbonCalculator["Results"].get("Energy", 0),
+    #             self.carbonCalculator["Results"].get("Waste", 0),
+    #             self.carbonCalculator["Results"].get("Travel", 0)
+    #         ]
+
+    #         # Create a pie chart
+    #         fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0.4)])
+    #         fig.update_layout(title={
+    #             'text': 'Carbon Footprint Distribution',
+    #             'x': 0.5,
+    #             'xanchor': 'center'
+    #         })
+
+    #         # Save the plot as an HTML file in a temporary location
+    #         temp_html_path = tempfile.mktemp(suffix='.html')
+    #         fig.write_html(temp_html_path)
+
+    #         # Set the QWebEngineView to display the pie chart
+    #         self.web_view_sub.setUrl(QUrl.fromLocalFile(temp_html_path))
+    #     except Exception as e:
+    #         print(f"Visualization Pie Chart Error: {e}"}
+
+
     def visualization_sub(self, values_sub:list):
         try:
             # Create a bar plot
             categories = ["Energy", "Waste", "Business Travel"]  # Labels for each bar
-            # values = [10, 15]  # Heights of each bar
+            values = [
+                self.carbonCalculator["Results"].get("Energy", 0),
+                self.carbonCalculator["Results"].get("Waste", 0),
+                self.carbonCalculator["Results"].get("Travel", 0)
+            ]
 
-            fig = go.Figure(data=[go.Bar(x=categories, y=values_sub)])
+            fig = go.Figure(data=[go.Pie(x=categories, y=values_sub, hole=0.4)])
             fig.update_layout(title={
                 'text': 'Energy vs Waste vs Business travel',
                 'x': 0.5,  # Center the title
