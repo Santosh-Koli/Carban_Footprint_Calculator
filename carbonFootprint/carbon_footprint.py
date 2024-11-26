@@ -1485,8 +1485,8 @@ class CarbonFootprintCalculator(QMainWindow):
             }, yaxis_title='KgCO2')
 
             # Save the plot as a PNG file for PDF
-            # self.per_capita_cf_graph_path = os.path.join(tempfile.gettempdir(), "per_capita_cf_graph.png")
-            # fig.write_image(self.per_capita_cf_graph_path, width=1200, height=800, scale=2)  # Higher resolution
+            self.per_capita_cf_graph_path = os.path.join(tempfile.gettempdir(), "per_capita_cf_graph.png")
+            fig.write_image(self.per_capita_cf_graph_path, width=1200, height=800, scale=2)  # Higher resolution
 
             # Save the plot as an HTML file in a temporary location
             temp_html_path = tempfile.mktemp(suffix='.html')
