@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 class PlotlySubplotApp(QMainWindow):
+
     def __init__(self):
         super().__init__()
 
@@ -47,6 +48,8 @@ class PlotlySubplotApp(QMainWindow):
 
         # Add the web view to the layout
         self.layout.addWidget(web_view)
+
+    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
