@@ -348,7 +348,9 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_staff_label = QLabel("Staff Headcount:")
             self.tab1_staff_input = QLineEdit()
             self.tab1_staff_input.setPlaceholderText("Enter number of staff")
-            self.tab1_staff_input.setValidator(QtGui.QIntValidator())  # Ensures only integer input
+            self.tab1_staff_input.setValidator(QtGui.QIntValidator()) # Ensures only integer input
+            self.tab1_staff_input.editingFinished.connect(self.check_employee_count)
+
 
             self.individual_rbtn = QRadioButton("Individual")
             self.individual_rbtn.setFont(QFont("Arial", 18, QFont.Bold))
@@ -375,8 +377,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_year_input.setCurrentIndex(4)
             self.tab1_next_button = QPushButton("Next")
             self.tab1_next_button.clicked.connect(lambda: self.switchTab(1))
-            self.tab1_staff_input = QLineEdit()
-            self.tab1_staff_input.editingFinished.connect(self.check_employee_count)
+            
 
             
 
