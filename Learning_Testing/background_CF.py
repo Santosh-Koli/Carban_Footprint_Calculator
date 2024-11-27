@@ -349,7 +349,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_staff_input = QLineEdit()
             self.tab1_staff_input.setPlaceholderText("Enter number of staff")
             self.tab1_staff_input.setValidator(QtGui.QIntValidator()) # Ensures only integer input
-            self.tab1_staff_input.setFixedWidth(350) 
+            self.tab1_staff_input.setFixedWidth(380) 
             self.tab1_staff_input.editingFinished.connect(self.check_employee_count)
 
 
@@ -372,13 +372,39 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_name_label = QLabel("Name:")
             self.tab1_name_input = QLineEdit()
             self.tab1_name_input.setPlaceholderText("Enter your name")
+            self.tab1_name_input.setFixedWidth(380)
             self.tab1_year_label = QLabel("Year:")
             self.tab1_year_input = QComboBox()
             self.tab1_year_input.addItems(["2020","2021", "2022", "2023", "2024",])
             self.tab1_year_input.setCurrentIndex(4)
-            self.tab1_year_input.setFixedWidth(350)
+            self.tab1_year_input.setFixedWidth(380)
+            self.tab1_year_input.setStyleSheet("""
+                background-color: rgba(255, 255, 255, 1);
+                color: #004d40;
+                font-size: 12pt;
+                padding: 8px;
+                border: 2px solid #00796b; 
+                border-radius: 8px;
+            """)
             self.tab1_next_button = QPushButton("Next")
             self.tab1_next_button.clicked.connect(lambda: self.switchTab(1))
+            self.tab1_next_button.setFixedWidth(300)
+
+            # Add a "Europe Country" label and dropdown (QComboBox)
+            self.tab1_country_label = QLabel("E-Country:")
+            self.tab1_country_dropdown = QComboBox()
+            self.tab1_country_dropdown.addItems(["Select Country", "Germany", "France", "Italy", "Spain", "Netherlands", "Poland", "Belgium", "Sweden", "Austria", "Denmark"])  # Add more countries as needed
+            self.tab1_country_dropdown.setFixedWidth(380)
+            self.tab1_country_dropdown.setStyleSheet("""
+                background-color: rgba(255, 255, 255, 1);
+                color: #004d40;
+                font-size: 12pt;
+                padding: 8px;
+                border: 2px solid #00796b; 
+                border-radius: 8px;
+            """)
+            self.tab1_country_dropdown.setCurrentIndex(0)  # Default to "Select Country"
+
             
 
             
@@ -387,18 +413,30 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_layout.addWidget(background, 0, 0, 1, 8)
             self.tab1_layout.addWidget(self.tab1_staff_label, 1, 0, 1, 1)
             self.tab1_layout.addWidget(self.tab1_staff_input, 1, 1, 1, 7)
-            self.tab1_layout.addWidget(self.individual_rbtn, 2, 3, 1, 1)
-            self.tab1_layout.addWidget(self.sbusiness_rbtn, 2, 4, 1, 1)
-            self.tab1_layout.addWidget(self.bbusiness_rbtn, 2, 5, 1, 1)
+            self.tab1_layout.addWidget(self.individual_rbtn, 1, 5, 1, 1)
+            self.tab1_layout.addWidget(self.sbusiness_rbtn, 1, 6, 1, 1)
+            self.tab1_layout.addWidget(self.bbusiness_rbtn, 1, 7, 1, 1)
             self.tab1_layout.addWidget(self.tab1_name_label, 3, 0, 1, 1)
             self.tab1_layout.addWidget(self.tab1_name_input, 3, 1, 1, 7)
             self.tab1_layout.addWidget(self.tab1_year_label, 4, 0, 1, 1)
             self.tab1_layout.addWidget(self.tab1_year_input, 4, 1, 1, 7)
-            self.tab1_layout.addWidget(self.tab1_next_button, 5, 6, 1, 2)
+            self.tab1_layout.addWidget(self.tab1_next_button, 5, 7, 1, 1)
+            self.tab1_layout.addWidget(self.tab1_country_label, 3, 5, 1, 1)  # Adjusted row and column for placement
+            self.tab1_layout.addWidget(self.tab1_country_dropdown, 3, 6, 1, 2)
 
             self.tab1_staff_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
             self.tab1_name_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
             self.tab1_year_input.currentIndexChanged.connect(lambda: self.carbonCalculator_func("Details"))
+
+
+
+
+
+
+
+
+
+
 
             # Add widgets to the second tab
             self.tab2_layout = QGridLayout(self.tab2)
@@ -1697,9 +1735,27 @@ class CarbonFootprintCalculator(QMainWindow):
             mydb.close()
 
 
+# if __name__ == "__main__":
+#   windll.shcore.SetProcessDpiAwareness(0)
+#   app = QApplication(sys.argv)
+#   window = CarbonFootprintCalculator("SM", "Admin")
+#   window.show()
+#   sys.exit(app.exec_())
+
+
 if __name__ == "__main__":
-  windll.shcore.SetProcessDpiAwareness(0)
-  app = QApplication(sys.argv)
-  window = CarbonFootprintCalculator("SM", "Admin")
-  window.show()
-  sys.exit(app.exec_())
+    windll.shcore.SetProcessDpiAwareness(0)
+    app = QApplication(sys.argv)
+    window = CarbonFootprintCalculator("SM", "Admin")
+    
+    # Disable minimize and maximize options
+    window.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)  # Only allow close button
+    
+    # Open the application maximized
+    window.showMaximized()
+
+    sys.exit(app.exec_())
+
+
+
+
