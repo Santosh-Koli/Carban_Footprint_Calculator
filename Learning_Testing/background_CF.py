@@ -349,6 +349,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_staff_input = QLineEdit()
             self.tab1_staff_input.setPlaceholderText("Enter number of staff")
             self.tab1_staff_input.setValidator(QtGui.QIntValidator()) # Ensures only integer input
+            self.tab1_staff_input.setFixedWidth(350) 
             self.tab1_staff_input.editingFinished.connect(self.check_employee_count)
 
 
@@ -375,6 +376,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_year_input = QComboBox()
             self.tab1_year_input.addItems(["2020","2021", "2022", "2023", "2024",])
             self.tab1_year_input.setCurrentIndex(4)
+            self.tab1_year_input.setFixedWidth(350)
             self.tab1_next_button = QPushButton("Next")
             self.tab1_next_button.clicked.connect(lambda: self.switchTab(1))
             
@@ -477,8 +479,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab2_previous_button = QPushButton("Previous")
             self.tab2_previous_button.clicked.connect(lambda: self.switchTab(0))
+            self.tab2_previous_button.setFixedWidth(200)
             self.tab2_next_button = QPushButton("Next")
             self.tab2_next_button.clicked.connect(lambda: self.switchTab(2))
+            self.tab2_next_button.setFixedWidth(200)
             self.tab2_layout.addWidget(self.tab2_previous_button, 5, 0)
             self.tab2_layout.addWidget(self.tab2_next_button, 5, 3)
 
@@ -555,8 +559,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab3_previous_button = QPushButton("Previous")
             self.tab3_previous_button.clicked.connect(lambda: self.switchTab(1))
+            self.tab3_previous_button.setFixedWidth(200)
             self.tab3_next_button = QPushButton("Next")
             self.tab3_next_button.clicked.connect(lambda: self.switchTab(3))
+            self.tab3_next_button.setFixedWidth(200)
             self.tab3_layout.addWidget(self.tab3_previous_button, 4, 0)
             self.tab3_layout.addWidget(self.tab3_next_button, 4, 3)
 
@@ -636,8 +642,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab4_previous_button = QPushButton("Previous")
             self.tab4_previous_button.clicked.connect(lambda: self.switchTab(2))
+            self.tab4_previous_button.setFixedWidth(200)
             self.tab4_next_button = QPushButton("Next")
             self.tab4_next_button.clicked.connect(lambda: self.switchTab(4))
+            self.tab4_next_button.setFixedWidth(200)
             self.tab4_layout.addWidget(self.tab4_previous_button, 4, 0)
             self.tab4_layout.addWidget(self.tab4_next_button, 4, 3)
 
@@ -747,10 +755,13 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab5_previous_button = QPushButton("Previous")
             self.tab5_previous_button.clicked.connect(lambda: self.switchTab(3))
+            self.tab5_previous_button.setFixedWidth(200)
             self.tab5_next_button = QPushButton("Next")
             self.tab5_next_button.clicked.connect(lambda: self.switchTab(5))
+            self.tab5_next_button.setFixedWidth(200)
             self.tab5_calculate_button = QPushButton("Calculate")
             self.tab5_calculate_button.setFixedHeight(50)
+            self.tab5_calculate_button.setFixedWidth(200)
             self.tab5_calculate_button.setFont(self.my_font)
             self.tab5_calculate_button.setStyleSheet("""
                 QPushButton {
@@ -860,8 +871,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab6_previous_button = QPushButton("Previous")
             self.tab6_previous_button.clicked.connect(lambda: self.switchTab(4))
+            self.tab6_previous_button.setFixedWidth(300)
             self.tab6_next_button = QPushButton("Next")
             self.tab6_next_button.clicked.connect(lambda: self.switchTab(6))
+            self.tab6_next_button.setFixedWidth(300)
             self.tab6_layout.addWidget(self.tab6gb, 0, 0, 1, 2)
             self.tab6_layout.addWidget(self.tab6_previous_button, 1, 0)
             self.tab6_layout.addWidget(self.tab6_next_button, 1, 1)
@@ -952,8 +965,11 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab7_previous_button = QPushButton("Previous")
             self.tab7_previous_button.clicked.connect(lambda: self.switchTab(5))
+            self.tab7_previous_button.setFixedWidth(300)
             self.tab7_next_button = QPushButton("Next")
             self.tab7_next_button.clicked.connect(lambda: self.switchTab(7))
+            self.tab7_next_button.setFixedWidth(300)
+
 
             self.tab7_layout.addWidget(self.tab7gb, 0, 0, 1, 2)
             self.tab7_layout.addWidget(self.tab7_previous_button, 1, 0)
@@ -1041,6 +1057,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab8_compare_button = QPushButton("Compare")
             self.tab8_compare_button.setFixedHeight(50)
+            self.tab8_compare_button.setFixedWidth(200)
             self.tab8_compare_button.setFont(self.my_font)
             self.tab8_compare_button.setStyleSheet("""
                 QPushButton {
@@ -1062,8 +1079,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab8_previous_button = QPushButton("Previous")
             self.tab8_previous_button.clicked.connect(lambda: self.switchTab(6))
+            self.tab8_previous_button.setFixedWidth(300)
             self.tab8_next_button = QPushButton("Next")
             self.tab8_next_button.clicked.connect(lambda: self.switchTab(8))
+            self.tab8_next_button.setFixedWidth(300)
             self.tab8_layout.addWidget(self.tab8gb, 0, 0, 1, 3)
             self.tab8_layout.addWidget(self.tab8_previous_button, 1, 0)
             self.tab8_layout.addWidget(self.tab8_compare_button, 1, 1)
@@ -1144,6 +1163,7 @@ class CarbonFootprintCalculator(QMainWindow):
             # Buttons for navigation in Tab 10
             self.tab9_previous_button = QPushButton("Previous")
             self.tab9_previous_button.clicked.connect(lambda: self.switchTab(6))
+            self.tab9_previous_button.setFixedWidth(300)
             
             
 
@@ -1151,6 +1171,7 @@ class CarbonFootprintCalculator(QMainWindow):
             #pdf generater
             self.download_pdf_button = QPushButton("Download PDF")
             self.download_pdf_button.setFixedHeight(50)
+            self.download_pdf_button.setFixedWidth(200)
             self.download_pdf_button.setFont(QtGui.QFont("Arial", 12, QtGui.QFont.Bold))
             self.download_pdf_button.setStyleSheet("""
                 QPushButton {
@@ -1239,9 +1260,12 @@ class CarbonFootprintCalculator(QMainWindow):
                 self.tabs.addTab(self.tab10, "Admin Viewer")
                 self.tab10_layout = QGridLayout(self.tab10)
                 self.combo1 = QComboBox()
+                self.combo1.setFixedWidth(300)
                 self.combo2 = QComboBox()
+                self.combo2.setFixedWidth(300)
                 generate = QPushButton("Generate")
                 generate.setFixedHeight(50)
+                generate.setFixedWidth(300)
                 generate.setFont(self.my_font)
                 generate.setStyleSheet("""
                     QPushButton {
