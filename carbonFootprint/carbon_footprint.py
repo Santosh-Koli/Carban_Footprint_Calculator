@@ -1758,9 +1758,23 @@ class CarbonFootprintCalculator(QMainWindow):
             mydb.close()
 
 
+# if __name__ == "__main__":
+#   windll.shcore.SetProcessDpiAwareness(0)
+#   app = QApplication(sys.argv)
+#   window = CarbonFootprintCalculator("SM", "Admin")
+#   window.show()
+#   sys.exit(app.exec_())
+
+
 if __name__ == "__main__":
-  windll.shcore.SetProcessDpiAwareness(0)
-  app = QApplication(sys.argv)
-  window = CarbonFootprintCalculator("SM", "Admin")
-  window.show()
-  sys.exit(app.exec_())
+    windll.shcore.SetProcessDpiAwareness(0)
+    app = QApplication(sys.argv)
+    window = CarbonFootprintCalculator("SM", "Admin")
+    
+    # Disable minimize and maximize options
+    window.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)  # Only allow close button
+    
+    # Open the application maximized
+    window.showMaximized()
+
+    sys.exit(app.exec_())
