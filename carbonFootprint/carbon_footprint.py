@@ -6,8 +6,8 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QLineEdit, QComboBox, QPushButton, QTabWidget, \
     QVBoxLayout, QHBoxLayout, QGridLayout, QGroupBox, QStyledItemDelegate, QTableWidget, QTableWidgetItem, QRadioButton, \
     QMessageBox, QDateEdit
-from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtCore import Qt, QDate
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QRegularExpressionValidator
+from PyQt5.QtCore import Qt, QDate, QRegularExpression
 # from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 # from matplotlib.figure import Figure
 import plotly.graph_objects as go
@@ -406,6 +406,9 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_name_input = QLineEdit()
             self.tab1_name_input.setPlaceholderText("Enter your name")
             self.tab1_name_input.setFixedWidth(380)
+            name_validator = QRegularExpressionValidator(QRegularExpression("^[A-Za-z\s]+$"))
+            self.tab1_name_input.setValidator(name_validator)
+            self.tab1_name_input.setToolTip("Name must contain only alphabetic characters and spaces.")
             self.tab1_year_label = QLabel("Year:")
             self.tab1_year_input = QComboBox()
             self.tab1_year_input.addItems(["2020","2021", "2022", "2023", "2024",])
