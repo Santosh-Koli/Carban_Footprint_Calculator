@@ -424,7 +424,7 @@ class CarbonFootprintCalculator(QMainWindow):
             """)
             self.tab1_next_button = QPushButton("Next")
             self.tab1_next_button.clicked.connect(lambda: self.switchTab(1))
-            self.tab1_next_button.setFixedWidth(300)
+            self.tab1_next_button.setFixedWidth(200)
     
             # Add a "Europe Country" label and dropdown (QComboBox)
             self.tab1_country_label = QLabel("E-Country:")
