@@ -4,11 +4,11 @@ from ctypes import windll
 
 import pymysql
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QLineEdit, QComboBox, QPushButton, QTabWidget, \
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QLineEdit, QComboBox, QPushButton, QTabWidget,\
     QVBoxLayout, QHBoxLayout, QGridLayout, QGroupBox, QStyledItemDelegate, QTableWidget, QTableWidgetItem, QRadioButton, \
-    QMessageBox
+    QMessageBox, QDateEdit
 from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QDate
 # from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 # from matplotlib.figure import Figure
 import plotly.graph_objects as go
@@ -141,6 +141,16 @@ class CarbonFootprintCalculator(QMainWindow):
             for key, value in self.carbonCalculator["Details"].items():
                 c.drawString(50, y_position, f"{key}: {value}")
                 y_position -= 20
+
+
+            # Add Date and Country explicitly
+            date = self.tab1_date_picker.date().toString("yyyy-MM-dd")
+            country = self.tab1_country_dropdown.currentText()
+            c.drawString(50, y_position, f"Date: {date}")
+            y_position -= 20
+            c.drawString(50, y_position, f"Country: {country}")
+            y_position -= 20
+
 
             # Add Results
             c.setFont("Helvetica-Bold", 14)
@@ -405,7 +415,22 @@ class CarbonFootprintCalculator(QMainWindow):
             """)
             self.tab1_country_dropdown.setCurrentIndex(0)  # Default to "Select Country"
 
-            
+            # Inside the init_ui method, add the following code to Tab 1:
+            self.tab1_date_label = QLabel("Date:")
+            self.tab1_date_picker = QDateEdit()
+            self.tab1_date_picker.setCalendarPopup(True)  # Enable calendar popup
+            self.tab1_date_picker.setFixedWidth(380)
+            self.tab1_date_picker.setStyleSheet("""
+                background-color: rgba(255, 255, 255, 1);
+                color: #004d40;
+                font-size: 12pt;
+                padding: 8px;
+                border: 2px solid #00796b; 
+                border-radius: 8px;
+            """)
+            self.tab1_date_picker.setDate(QDate.currentDate())  # Set the current date as default
+            self.tab1_date_picker.dateChanged.connect(lambda: self.carbonCalculator_func("Details"))
+
 
             
 
@@ -423,6 +448,8 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_layout.addWidget(self.tab1_next_button, 5, 7, 1, 1)
             self.tab1_layout.addWidget(self.tab1_country_label, 3, 5, 1, 1)  # Adjusted row and column for placement
             self.tab1_layout.addWidget(self.tab1_country_dropdown, 3, 6, 1, 2)
+            self.tab1_layout.addWidget(self.tab1_date_label, 4, 5, 1, 1)  # Place label in row 5
+            self.tab1_layout.addWidget(self.tab1_date_picker, 4, 6, 1, 2)  # Place date picker in row 5
 
             self.tab1_staff_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
             self.tab1_name_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
@@ -1341,6 +1368,11 @@ class CarbonFootprintCalculator(QMainWindow):
                 mod = "Small Business Firm"
             elif self.bbusiness_rbtn.isChecked():
                 mod = "Big Business Firm"
+
+            # Get the selected date
+            selected_date = self.tab1_date_picker.date().toString("yyyy-MM-dd")  # Format: YYYY-MM-DD
+
+
             self.carbonCalculator["Details"].update(
                 {"Username": self.username, "Module": mod, "CompanyName": self.tab1_name_input.text(), "Year": self.tab1_year_input.currentText(), "StaffHeadcount": self.tab1_staff_input.text()}) 
         elif module == "Energy":
