@@ -212,6 +212,33 @@ class CarbonFootprintCalculator(QMainWindow):
             QtWidgets.QMessageBox.information(self, "Success", f"PDF saved successfully at: {file_path}")
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"Error generating PDF: {e}")
+    
+
+
+    def validate_waste_recycle_percentage(self):
+        try:
+            # Get the value entered by the user
+            percentage = float(self.tab3_waste_recycle.text())
+        
+            # Check if the percentage exceeds the limit
+            if percentage > 50:
+                # Show a warning message
+                QMessageBox.warning(
+                    self,
+                    "Invalid Input",
+                    "Recycled waste percentage cannot exceed 50%. Please adjust the value."
+                )
+                # Clear the input or reset to a valid value
+                self.tab3_waste_recycle.setText("")
+        except ValueError:
+            # Handle invalid or empty input
+            QMessageBox.warning(
+                self,
+                "Invalid Input",
+                "Please enter a valid percentage for recycled waste."
+            )
+            self.tab3_waste_recycle.setText("")
+    
 
     def init_ui(self):
         try:
@@ -608,7 +635,14 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab3_layout.addLayout(self.tab3_input_layout, 0, 0, 1, 4)
             self.tab3_waste_generated.editingFinished.connect(lambda: self.carbonCalculator_func("Waste"))
             self.tab3_waste_recycle.editingFinished.connect(lambda: self.carbonCalculator_func("Waste"))
+            self.tab3_waste_recycle.editingFinished.connect(self.validate_waste_recycle_percentage)
+            percentage_validator = QtGui.QDoubleValidator()
+            percentage_validator.setRange(0, 100, 1)  # Adjust range as needed
+            self.tab3_waste_recycle.setValidator(percentage_validator)
 
+            
+
+    
             self.tab3_previous_button = QPushButton("Previous")
             self.tab3_previous_button.clicked.connect(lambda: self.switchTab(1))
             self.tab3_previous_button.setFixedWidth(200)
@@ -617,7 +651,11 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab3_next_button.setFixedWidth(200) 
             self.tab3_layout.addWidget(self.tab3_previous_button, 4, 0)
             self.tab3_layout.addWidget(self.tab3_next_button, 4, 3)
+            
 
+            
+            
+            
             # Add widgets to the fourth tab
             self.tab4_layout = QGridLayout(self.tab4)
             
