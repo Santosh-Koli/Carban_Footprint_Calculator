@@ -5,9 +5,9 @@ import pymysql
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QLineEdit, QComboBox, QPushButton, QTabWidget, \
     QVBoxLayout, QHBoxLayout, QGridLayout, QGroupBox, QStyledItemDelegate, QTableWidget, QTableWidgetItem, QRadioButton, \
-    QMessageBox
+    QMessageBox, QDateEdit
 from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QDate
 # from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 # from matplotlib.figure import Figure
 import plotly.graph_objects as go
@@ -140,6 +140,15 @@ class CarbonFootprintCalculator(QMainWindow):
             for key, value in self.carbonCalculator["Details"].items():
                 c.drawString(50, y_position, f"{key}: {value}")
                 y_position -= 20
+            
+            # Add Date and Country explicitly
+            date = self.tab1_date_picker.date().toString("yyyy-MM-dd")
+            country = self.tab1_country_dropdown.currentText()
+            c.drawString(50, y_position, f"Date: {date}")
+            y_position -= 20
+            c.drawString(50, y_position, f"Country: {country}")
+            y_position -= 20
+
 
             # Add Results
             c.setFont("Helvetica-Bold", 14)
@@ -296,7 +305,6 @@ class CarbonFootprintCalculator(QMainWindow):
                 }}
             
         
-        
                 QLabel {{ 
                     color: #ffffff;
                     font-size: 13pt;
@@ -346,6 +354,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab1_staff_label = QLabel("Staff Headcount:")
             self.tab1_staff_input = QLineEdit()
+            self.tab1_staff_input.setFixedWidth(380)
             self.tab1_staff_input.setPlaceholderText("Enter number of staff")
             self.tab1_staff_input.setValidator(QtGui.QIntValidator())  # Ensures only integer input
             self.tab1_staff_input.editingFinished.connect(self.check_employee_count)
@@ -369,13 +378,55 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_name_label = QLabel("Name:")
             self.tab1_name_input = QLineEdit()
             self.tab1_name_input.setPlaceholderText("Enter your name")
+            self.tab1_name_input.setFixedWidth(380)
             self.tab1_year_label = QLabel("Year:")
             self.tab1_year_input = QComboBox()
             self.tab1_year_input.addItems(["2020","2021", "2022", "2023", "2024",])
             self.tab1_year_input.setCurrentIndex(4)
+            self.tab1_year_input.setFixedWidth(380)
+            self.tab1_year_input.setStyleSheet("""
+                background-color: rgba(255, 255, 255, 1);
+                color: #004d40;
+                font-size: 12pt;
+                padding: 8px;
+                border: 2px solid #00796b; 
+                border-radius: 8px;
+            """)
             self.tab1_next_button = QPushButton("Next")
             self.tab1_next_button.clicked.connect(lambda: self.switchTab(1))
+            self.tab1_next_button.setFixedWidth(300)
     
+            # Add a "Europe Country" label and dropdown (QComboBox)
+            self.tab1_country_label = QLabel("E-Country:")
+            self.tab1_country_dropdown = QComboBox()
+            self.tab1_country_dropdown.addItems(["Select Country", "Germany", "France", "Italy", "Spain", "Netherlands", "Poland", "Belgium", "Sweden", "Austria", "Denmark"])  # Add more countries as needed
+            self.tab1_country_dropdown.setFixedWidth(380)
+            self.tab1_country_dropdown.setStyleSheet("""
+                background-color: rgba(255, 255, 255, 1);
+                color: #004d40;
+                font-size: 12pt;
+                padding: 8px;
+                border: 2px solid #00796b; 
+                border-radius: 8px;
+            """)
+            self.tab1_country_dropdown.setCurrentIndex(0)  # Default to "Select Country"
+
+            # Inside the init_ui method, add the following code to Tab 1:
+            self.tab1_date_label = QLabel("Date:")
+            self.tab1_date_picker = QDateEdit()
+            self.tab1_date_picker.setCalendarPopup(True)  # Enable calendar popup
+            self.tab1_date_picker.setFixedWidth(380)
+            self.tab1_date_picker.setStyleSheet("""
+                background-color: rgba(255, 255, 255, 1);
+                color: #004d40;
+                font-size: 12pt;
+                padding: 8px;
+                border: 2px solid #00796b; 
+                border-radius: 8px;
+            """)
+            self.tab1_date_picker.setDate(QDate.currentDate())  # Set the current date as default
+            self.tab1_date_picker.dateChanged.connect(lambda: self.carbonCalculator_func("Details"))
+
 
             
 
@@ -383,14 +434,19 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_layout.addWidget(background, 0, 0, 1, 8)
             self.tab1_layout.addWidget(self.tab1_staff_label, 1, 0, 1, 1)
             self.tab1_layout.addWidget(self.tab1_staff_input, 1, 1, 1, 7)
-            self.tab1_layout.addWidget(self.individual_rbtn, 2, 3, 1, 1)
-            self.tab1_layout.addWidget(self.sbusiness_rbtn, 2, 4, 1, 1)
-            self.tab1_layout.addWidget(self.bbusiness_rbtn, 2, 5, 1, 1)
+            self.tab1_layout.addWidget(self.individual_rbtn, 1, 5, 1, 1)
+            self.tab1_layout.addWidget(self.sbusiness_rbtn, 1, 6, 1, 1)
+            self.tab1_layout.addWidget(self.bbusiness_rbtn, 1, 7, 1, 1)
             self.tab1_layout.addWidget(self.tab1_name_label, 3, 0, 1, 1)
             self.tab1_layout.addWidget(self.tab1_name_input, 3, 1, 1, 7)
             self.tab1_layout.addWidget(self.tab1_year_label, 4, 0, 1, 1)
             self.tab1_layout.addWidget(self.tab1_year_input, 4, 1, 1, 7)
-            self.tab1_layout.addWidget(self.tab1_next_button, 5, 6, 1, 2)
+            self.tab1_layout.addWidget(self.tab1_next_button, 5, 7, 1, 1)
+            self.tab1_layout.addWidget(self.tab1_country_label, 3, 5, 1, 1)  # Adjusted row and column for placement
+            self.tab1_layout.addWidget(self.tab1_country_dropdown, 3, 6, 1, 2)
+            self.tab1_layout.addWidget(self.tab1_date_label, 4, 5, 1, 1)  # Place label in row 5
+            self.tab1_layout.addWidget(self.tab1_date_picker, 4, 6, 1, 2)  # Place date picker in row 5
+
 
             self.tab1_staff_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
             self.tab1_name_input.editingFinished.connect(lambda: self.carbonCalculator_func("Details"))
@@ -475,8 +531,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab2_previous_button = QPushButton("Previous")
             self.tab2_previous_button.clicked.connect(lambda: self.switchTab(0))
+            self.tab2_previous_button.setFixedWidth(200)
             self.tab2_next_button = QPushButton("Next")
             self.tab2_next_button.clicked.connect(lambda: self.switchTab(2))
+            self.tab2_next_button.setFixedWidth(200)
             self.tab2_layout.addWidget(self.tab2_previous_button, 5, 0)
             self.tab2_layout.addWidget(self.tab2_next_button, 5, 3)
 
@@ -553,8 +611,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab3_previous_button = QPushButton("Previous")
             self.tab3_previous_button.clicked.connect(lambda: self.switchTab(1))
+            self.tab3_previous_button.setFixedWidth(200)
             self.tab3_next_button = QPushButton("Next")
             self.tab3_next_button.clicked.connect(lambda: self.switchTab(3))
+            self.tab3_next_button.setFixedWidth(200) 
             self.tab3_layout.addWidget(self.tab3_previous_button, 4, 0)
             self.tab3_layout.addWidget(self.tab3_next_button, 4, 3)
 
@@ -634,8 +694,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab4_previous_button = QPushButton("Previous")
             self.tab4_previous_button.clicked.connect(lambda: self.switchTab(2))
+            self.tab4_previous_button.setFixedWidth(200)
             self.tab4_next_button = QPushButton("Next")
             self.tab4_next_button.clicked.connect(lambda: self.switchTab(4))
+            self.tab4_next_button.setFixedWidth(200)
             self.tab4_layout.addWidget(self.tab4_previous_button, 4, 0)
             self.tab4_layout.addWidget(self.tab4_next_button, 4, 3)
 
@@ -745,10 +807,13 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab5_previous_button = QPushButton("Previous")
             self.tab5_previous_button.clicked.connect(lambda: self.switchTab(3))
+            self.tab5_previous_button.setFixedWidth(200)
             self.tab5_next_button = QPushButton("Next")
             self.tab5_next_button.clicked.connect(lambda: self.switchTab(5))
+            self.tab5_next_button.setFixedWidth(200)
             self.tab5_calculate_button = QPushButton("Calculate")
             self.tab5_calculate_button.setFixedHeight(50)
+            self.tab5_calculate_button.setFixedWidth(200)
             self.tab5_calculate_button.setFont(self.my_font)
             self.tab5_calculate_button.setStyleSheet("""
                 QPushButton {
@@ -858,8 +923,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab6_previous_button = QPushButton("Previous")
             self.tab6_previous_button.clicked.connect(lambda: self.switchTab(4))
+            self.tab6_previous_button.setFixedWidth(200)
             self.tab6_next_button = QPushButton("Next")
             self.tab6_next_button.clicked.connect(lambda: self.switchTab(6))
+            self.tab6_next_button.setFixedWidth(200)
             self.tab6_layout.addWidget(self.tab6gb, 0, 0, 1, 2)
             self.tab6_layout.addWidget(self.tab6_previous_button, 1, 0)
             self.tab6_layout.addWidget(self.tab6_next_button, 1, 1)
@@ -950,8 +1017,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab7_previous_button = QPushButton("Previous")
             self.tab7_previous_button.clicked.connect(lambda: self.switchTab(5))
+            self.tab7_previous_button.setFixedWidth(200)
             self.tab7_next_button = QPushButton("Next")
             self.tab7_next_button.clicked.connect(lambda: self.switchTab(7))
+            self.tab7_next_button.setFixedWidth(200)
             self.tab7_layout.addWidget(self.tab7gb, 0, 0, 1, 2)
             self.tab7_layout.addWidget(self.tab7_previous_button, 1, 0)
             self.tab7_layout.addWidget(self.tab7_next_button, 1, 1)
@@ -1038,6 +1107,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab8_compare_button = QPushButton("Compare")
             self.tab8_compare_button.setFixedHeight(50)
+            self.tab8_compare_button.setFixedWidth(200)
             self.tab8_compare_button.setFont(self.my_font)
             self.tab8_compare_button.setStyleSheet("""
                 QPushButton {
@@ -1059,8 +1129,10 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab8_previous_button = QPushButton("Previous")
             self.tab8_previous_button.clicked.connect(lambda: self.switchTab(6))
+            self.tab8_previous_button.setFixedWidth(200)
             self.tab8_next_button = QPushButton("Next")
             self.tab8_next_button.clicked.connect(lambda: self.switchTab(8))
+            self.tab8_next_button.setFixedWidth(200)
             self.tab8_layout.addWidget(self.tab8gb, 0, 0, 1, 3)
             self.tab8_layout.addWidget(self.tab8_previous_button, 1, 0)
             self.tab8_layout.addWidget(self.tab8_compare_button, 1, 1)
@@ -1141,6 +1213,7 @@ class CarbonFootprintCalculator(QMainWindow):
             # Buttons for navigation in Tab 10
             self.tab9_previous_button = QPushButton("Previous")
             self.tab9_previous_button.clicked.connect(lambda: self.switchTab(6))
+            self.tab9_previous_button.setFixedWidth(200)
             
             
 
@@ -1148,6 +1221,7 @@ class CarbonFootprintCalculator(QMainWindow):
             #pdf generater
             self.download_pdf_button = QPushButton("Download PDF")
             self.download_pdf_button.setFixedHeight(50)
+            self.download_pdf_button.setFixedWidth(200)
             self.download_pdf_button.setFont(QtGui.QFont("Arial", 12, QtGui.QFont.Bold))
             self.download_pdf_button.setStyleSheet("""
                 QPushButton {
@@ -1236,9 +1310,28 @@ class CarbonFootprintCalculator(QMainWindow):
                 self.tabs.addTab(self.tab10, "Admin Viewer")
                 self.tab10_layout = QGridLayout(self.tab10)
                 self.combo1 = QComboBox()
+                self.combo1.setFixedWidth(300)
+                self.combo1.setStyleSheet("""
+                background-color: rgba(255, 255, 255, 1);
+                color: #004d40;
+                font-size: 12pt;
+                padding: 8px;
+                border: 2px solid #00796b; 
+                border-radius: 8px;
+            """)
                 self.combo2 = QComboBox()
+                self.combo2.setFixedWidth(300)
+                self.combo2.setStyleSheet("""
+                background-color: rgba(255, 255, 255, 1);
+                color: #004d40;
+                font-size: 12pt;
+                padding: 8px;
+                border: 2px solid #00796b; 
+                border-radius: 8px;
+            """)
                 generate = QPushButton("Generate")
                 generate.setFixedHeight(50)
+                generate.setFixedWidth(200)
                 generate.setFont(self.my_font)
                 generate.setStyleSheet("""
                     QPushButton {
