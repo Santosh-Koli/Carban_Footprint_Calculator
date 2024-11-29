@@ -6,7 +6,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QLineEdit, QComboBox, QPushButton, QTabWidget, \
     QVBoxLayout, QHBoxLayout, QGridLayout, QGroupBox, QStyledItemDelegate, QTableWidget, QTableWidgetItem, QRadioButton, \
     QMessageBox, QDateEdit
-from PyQt5.QtGui import QFont, QIcon, QPixmap, QRegularExpressionValidator
+from PyQt5.QtGui import QFont, QPixmap, QRegularExpressionValidator
 from PyQt5.QtCore import Qt, QDate, QRegularExpression
 # from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 # from matplotlib.figure import Figure
@@ -15,7 +15,7 @@ from plotly.subplots import make_subplots
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import letter 
 from reportlab.lib.utils import ImageReader
 import tempfile
 import os
@@ -406,7 +406,8 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab1_name_input = QLineEdit()
             self.tab1_name_input.setPlaceholderText("Enter your name")
             self.tab1_name_input.setFixedWidth(380)
-            name_validator = QRegularExpressionValidator(QRegularExpression("^[A-Za-z\s]+$"))
+            regex_pattern = r"^[A-Za-z\s]+$"  # Use raw string for regex
+            name_validator = QRegularExpressionValidator(QRegularExpression(regex_pattern))
             self.tab1_name_input.setValidator(name_validator)
             self.tab1_name_input.setToolTip("Name must contain only alphabetic characters and spaces.")
             self.tab1_year_label = QLabel("Year:")
@@ -962,6 +963,8 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab6layout.addWidget(self.web_view, 0, 0)
         
 
+            
+
             self.tab6_previous_button = QPushButton("Previous")
             self.tab6_previous_button.clicked.connect(lambda: self.switchTab(4))
             self.tab6_previous_button.setFixedWidth(200)
@@ -971,11 +974,11 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab6_layout.addWidget(self.tab6gb, 0, 0, 1, 2)
             self.tab6_layout.addWidget(self.tab6_previous_button, 1, 0)
             self.tab6_layout.addWidget(self.tab6_next_button, 1, 1)
-            
-            
-            
-            
-            
+
+    
+
+           
+           
             # Add widgets to the 7th tab
             self.tab7gb = QGroupBox()
 
