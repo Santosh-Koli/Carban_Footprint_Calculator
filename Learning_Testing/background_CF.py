@@ -961,7 +961,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 font-weight: bold;           /* Makes the text bold */
             """)
             # Position the reference label at the bottom-right corner outside the layout
-            self.tab6_reference_label.adjustSize()  # Adjust the label size to fit the text
+            self.tab6_reference_label.adjustSize() 
             tab_width = self.tab6.width()
             tab_height = self.tab6.height()
             self.tab6_reference_label.move(tab_width - self.tab6_reference_label.width() - 20, tab_height - self.tab6_reference_label.height() - 20)
