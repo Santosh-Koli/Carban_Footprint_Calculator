@@ -36,8 +36,6 @@ class CarbonFootprintCalculator(QMainWindow):
         # self.setFixedWidth(600)
         self.username = username
         self.role = role
-        self.combo1 = None  # Initialize to None to avoid attribute error
-        self.combo2 = None  # If combo2 is used similarly, initialize it as well
         self.init_ui()
         self.carbonCalculator = {}
         self.carbonCalculator.setdefault("Details", {})
@@ -1764,7 +1762,7 @@ class CarbonFootprintCalculator(QMainWindow):
         self.tabs.setCurrentIndex(index)
 
     def on_tab_change(self, index):
-        if index == 8 and self.combo1:
+        if index == 8:
             mycursor = None
             try:
                 self.combo1.clear()
@@ -1839,15 +1837,15 @@ class CarbonFootprintCalculator(QMainWindow):
 #   sys.exit(app.exec_())
 
 
-if __name__ == "__main__":
-    windll.shcore.SetProcessDpiAwareness(0)
-    app = QApplication(sys.argv)
-    window = CarbonFootprintCalculator("SM", "User")
+# if __name__ == "__main__":
+#     windll.shcore.SetProcessDpiAwareness(0)
+#     app = QApplication(sys.argv)
+#     window = CarbonFootprintCalculator("SM", "User")
     
-    # Disable minimize and maximize options
-    window.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)  # Only allow close button
+#     # Disable minimize and maximize options
+#     window.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)  # Only allow close button
     
-    # Open the application maximized
-    window.showMaximized()
+#     # Open the application maximized
+#     window.showMaximized()
 
-    sys.exit(app.exec_())
+#     sys.exit(app.exec_())
