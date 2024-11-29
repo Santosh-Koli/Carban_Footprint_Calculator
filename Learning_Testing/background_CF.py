@@ -951,11 +951,15 @@ class CarbonFootprintCalculator(QMainWindow):
             # Add the reference link outside the layout
             self.tab6_reference_label = QLabel(self.tab6)  # Add the label directly to the tab
             self.tab6_reference_label.setText(
-                '<a href="https://www.iea.org/data-and-statistics/charts/co2-total-emissions-per-capita-by-region-2000-2023" style="color:#004d40; text-decoration:none;">Reference Link</a>'
+                '<a href="https://www.iea.org/data-and-statistics/charts/co2-total-emissions-per-capita-by-region-2000-2023" style="color:#FFFFFF; text-decoration:none;">Reference Link</a>'
             )
             self.tab6_reference_label.setOpenExternalLinks(True)  # Enable opening the link in a browser
-            self.tab6_reference_label.setStyleSheet("font-size: 12px; color: #004d40;")  # Style the link
-
+            self.tab6_reference_label.setStyleSheet("""
+                font-size: 14px; 
+                color: #FFFFFF; 
+                text-decoration: underline;  /* Adds underline to the text */
+                font-weight: bold;           /* Makes the text bold */
+            """)
             # Position the reference label at the bottom-right corner outside the layout
             self.tab6_reference_label.adjustSize()  # Adjust the label size to fit the text
             tab_width = self.tab6.width()
