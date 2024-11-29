@@ -930,8 +930,8 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab6gb.setLayout(self.tab6layout)
 
             self.tab6_layout = QGridLayout(self.tab6)
-
             self.tab6layout.addWidget(self.web_view, 0, 0)
+
         
 
             self.tab6_previous_button = QPushButton("Previous")
@@ -944,7 +944,29 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab6_layout.addWidget(self.tab6_previous_button, 1, 0)
             self.tab6_layout.addWidget(self.tab6_next_button, 1, 1)
             
-            
+
+
+            self.web_view = QWebEngineView()
+
+            # Add the reference link outside the layout
+            self.tab6_reference_label = QLabel(self.tab6)  # Add the label directly to the tab
+            self.tab6_reference_label.setText(
+                '<a href="https://www.iea.org/data-and-statistics/charts/co2-total-emissions-per-capita-by-region-2000-2023" style="color:#004d40; text-decoration:none;">Reference Link</a>'
+            )
+            self.tab6_reference_label.setOpenExternalLinks(True)  # Enable opening the link in a browser
+            self.tab6_reference_label.setStyleSheet("font-size: 12px; color: #004d40;")  # Style the link
+
+            # Position the reference label at the bottom-right corner outside the layout
+            self.tab6_reference_label.adjustSize()  # Adjust the label size to fit the text
+            tab_width = self.tab6.width()
+            tab_height = self.tab6.height()
+            self.tab6_reference_label.move(tab_width - self.tab6_reference_label.width() - 20, tab_height - self.tab6_reference_label.height() - 20)
+
+            # Update position dynamically when the tab is resized
+            self.tab6.resizeEvent = lambda event: self.tab6_reference_label.move(
+                self.tab6.width() - self.tab6_reference_label.width() - 20,
+                self.tab6.height() - self.tab6_reference_label.height() - 20
+            )
             
             
             
