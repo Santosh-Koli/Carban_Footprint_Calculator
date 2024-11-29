@@ -946,7 +946,7 @@ class CarbonFootprintCalculator(QMainWindow):
             
 
 
-            self.web_view = QWebEngineView()
+            # self.web_view = QWebEngineView()
 
             # Add the reference link outside the layout
             self.tab6_reference_label = QLabel(self.tab6)  # Add the label directly to the tab
