@@ -28,7 +28,7 @@ import MySQLdb as mdb
 
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 HOST= "sql.freedb.tech"
-USER = "freedb_saloni"
+USERNAME = "freedb_saloni"
 PASSWORD = "Xyk$b8T!MNGQh&T"
 DATABASE = "freedb_mydbcf"
             
