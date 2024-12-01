@@ -409,7 +409,7 @@ class Ui_Form(CarbonFootprintCalculator):
                 print("Login successful")
                 cfc = CarbonFootprintCalculator(username, role)
                 self.close()
-                cfc.show()
+                cfc.showMaximized()
             else:
                 QMessageBox.about(self, 'Login Error', 'Username/Password Incorrect')
                 print("Username/Password Incorrect")
@@ -554,6 +554,8 @@ if __name__ == "__main__":
   window = LoginApp()
   window.show()
   sys.exit(app.exec_())
+
+
 
 
 
