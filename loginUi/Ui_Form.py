@@ -22,6 +22,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from carbonFootprint.carbon_footprint import CarbonFootprintCalculator
 
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DB_HOST = os.getenv("DB_HOST")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_NAME = os.getenv("DB_NAME")
+
 class Ui_Form(CarbonFootprintCalculator):
     def __init__(self):
         QWidget.__init__(self)
@@ -388,10 +398,10 @@ class Ui_Form(CarbonFootprintCalculator):
             password = self.password.text()
 
             mydb = pymysql.connect(
-                host="sql.freedb.tech",
-                user="freedb_saloni",
-                password="Xyk$b8T!MNGQh&T",
-                database="freedb_mydbcf"
+                host=DB_HOST,
+                user=DB_USER,
+                password=DB_PASSWORD,
+                database=DB_NAME
             )
             print("Successfully connected")
             mycursor = mydb.cursor()
@@ -470,10 +480,10 @@ class Ui_Form(CarbonFootprintCalculator):
             # )
 
             mydb = pymysql.connect(
-                host="sql.freedb.tech",
-                user="freedb_saloni",
-                password="Xyk$b8T!MNGQh&T",
-                database="freedb_mydbcf"
+                host=DB_HOST,
+                user=DB_USER,
+                password=DB_PASSWORD,
+                database=DB_NAME
             )
 
             mycursor = mydb.cursor()
