@@ -41,3 +41,26 @@ A Python-based interactive application to calculate and visualize your carbon fo
 - Ability to compare emissions across companies and years.
 
 -----------------------------------------------------------------------------------------------------------------------------
+
+## File Structure 📁 :- 
+
+```bash
+carbon-footprint-calculator/
+│
+├── carbonFootprint/
+│   └── carbon_footprint.py    # Main logic for calculating carbon footprint
+│
+├── ui_form.py                 # User interface and login system
+│
+├── requirements.txt           # List of required Python libraries
+│
+├── images/                    # Contains UI background images
+│   ├── carbonfootprint_login.png
+│   └── carbon_footprint_background.png
+│
+└── README.md                  # Project documentation
+
+```
+-----------------------------------------------------------------------------------------------------------------------------
+
+##
