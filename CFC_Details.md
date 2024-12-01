@@ -63,4 +63,14 @@ carbon-footprint-calculator/
 ```
 -----------------------------------------------------------------------------------------------------------------------------
 
-##
+## Installation and Setup: -
+
+1. Prerequisites
+   
+- Python 3.8 or above
+- pip (Python package manager)
+- MySQL database (or use the provided remote database setup)
+- ChromeDriver (if enabling Selenium functionalities)
+
+  
+
