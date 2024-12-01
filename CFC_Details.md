@@ -59,3 +59,8 @@ carbon-footprint-calculator/
 │   └── carbon_footprint_background.png
 │
 └── README.md                  # Project documentation
+
+```
+-----------------------------------------------------------------------------------------------------------------------------
+
+##
