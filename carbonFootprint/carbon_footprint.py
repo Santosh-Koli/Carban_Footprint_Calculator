@@ -17,25 +17,20 @@ from PyQt5.QtCore import QUrl
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter 
 from reportlab.lib.utils import ImageReader
-from dotenv import load_dotenv
 import tempfile
 import os
 import MySQLdb as mdb
 
 
-load_dotenv()
 
-# Explicitly specify the .env file path
-env_path = os.path.join(os.path.dirname(__file__), '.env')
-load_dotenv(dotenv_path=env_path)
 
 
 
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-HOST = os.getenv("HOST")
-USERNAME = os.getenv("USERNAME")
-PASSWORD = os.getenv("PASSWORD")
-DATABASE = os.getenv("DATABASE")
+HOST= "sql.freedb.tech"
+USER = "freedb_saloni"
+PASSWORD = "Xyk$b8T!MNGQh&T"
+DATABASE = "freedb_mydbcf"
             
 
 
