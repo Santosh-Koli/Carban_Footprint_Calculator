@@ -63,4 +63,42 @@ carbon-footprint-calculator/
 ```
 -----------------------------------------------------------------------------------------------------------------------------
 
-##
+## Installation and Setup🚀 :- 
+
+**Prerequisites:**
+
+Python 3.8 or above
+pip (Python package manager)
+MySQL database (just ensure that database connected)
+ChromeDriver (if enabling Selenium functionalities)
+
+**Installation Steps:**
+
+1. Clone the repository:
+
+```bash
+
+git clone https://github.com/your-repo/carbon-footprint-calculator.git  
+cd carbon-footprint-calculator
+
+```
+
+2. Install required Python libraries:
+
+```bash
+
+pip install -r requirements.txt
+
+```
+
+3. Set up the MySQL database:
+
+```bash
+
+set up your own MySQL database and update the credentials in the code.  
+
+
+
+
+
+
