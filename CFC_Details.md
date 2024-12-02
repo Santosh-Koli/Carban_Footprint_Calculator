@@ -45,32 +45,73 @@ A Python-based interactive application to calculate and visualize your carbon fo
 ## File Structure 📁 :- 
 
 ```bash
-carbon-footprint-calculator/
-│
-├── carbonFootprint/
-│   └── carbon_footprint.py    # Main logic for calculating carbon footprint
-│
-├── ui_form.py                 # User interface and login system
-│
-├── requirements.txt           # List of required Python libraries
-│
-├── images/                    # Contains UI background images
-│   ├── carbonfootprint_login.png
-│   └── carbon_footprint_background.png
-│
-└── README.md                  # Project documentation
+
 
 ```
 -----------------------------------------------------------------------------------------------------------------------------
 
-## Installation and Setup: -
+## Installation and Setup 🛠️ : -
 
 1. Prerequisites
    
 - Python 3.8 or above
 - pip (Python package manager)
-- MySQL database (or use the provided remote database setup)
+- MySQL database (create your own database, can refer excel sheet to create a table)
 - ChromeDriver (if enabling Selenium functionalities)
+
+2. Steps
+
+- Clone the Repository:-
+
+```bash
+
+  git clone https://github.com/your-username/Carbon-Footprint-Calculator.git
+  cd Carbon-Footprint-Calculator
+
+```
+
+- Set Up the Environment Create a virtual environment and activate it:-
+
+```bash
+
+python -m venv venv
+source venv/bin/activate  # For Linux/macOS
+myvenv\Scripts\activate     # For Windows
+
+```
+
+- Install Dependencies Use the requirements.txt file to install the necessary libraries:-
+
+```bash
+
+pip install -r requirements.txt
+
+```
+
+- Set Up the Database:-
+
+
+- Run the Application:-
+
+```bash
+
+python ui_form.py
+
+```
+
+- Admin Access (Optional)
+
+```bash
+
+Use admin credentials to access admin tools and analytics.
+
+```
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 
   
 
