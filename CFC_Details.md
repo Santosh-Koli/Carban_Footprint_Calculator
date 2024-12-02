@@ -190,7 +190,7 @@ Use admin credentials to access admin tools and analytics. (Currently admin acce
 
 ----------------------------------------------------------------------------------------------------------------------------
 
-*Let's work together to create a sustainable future!* 🌿
+*Let's work together to create a sustainable future!* ♻️ 
 
 ----------------------------------------------------------------------------------------------------------------------------
 
