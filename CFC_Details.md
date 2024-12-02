@@ -49,6 +49,24 @@
 
 ```bash
 
+CARBON_FOOTPRINT_CALCULATOR/
+├── __pycache__/                                      # Compiled Python bytecode
+├── .idea/                                            # IDE project settings (if using PyCharm or similar)
+├── carbonFootprint/                                  # Main module for carbon footprint calculations
+│   └── carbon_footprint.py                           # Core logic for calculations and backend processes
+├── images/                                           # Images and UI assets
+│   ├── carbonfootprint_login.png
+│   └── carbon_footprint_background.png
+├── Learning_Testing/                                 # For test scripts or learning modules
+│   └── (test files here)                             # Placeholder for testing resources
+├── loginUi/                                          # Login and UI management
+│   └── Ui_Form.py                                    # Handles user interface logic for login/registration
+├── myvenv/                                           # Virtual environment for project dependencies
+├── Carbon Footprint Calculator-Concept-Design.docx   # Documentation or design notes
+├── CFC_Details.md                                    # Markdown file for additional project details
+├── LICENSE                                           # License file for the project
+├── requirements.txt                                  # List of Python dependencies
+
 
 ```
 
