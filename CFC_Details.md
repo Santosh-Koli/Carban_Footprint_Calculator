@@ -109,6 +109,42 @@ Use admin credentials to access admin tools and analytics.
 
 ----------------------------------------------------------------------------------------------------------------------------
 
+## Technologies Used 💻 :-
+
+- Programming Language: Python 3.8+
+- Framework: PyQt5 (for the GUI)
+- Database: MySQL (with pymysql and MySQLdb for connections)
+- Visualization: Plotly and PyQt WebEngine
+- PDF Generation: ReportLab
+- Additional Tools: Selenium (for web data retrieval)
+
+----------------------------------------------------------------------------------------------------------------------------
+
+## Features Breakdown 🚶‍♂️💡 :- 
+
+1. Login & Registration
+   
+- Secure login system with password validation.
+- User role-based access (Admin/User).
+
+2. Dynamic Tabs
+
+- Tabs for energy, waste, travel inputs, and results visualization.
+- Validation for user inputs (e.g., numeric-only fields).
+  
+4. Visual Analytics
+
+- Bar and pie charts for carbon footprint comparison.
+- Yearly comparisons and energy-waste-travel distributions.
+  
+5. Admin Panel
+
+- Tools to compare companies' emissions.
+- Filters for years and user types.
+
+6. Reporting
+
+- Generate PDF reports with detailed graphs and recommendations.
 
 
 
