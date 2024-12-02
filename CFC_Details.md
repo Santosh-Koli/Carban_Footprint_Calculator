@@ -167,6 +167,7 @@ Use admin credentials to access admin tools and analytics.
 
 ----------------------------------------------------------------------------------------------------------------------------
 
+## License 📄 :-
 
-  
+This project is licensed under the MIT License. See the "LICENSE" file for details. 
 
