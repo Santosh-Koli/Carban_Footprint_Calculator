@@ -9,37 +9,37 @@
 
 1. Interactive Dashboard:
    
-- Track energy consumption, waste, and travel habits.
-- View detailed breakdowns of carbon emissions.
+- *Track energy consumption, waste, and travel habits.*
+- *View detailed breakdowns of carbon emissions.*
 
 3. User-Friendly Interface:
    
-- Clean, modern, and intuitive design.
-- Registration and login system for personalized tracking.
+- *Clean, modern, and intuitive design.*
+- *Registration and login system for personalized tracking.*
 
 5. Dynamic Calculations:
    
-- Calculate carbon footprint for individual or enterprise users.
-- View per capita emissions and compare with European averages.
+- *Calculate carbon footprint for individual or enterprise users.*
+- *View per capita emissions and compare with European averages.*
 
 7. Data Visualization:
    
-- Dynamic charts for comparing emissions.
-- Visualize the distribution of emissions from energy, waste, and travel.
+- *Dynamic charts for comparing emissions.*
+- *Visualize the distribution of emissions from energy, waste, and travel.*
 
 9. Yearly Comparisons:
     
-- Compare carbon footprint data year-over-year.
-- Track progress and identify trends over time.
+- *Compare carbon footprint data year-over-year.*
+- *Track progress and identify trends over time.*
 
 11. PDF Reporting:
     
-- Generate downloadable reports with visual graphs and feedback.
+- *Generate downloadable reports with visual graphs and feedback.*
 
 13. Admin Features:
     
-- Access to all user data and analytics.
-- Ability to compare emissions across companies and years.
+- *Access to all user data and analytics.*
+- *Ability to compare emissions across companies and years.*
 
   
 
@@ -59,14 +59,14 @@
 
 1. Prerequisites
    
-- Python 3.8 or above
-- pip (Python package manager)
-- MySQL database (create your own database, can refer excel sheet to create a table)
-- ChromeDriver (if enabling Selenium functionalities)
+- *Python 3.8 or above*
+- *pip (Python package manager)*
+- *MySQL database (create your own database, can refer excel sheet to create a table)*
+- *ChromeDriver (if enabling Selenium functionalities)*
 
 2. Steps
 
-- Clone the Repository:-
+- *Clone the Repository:-*
 
 ```bash
 
@@ -75,7 +75,7 @@
 
 ```
 
-- Set Up the Environment Create a virtual environment and activate it:-
+- *Set Up the Environment Create a virtual environment and activate it:-*
 
 ```bash
 
@@ -85,7 +85,7 @@ myvenv\Scripts\activate     # For Windows
 
 ```
 
-- Install Dependencies Use the requirements.txt file to install the necessary libraries:-
+- *Install Dependencies Use the requirements.txt file to install the necessary libraries:-*
 
 ```bash
 
@@ -93,10 +93,10 @@ pip install -r requirements.txt
 
 ```
 
-- Set Up the Database:-
+- *Set Up the Database:-*
 
 
-- Run the Application:-
+- *Run the Application:-*
 
 ```bash
 
@@ -104,7 +104,7 @@ python ui_form.py
 
 ```
 
-- Admin Access (Optional)
+- *Admin Access (Optional):-*
 
 ```bash
 
@@ -117,12 +117,12 @@ Use admin credentials to access admin tools and analytics.
 
 ## Technologies Used 💻 :-
 
-- Programming Language: Python 3.8+
-- Framework: PyQt5 (for the GUI)
-- Database: MySQL (with pymysql and MySQLdb for connections)
-- Visualization: Plotly and PyQt WebEngine
-- PDF Generation: ReportLab
-- Additional Tools: Selenium (for web data retrieval)
+- *Programming Language: Python 3.8+*
+- *Framework: PyQt5 (for the GUI)*
+- *Database: MySQL (with pymysql and MySQLdb for connections)*
+- *Visualization: Plotly and PyQt WebEngine*
+- *PDF Generation: ReportLab*
+- *Additional Tools: Selenium (for web data retrieval)*
   
 
 ----------------------------------------------------------------------------------------------------------------------------
@@ -131,27 +131,27 @@ Use admin credentials to access admin tools and analytics.
 
 1. Login & Registration
    
-- Secure login system with password validation.
-- User role-based access (Admin/User).
+- *Secure login system with password validation.*
+- *User role-based access (Admin/User).*
 
 2. Dynamic Tabs
 
-- Tabs for energy, waste, travel inputs, and results visualization.
-- Validation for user inputs (e.g., numeric-only fields).
+- *Tabs for energy, waste, travel inputs, and results visualization.*
+- *Validation for user inputs (e.g., numeric-only fields).*
   
 4. Visual Analytics
 
-- Bar and pie charts for carbon footprint comparison.
-- Yearly comparisons and energy-waste-travel distributions.
+- *Bar and pie charts for carbon footprint comparison.*
+- *Yearly comparisons and energy-waste-travel distributions.*
   
 5. Admin Panel
 
-- Tools to compare companies' emissions.
-- Filters for years and user types.
+- *Tools to compare companies' emissions.*
+- *Filters for years and user types.*
 
 6. Reporting
 
-- Generate PDF reports with detailed graphs and recommendations.
+- *Generate PDF reports with detailed graphs and recommendations.*
   
 
 ----------------------------------------------------------------------------------------------------------------------------
@@ -169,11 +169,11 @@ Use admin credentials to access admin tools and analytics.
 
 ## License 📄 :-
 
-This project is licensed under the MIT License. See the "LICENSE" file for details. 
+*This project is licensed under the MIT License. See the "LICENSE" file for details.*
 
 ----------------------------------------------------------------------------------------------------------------------------
 
-Let's work together to create a sustainable future! 🌿
+*Let's work together to create a sustainable future!* 🌿
 
 ----------------------------------------------------------------------------------------------------------------------------
 
