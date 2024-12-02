@@ -108,8 +108,7 @@ python ui_form.py
 
 ```bash
 
-Use admin credentials to access admin tools and analytics.
-
+Use admin credentials to access admin tools and analytics. (Currently admin access is restricted to single user_admin) 
 ```
 
 
