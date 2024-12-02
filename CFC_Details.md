@@ -2,6 +2,7 @@
 
 A Python-based interactive application to calculate and visualize your carbon footprint. This tool provides insights into energy consumption, waste generation, and travel habits, and compares them with regional and global averages. Users can also download detailed reports in PDF format, view dynamic visualizations, and track their progress over time.
 
+
 -----------------------------------------------------------------------------------------------------------------------------
 
 *Features* 🌟:- 
@@ -40,6 +41,8 @@ A Python-based interactive application to calculate and visualize your carbon fo
 - Access to all user data and analytics.
 - Ability to compare emissions across companies and years.
 
+  
+
 -----------------------------------------------------------------------------------------------------------------------------
 
 ## File Structure 📁 :- 
@@ -48,6 +51,8 @@ A Python-based interactive application to calculate and visualize your carbon fo
 
 
 ```
+
+
 -----------------------------------------------------------------------------------------------------------------------------
 
 ## Installation and Setup 🛠️ : -
@@ -107,6 +112,7 @@ Use admin credentials to access admin tools and analytics.
 
 ```
 
+
 ----------------------------------------------------------------------------------------------------------------------------
 
 ## Technologies Used 💻 :-
@@ -117,6 +123,7 @@ Use admin credentials to access admin tools and analytics.
 - Visualization: Plotly and PyQt WebEngine
 - PDF Generation: ReportLab
 - Additional Tools: Selenium (for web data retrieval)
+  
 
 ----------------------------------------------------------------------------------------------------------------------------
 
@@ -145,10 +152,20 @@ Use admin credentials to access admin tools and analytics.
 6. Reporting
 
 - Generate PDF reports with detailed graphs and recommendations.
+  
 
 ----------------------------------------------------------------------------------------------------------------------------
 
+## Contributing 🤝 :- 
 
+**We welcome contributions! To get started:**
+
+*Fork the repository.*
+*Create a feature branch.*
+*Commit your changes.*
+*Submit a pull request.*
+
+----------------------------------------------------------------------------------------------------------------------------
 
 
   
