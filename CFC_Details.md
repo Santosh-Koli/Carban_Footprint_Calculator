@@ -146,6 +146,8 @@ Use admin credentials to access admin tools and analytics.
 
 - Generate PDF reports with detailed graphs and recommendations.
 
+----------------------------------------------------------------------------------------------------------------------------
+
 
 
 
