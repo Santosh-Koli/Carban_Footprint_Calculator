@@ -6,7 +6,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QLineEdit, QComboBox, QPushButton, QTabWidget, \
     QVBoxLayout, QHBoxLayout, QGridLayout, QGroupBox, QStyledItemDelegate, QTableWidget, QTableWidgetItem, QRadioButton, \
     QMessageBox, QDateEdit
-from PyQt5.QtGui import QFont, QPixmap, QRegularExpressionValidator
+from PyQt5.QtGui import QFont, QPixmap, QRegularExpressionValidator, QPixmap, QColor, QPalette
 from PyQt5.QtCore import Qt, QDate, QRegularExpression
 # from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 # from matplotlib.figure import Figure
@@ -269,7 +269,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 }
 
                 QTabBar::tab {
-                    background: #00796b; /* Default background color for tabs */
+                    background-color: rgba(101, 50, 12, 1); /* Default background color for tabs */
                     color: white; /* Default text color for tab labels */
                     font-weight: bold; /* Bold text for better visibility */
                     border: 1px solid #004d40; /* Border around each tab */
@@ -287,7 +287,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 }
 
                 QTabBar::tab:hover {
-                    background: #005b4f; /* Hover effect for tabs */
+                    background-color: rgba(139, 69, 19, 1); /* Hover effect for tabs */
                 }
             """)
 
@@ -318,41 +318,33 @@ class CarbonFootprintCalculator(QMainWindow):
             
             self.tab1.setObjectName("tab1")
             
-            image_path = os.path.abspath("images/carbon_footprint_background.png")
-
-            self.tab1.setStyleSheet(f"""
-                QWidget#tab1 {{                    
-                    background-image: url('images/image.png');
-                    background = QLabel()
-                    pixmap = QPixmap("images/carbonfootprint_login.png")
-                    scaled_pixmap = pixmap.scaled(400, 400)
-                    background.setPixmap(scaled_pixmap)
-                    background.setScaledContents(True)
-                    background-repeat: no-repeat;
-                    background-position: center;
-                
-                }}
             
-        
-                QLabel {{ 
+
+            self.tab1.setStyleSheet("""
+                QWidget#tab1 {                    
+                    background-color: rgba(186, 182, 170, 255); /* Faint brown */
+                    background.setStyleSheet("border: none;")
+                }
+
+                QLabel { 
                     color: #ffffff;
                     font-size: 13pt;
                     font-weight: bold;
                     background-color: rgba(0, 0, 0, 1);
                     padding: 8px;
                     border-radius: 8px;
-                }}
+                }
 
-                QLineEdit {{
+                QLineEdit {
                     background-color: rgba(255, 255, 255, 1);
                     color: #004d40;
                     font-size: 12pt;
                     padding: 8px;
                     border: 2px solid #00796b; 
                     border-radius: 8px;
-                }}
+                }
 
-                QPushButton {{
+                QPushButton {
                     background-color: rgba(0, 51, 102, 1);
                     color: #ffffff;
                     font-size: 12pt;
@@ -360,26 +352,71 @@ class CarbonFootprintCalculator(QMainWindow):
                     padding: 10px 20px;
                     border: none;                
                     border-radius: 8px;
-                }}
+                }
 
-                QPushButton:hover {{
+                QPushButton:hover {
                     background-color: rgba(0, 137, 123, 0.9); /* Slightly lighter green on hover */    
-                }}                    
+                }
             """)
+            
 
+            # # Main window or parent widget
+            # window = QWidget()
+            # window.resize(800, 600)
 
-            background = QLabel()
-            # Load the image using QPixmap
-            pixmap = QPixmap("images/carbonfootprint_login.png")
-            scaled_pixmap = pixmap.scaled(400, 400)
+            # # Create a QLabel for the image
+            # background = QLabel(window)
+            # background.setFixedSize(200, 200)  # Explicitly set the size of the label
+            # background.move(50, 50)  # Move the label to a specific position
+
+            # # Load and scale the image
+            # pixmap = QPixmap("images/image1.png")
+            # scaled_pixmap = pixmap.scaled(
+            # background.width(), background.height(), Qt.KeepAspectRatio)
+                   
+
+            # # Set the pixmap to the label
+            # background.setPixmap(scaled_pixmap)
+            # background.setScaledContents(True)
+            # background.setToolTip(
+            #     "Welcome to the Carbon Footprint Calculator!\n\nThis tool helps you understand and reduce your carbon footprint. "
+            #     "Every small action counts toward a healthier planet.\nCalculate your emissions, get insights, and track your impact with tables & charts  for a sustainable future. ")
+            
+            
+            # Main window or parent widget
+
+            window = QWidget()
+            window.resize(800, 600)
+        
+
+            # Set faint brown background color
+            palette = QPalette()
+            palette.setColor(QPalette.Window, QColor(210, 180, 140))  # RGB for faint brown
+            window.setPalette(palette)
+            window.setAutoFillBackground(True)
+
+            # Create a QLabel for the image
+            background = QLabel(window)
+            background.setFixedSize(450, 450)  # Explicitly set the size of the label
+            background.move(50, 50)  # Move the label to a specific position
+
+            background.setStyleSheet("QLabel { border: none; background: none; }")
+
+            # Load and scale the logo image
+            pixmap = QPixmap("images/logo.png")  # Use the uploaded image path
+            scaled_pixmap = pixmap.scaled(
+            background.width(), background.height(), Qt.KeepAspectRatio
+            )
 
             # Set the pixmap to the label
             background.setPixmap(scaled_pixmap)
             background.setScaledContents(True)
             background.setToolTip(
                 "Welcome to the Carbon Footprint Calculator!\n\nThis tool helps you understand and reduce your carbon footprint. "
-                "Every small action counts toward a healthier planet.\nCalculate your emissions, get insights, and track your impact with tables & charts  for a sustainable future. ")
-            
+                "Every small action counts toward a healthier planet.\nCalculate your emissions, get insights, and track your impact with tables & charts for a sustainable future."
+            )
+
+
 
             self.tab1_staff_label = QLabel("Staff Headcount:")
             self.tab1_staff_input = QLineEdit()
@@ -464,7 +501,7 @@ class CarbonFootprintCalculator(QMainWindow):
             
 
 
-            self.tab1_layout.addWidget(background, 0, 0, 1, 8)
+            self.tab1_layout.addWidget(background, 0, 3, 2, 4)
             self.tab1_layout.addWidget(self.tab1_staff_label, 1, 0, 1, 1)
             self.tab1_layout.addWidget(self.tab1_staff_input, 1, 1, 1, 7)
             self.tab1_layout.addWidget(self.individual_rbtn, 1, 5, 1, 1)
@@ -490,13 +527,13 @@ class CarbonFootprintCalculator(QMainWindow):
             
             self.tab2.setObjectName("tab2")
             
-            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            image_path = os.path.abspath("images/image1.png")
 
             self.tab2.setStyleSheet(f"""
                 QWidget#tab2 {{                    
-                    background-image: url('images/carbon_footprint_background.png');
+                    background-image: url('images/image1.png');
                     background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    pixmap = QPixmap("images/image1.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
                     background.setPixmap(scaled_pixmap)
                     background.setScaledContents(True)
@@ -576,13 +613,13 @@ class CarbonFootprintCalculator(QMainWindow):
             
             self.tab3.setObjectName("tab3")
             
-            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            image_path = os.path.abspath("images/image1.png")
 
             self.tab3.setStyleSheet(f"""
                 QWidget#tab3 {{                    
-                    background-image: url('images/carbon_footprint_background.png');
+                    background-image: url('images/image1.png');
                     background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    pixmap = QPixmap("images/image1.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
                     background.setPixmap(scaled_pixmap)
                     background.setScaledContents(True)
@@ -667,13 +704,13 @@ class CarbonFootprintCalculator(QMainWindow):
             
             self.tab4.setObjectName("tab4")
             
-            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            image_path = os.path.abspath("images/image1.png")
 
             self.tab4.setStyleSheet(f"""
                 QWidget#tab4 {{                    
-                    background-image: url('images/carbon_footprint_background.png');
+                    background-image: url('images/image1.png');
                     background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    pixmap = QPixmap("images/image1.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
                     background.setPixmap(scaled_pixmap)
                     background.setScaledContents(True)
@@ -750,13 +787,13 @@ class CarbonFootprintCalculator(QMainWindow):
             
             self.tab5.setObjectName("tab5")
 
-            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            image_path = os.path.abspath("images/image1.png")
 
             self.tab5.setStyleSheet(f"""
                 QWidget#tab5 {{                    
-                    background-image: url('images/carbon_footprint_background.png');
+                    background-image: url('images/image1.png');
                     background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    pixmap = QPixmap("images/image1.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
                     background.setPixmap(scaled_pixmap)
                     background.setScaledContents(True)
@@ -892,13 +929,13 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab6.setObjectName("tab6")
 
-            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            image_path = os.path.abspath("images/image1.png")
 
             self.tab6.setStyleSheet(f"""
                 QWidget#tab6 {{                    
-                    background-image: url('images/carbon_footprint_background.png');
+                    background-image: url('images/image1.png');
                     background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    pixmap = QPixmap("images/image1.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
                     background.setPixmap(scaled_pixmap)
                     background.setScaledContents(True)
@@ -1010,13 +1047,13 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab7.setObjectName("tab7")
 
-            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            image_path = os.path.abspath("images/image1.png")
 
             self.tab7.setStyleSheet(f"""
                 QWidget#tab7 {{                    
-                    background-image: url('images/carbon_footprint_background.png');
+                    background-image: url('images/image1.png');
                     background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    pixmap = QPixmap("images/image1.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
                     background.setPixmap(scaled_pixmap)
                     background.setScaledContents(True)
@@ -1101,13 +1138,13 @@ class CarbonFootprintCalculator(QMainWindow):
             
             self.tab8.setObjectName("tab8")
 
-            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            image_path = os.path.abspath("images/image1.png")
 
             self.tab8.setStyleSheet(f"""
                 QWidget#tab8 {{                    
-                    background-image: url('images/carbon_footprint_background.png');
+                    background-image: url('images/image1.png');
                     background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    pixmap = QPixmap("images/image1.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
                     background.setPixmap(scaled_pixmap)
                     background.setScaledContents(True)
@@ -1225,13 +1262,13 @@ class CarbonFootprintCalculator(QMainWindow):
             
             self.tab9.setObjectName("tab9")
             
-            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            image_path = os.path.abspath("images/image1.png")
 
             self.tab9.setStyleSheet(f"""
                 QWidget#tab9 {{                    
-                    background-image: url('images/carbon_footprint_background.png');
+                    background-image: url('images/image1.png');
                     background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    pixmap = QPixmap("images/image1.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
                     background.setPixmap(scaled_pixmap)
                     background.setScaledContents(True)
@@ -1335,13 +1372,13 @@ class CarbonFootprintCalculator(QMainWindow):
 
             self.tab10.setObjectName("tab10")
 
-            image_path = os.path.abspath("images/carbon_footprint_background.png")
+            image_path = os.path.abspath("images/image1.png")
 
             self.tab10.setStyleSheet(f"""
                 QWidget#tab10 {{                    
-                    background-image: url('images/carbon_footprint_background.png');
+                    background-image: url('images/image1.png');
                     background = QLabel()
-                    pixmap = QPixmap("images/carbon_footprint_background.png")
+                    pixmap = QPixmap("images/image1.png")
                     scaled_pixmap = pixmap.scaled(400, 400)
                     background.setPixmap(scaled_pixmap)
                     background.setScaledContents(True)
