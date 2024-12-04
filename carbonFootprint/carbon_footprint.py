@@ -152,13 +152,19 @@ class CarbonFootprintCalculator(QMainWindow):
             y_position -= 20
 
 
+
             # Add Results
             c.setFont("Helvetica-Bold", 14)
             c.drawString(50, y_position - 10, "Results:")
             y_position -= 30
+
+            
+            excluded_keys = ["StaffHeadcount"]
             for key, value in self.carbonCalculator["Results"].items():
-                c.drawString(50, y_position, f"{key}: {value:.2f} KgCO2")
-                y_position -= 20
+                if key not in excluded_keys:
+                    c.drawString(50, y_position, f"{key}: {value:.2f} KgCO2")
+                    y_position -= 20
+
 
             # Add Feedback
             c.setFont("Helvetica-Bold", 14)
