@@ -52,26 +52,26 @@ class CarbonFootprintCalculator(QMainWindow):
 
     def check_employee_count(self):
         try:
-            # Get the input from the staff headcount field
-            staff_count = int(self.tab1_staff_input.text())  # Convert to integer
+            
+            staff_count = int(self.tab1_staff_input.text())  
         
             if staff_count == 1:
-                # Show a suggestion for individual user type
+                
                 QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Individual User'.")
-                self.individual_rbtn.setChecked(True)  # Automatically select the Individual radio button
+                self.individual_rbtn.setChecked(True)  
             elif 2 <= staff_count <= 250:
-                # Show a suggestion for small business
+        
                 QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Small Enterprises'.")
-                self.sbusiness_rbtn.setChecked(True)  # Automatically select the Small Business radio button
+                self.sbusiness_rbtn.setChecked(True)  
             elif staff_count > 250:
-                # Show a suggestion for big business
+                
                 QMessageBox.information(self, "Suggestion", "Based on the number of employees, it is recommended to choose 'Large Enterprises'.")
-                self.bbusiness_rbtn.setChecked(True)  # Automatically select the Large Business radio button
+                self.bbusiness_rbtn.setChecked(True)  
             else:
-                # Handle cases where staff count is invalid
+                
                 QMessageBox.warning(self, "Invalid Input", "Please enter a valid number for the staff headcount.")
         except ValueError:
-            # Handle invalid or empty input
+            
             QMessageBox.warning(self, "Invalid Input", "Please enter a valid number for the staff headcount.")
 
     def generate_feedback(self):
@@ -83,7 +83,7 @@ class CarbonFootprintCalculator(QMainWindow):
             avg_cf = self.carbonCalculator["Details"].get("avg_europe", 0)
 
             if percapita_AvgCF < avg_cf:
-                # Positive Feedback
+        
                 feedback_text = (
                     "<b>Good/Positive Result:</b><br>"
                     "Fantastic work! Your carbon footprint is below the European average.<br>"
@@ -93,7 +93,7 @@ class CarbonFootprintCalculator(QMainWindow):
                     "<b>Travel:</b> Excellent choices! Continue carpooling or using public transport whenever possible to maintain a low travel footprint."
                 )
             else:
-                # Negative Feedback
+                
                 feedback_text = (
                     "<b>Bad/Negative Result:</b><br>"
                     "Your carbon footprint is above the European average, but small changes can help!<br>"
@@ -112,22 +112,22 @@ class CarbonFootprintCalculator(QMainWindow):
                     "- Opt for virtual meetings to minimize travel when you can."
                 )
 
-            # Update the feedback label in Tab 9
+            
             self.tab9_feedback_label.setText(feedback_text)
 
         except Exception as e:
             print(f"Error generating feedback: {e}")
 
     def generate_pdf(self):
-        graph_spacing = 300  # Space between each graph
-        graph_width = 500    # Width of the graph in the PDF
-        graph_height = 250   # Height of the graph in the PDF
+        graph_spacing = 300  
+        graph_width = 500    
+        graph_height = 250  
 
         try:
             # File  path to save the PDF
             file_path, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Save PDF", "", "PDF Files (*.pdf)")
             if not file_path:
-                return  # User canceled saving
+                return 
 
             # Create a PDF canvas
             c = canvas.Canvas(file_path, pagesize=letter)
@@ -172,20 +172,20 @@ class CarbonFootprintCalculator(QMainWindow):
             y_position -= 30
             feedback_text = self.tab9_feedback_label.text()
             c.setFont("Helvetica", 12)
-            for line in feedback_text.split("<br>"):  # Handle HTML line breaks
+            for line in feedback_text.split("<br>"):  
                 c.drawString(50, y_position, line.strip().replace("<b>", "").replace("</b>", ""))
                 y_position -= 20
 
             # Leave enough space for graphs
             y_position -= 50
-            graph_spacing = 300  # Adjust spacing for graphs
+            graph_spacing = 300  
             graph_width = 500
             graph_height = 300
 
             # Add Graphs
-            graph_spacing = 300  # Space between each graph
-            graph_width = 500    # Width of the graph in the PDF
-            graph_height = 250   # Height of the graph in the PDF
+            graph_spacing = 300  
+            graph_width = 500   
+            graph_height = 250   
 
             try:
                 # Draw Total CF Graph
@@ -215,7 +215,7 @@ class CarbonFootprintCalculator(QMainWindow):
                 print(f"Error adding graphs to PDF: {e}")
 
 
-            # Finalize and save the PDF
+            
             c.save()
             QtWidgets.QMessageBox.information(self, "Success", f"PDF saved successfully at: {file_path}")
         except Exception as e:
@@ -225,21 +225,21 @@ class CarbonFootprintCalculator(QMainWindow):
 
     def validate_waste_recycle_percentage(self):
         try:
-            # Get the value entered by the user
+            
             percentage = float(self.tab3_waste_recycle.text())
         
             # Check if the percentage exceeds the limit
             if percentage > 50:
-                # Show a warning message
+                
                 QMessageBox.warning(
                     self,
                     "Invalid Input",
                     "Recycled waste percentage cannot exceed 50%. Please adjust the value."
                 )
-                # Clear the input or reset to a valid value
+                
                 self.tab3_waste_recycle.setText("")
         except ValueError:
-            # Handle invalid or empty input
+            
             QMessageBox.warning(
                 self,
                 "Invalid Input",
@@ -250,13 +250,13 @@ class CarbonFootprintCalculator(QMainWindow):
 
     def init_ui(self):
         try:
-            validator = QtGui.QDoubleValidator()  # Create validator.
+            validator = QtGui.QDoubleValidator() 
             validator.setRange(0, 9999999.0, 1)
 
             percentage_validator = QtGui.QDoubleValidator()
             percentage_validator.setRange(0, 55, 1)
 
-            # self.setStyleSheet()
+            
             # Create the main widget and layout
             self.central_widget = QWidget()
             self.setCentralWidget(self.central_widget)
@@ -395,26 +395,26 @@ class CarbonFootprintCalculator(QMainWindow):
             window.resize(800, 600)
         
 
-            # Set faint brown background color
+            
             palette = QPalette()
-            palette.setColor(QPalette.Window, QColor(210, 180, 140))  # RGB for faint brown
+            palette.setColor(QPalette.Window, QColor(210, 180, 140))  
             window.setPalette(palette)
             window.setAutoFillBackground(True)
 
-            # Create a QLabel for the image
+            
             background = QLabel(window)
-            background.setFixedSize(450, 450)  # Explicitly set the size of the label
-            background.move(50, 50)  # Move the label to a specific position
+            background.setFixedSize(450, 450)  
+            background.move(50, 50)  
 
             background.setStyleSheet("QLabel { border: none; background: none; }")
 
-            # Load and scale the logo image
-            pixmap = QPixmap("images/logo.png")  # Use the uploaded image path
+            
+            pixmap = QPixmap("images/logo.png") 
             scaled_pixmap = pixmap.scaled(
             background.width(), background.height(), Qt.KeepAspectRatio
             )
 
-            # Set the pixmap to the label
+            
             background.setPixmap(scaled_pixmap)
             background.setScaledContents(True)
             background.setToolTip(
@@ -864,7 +864,7 @@ class CarbonFootprintCalculator(QMainWindow):
             self.tab5_layout = QGridLayout(self.tab5)
             # self.tab5_layout.setAlignment(Qt.AlignCenter)
 
-            self.table = QTableWidget(6, 2)  # Set up a table with 2 columns
+            self.table = QTableWidget(6, 2)  
             self.table.verticalHeader().setVisible(False)
             # Set column headers
             self.table.setHorizontalHeaderLabels(["Operators", "Carbon Footprint (KgCO2)"])
@@ -879,13 +879,13 @@ class CarbonFootprintCalculator(QMainWindow):
             self.table.setItem(2, 0, QTableWidgetItem("Business Travel"))
             self.table.setItem(3, 0, QTableWidgetItem("Total"))
             self.table.setItem(4, 0, QTableWidgetItem("Europe Average"))
-            self.table.setItem(5, 0, QTableWidgetItem("Per Capita CF"))  # Add label for Per Capita CF
+            self.table.setItem(5, 0, QTableWidgetItem("Per Capita CF"))  
 
             for col in range(self.table.rowCount()):
-                if self.table.item(col, 0) is not None:  # Check if the item exists
+                if self.table.item(col, 0) is not None: 
                     self.table.item(col, 0).setFlags(Qt.ItemIsEnabled)
 
-                if self.table.item(col, 1) is None:  # Ensure the item exists before modifying
+                if self.table.item(col, 1) is None:  
                     self.table.setItem(col, 1, QtWidgets.QTableWidgetItem())
                 self.table.item(col, 1).setFlags(Qt.ItemIsEnabled)
             self.table.item(5, 0).setFlags(Qt.ItemIsEnabled)
@@ -1023,7 +1023,7 @@ class CarbonFootprintCalculator(QMainWindow):
             
             
             # Add the reference link outside the layout
-            self.tab6_reference_label = QLabel(self.tab6)  # Add the label directly to the tab
+            self.tab6_reference_label = QLabel(self.tab6)
             self.tab6_reference_label.setText(
                 '<a href="https://www.iea.org/data-and-statistics/charts/co2-total-emissions-per-capita-by-region-2000-2023" style="color:#FFFFFF; text-decoration:none;">Reference Link</a>'
             )
@@ -1034,13 +1034,13 @@ class CarbonFootprintCalculator(QMainWindow):
                 text-decoration: underline;  /* Adds underline to the text */
                 font-weight: bold;           /* Makes the text bold */
             """)
-            # Position the reference label at the bottom-right corner outside the layout
+            
             self.tab6_reference_label.adjustSize()  
             tab_width = self.tab6.width()
             tab_height = self.tab6.height()
             self.tab6_reference_label.move(tab_width - self.tab6_reference_label.width() - 20, tab_height - self.tab6_reference_label.height() - 20)
 
-            # Update position dynamically when the tab is resized
+            
             self.tab6.resizeEvent = lambda event: self.tab6_reference_label.move(
                 self.tab6.width() - self.tab6_reference_label.width() - 20,
                 self.tab6.height() - self.tab6_reference_label.height() - 20
@@ -1320,10 +1320,10 @@ class CarbonFootprintCalculator(QMainWindow):
                 }
             """)
 
-            # Add the feedback label to the layout
+            
             self.tab9layout.addWidget(self.tab9_feedback_label)
 
-            # Buttons for navigation in Tab 10
+            
             self.tab9_previous_button = QPushButton("Previous")
             self.tab9_previous_button.clicked.connect(lambda: self.switchTab(6))
             self.tab9_previous_button.setFixedWidth(200)
@@ -1505,7 +1505,7 @@ class CarbonFootprintCalculator(QMainWindow):
     def calculate(self):
         try:
             per_capita_cf = 0.0
-            staff_headcount = max(int(self.carbonCalculator["Details"].get("StaffHeadcount", 1)), 1)  # Ensure non-zero 
+            staff_headcount = max(int(self.carbonCalculator["Details"].get("StaffHeadcount", 1)), 1)  
             energy_result = (float(self.carbonCalculator["Energy"]["Electricity"]) * 12 * 0.0005) + (
                     float(self.carbonCalculator["Energy"]["NaturalGas"]) * 12 * 0.0053) + (
                                     float(self.carbonCalculator["Energy"]["Fuel"]) * 12 * 2.32)
@@ -1529,7 +1529,7 @@ class CarbonFootprintCalculator(QMainWindow):
 
             # table = QTableWidget(0, 2)
 
-            # Add the QTableWidgetItem to the table
+            
             self.table.item(0, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(1, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
             self.table.item(2, 1).setTextAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
@@ -1675,10 +1675,10 @@ class CarbonFootprintCalculator(QMainWindow):
     def visualization(self, values:list):
         try:
             # Create a bar plot
-            categories = ["Per Capita CF\n(KgCO2)", "Europe Avg. Per Capita CF\n(KgCO2)"]  # Labels for each bar
-            # values = [10, 15]  # Heights of each bar
+            categories = ["Per Capita CF\n(KgCO2)", "Europe Avg. Per Capita CF\n(KgCO2)"]  
+            
 
-             # Extract values for comparison
+        
             per_capita_cf = self.carbonCalculator["Results"].get("PerCapitaCF", 0)
             europe_avg_per_capita = self.carbonCalculator["Details"].get("avg_europe", 0)
             values = [per_capita_cf, europe_avg_per_capita]
@@ -1686,15 +1686,15 @@ class CarbonFootprintCalculator(QMainWindow):
             fig = go.Figure(data=[go.Bar(x=categories, y=values)])
             fig.update_layout(title={
             'text': 'Per Capita Carbon Footprint vs Europe Average Carbon Footprint',
-            'x': 0.5,  # Center the title
+            'x': 0.5,  
             'xanchor': 'center'
             }, yaxis_title='KgCO2')
 
-            # Save the plot as a PNG file for PDF
+            
             self.per_capita_cf_graph_path = os.path.join(tempfile.gettempdir(), "per_capita_cf_graph.png")
-            fig.write_image(self.per_capita_cf_graph_path, width=1200, height=800, scale=2)  # Higher resolution
+            fig.write_image(self.per_capita_cf_graph_path, width=1200, height=800, scale=2)  
 
-            # Save the plot as an HTML file in a temporary location
+            
             temp_html_path = tempfile.mktemp(suffix='.html')
             fig.write_html(temp_html_path)
 
