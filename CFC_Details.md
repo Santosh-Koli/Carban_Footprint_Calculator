@@ -113,7 +113,7 @@ pip install -r requirements.txt
 
 - *Set Up the Database:-*
 
-Create your own database tables, refer column names as per given in the excel sheet. 
+Create your own database tables(If you want build new application by yourself), refer column names as per given in the excel sheet. 
 Table1-login_table
 Table2-cf_table
 Table3-eu_avcgf_table 
